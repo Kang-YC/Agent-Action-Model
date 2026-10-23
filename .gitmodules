@@ -1,0 +1,4 @@
+[submodule "third_party/mini-swe-agent"]
+	path = third_party/mini-swe-agent
+	url = ssh://git@gitlab.xiaopeng.local:10022/capek-harness/mini-swe-agent.git
+	branch = feat/python-tool-agent-service
