@@ -128,6 +128,11 @@ class NativeRobot:
             return packet
         except Exception as error:
             self.uncertain = True
+            if not (self.output / "uncertain.json").exists():
+                save_json(self.output / "uncertain.json", dict(
+                    op="move_to_receipt_or_observation", episode_id=self.episode,
+                    last_ack_step=self.tick, error_type=type(error).__name__, error=str(error),
+                    automatic_retry=False, receipt_query_supported=False))
             record.update(status="uncertain",
                           error_type=type(error).__name__, error=str(error))
             save_json(path, record)
