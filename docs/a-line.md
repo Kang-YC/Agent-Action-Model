@@ -8,7 +8,7 @@
 bash scripts/run_a_stack_bowls.sh --output artifacts/a-stack-bowls-new
 ```
 
-新运行按参考协议，仅使用原生控制步数限制。`configs/a_stack_bowls_development.json` 中叠碗固定为 800 步，`max_decisions`、`max_total_tokens`、`wall_seconds` 均为 0，表示关闭额外上限。实际预算和命令另存到 `<run>.plan.json`；原生成功可提前结束，达到 horizon 后由原生环境判定结果。
+新运行按参考协议，仅使用原生控制步数限制。`configs/a_stack_bowls_development.json` 中叠碗固定为 800 步，`max_decisions`、`max_total_tokens`、`wall_seconds` 均为 0，表示关闭额外上限。实际预算和命令另存到 `<run>.plan.json`；原生成功可提前结束，达到 horizon 时仍未成功，汇总标为 `failure_control_step_limit`，停止继续发控制动作；成功可提前结束。仿真故障另记为 `aborted_simulator_error`，不伪造原生分数。
 
 `artifacts/a-stack-bowls-01/` 在预算变更前启动，仍使用自身快照中的旧开发保护预算（800 步、800 次有效决策、4000 万 token、4 小时）。修改配置不会热更新已有 Python 进程，既有运行以其 `.plan.json` 为准，不能追溯标成新协议。详见 [参考评测限制](reference-evaluation-limits.md)。
 
@@ -26,7 +26,7 @@ bash scripts/run_a_stack_bowls.sh \
 
 ## 运行跟进（2026-10-27）
 
-工作区位于 NFS，共享文件更新与本机进程可见性应分别核查。旧运行 `a-stack-bowls-01` 已在 11:14 UTC 输出 `summary.json`，状态为 `controller_error`：最后确认执行到 147/800 控制步、累计约 591 万 token。仿真日志先报告 PhysX scene corrupted / simulation stopped，随后 controller 的动作 RPC 超时，清理 RPC 也失败。该次属于基础设施异常，未得到原生终止结果；`sensors.mp4` 缺少 moov atom，不能视为通过视频验收。另有 35 次 recoverable tool input 拒绝，回执标记 `no_execution`，不计作物理动作。
+工作区位于 NFS，共享文件更新与本机进程可见性应分别核查。旧运行 `a-stack-bowls-01` 已在 11:14 UTC 输出 `summary.json`，状态为 `controller_error`：最后确认执行到 147/800 控制步、累计约 591 万 token。仿真日志先报告 PhysX scene corrupted / simulation stopped，随后 controller 的动作 RPC 超时，清理 RPC 也失败。该次属于基础设施异常，未得到原生终止结果；运行中曾检测到 `sensors.mp4` 缺少 moov atom；退出清理后复验已可读取，共 148 帧（1920×360），视频保留用于复盘。另有 35 次 recoverable tool input 拒绝，回执标记 `no_execution`，不计作物理动作。
 
 本机 `cnwlb-a100-p02152` 已加载固定 base（服务 PID 2486868，GPU 0），健康接口核对 checkpoint 成功，文本与三个相机视角的实际推理回包通过。验证证据位于 `artifacts/a-line-followup-20261027/`；冷启动因 NFS 依赖导入和预热超过十分钟，等待命令超时后原进程继续初始化并最终 ready，未重复加载。
 
@@ -37,3 +37,5 @@ bash scripts/run_a_stack_bowls.sh \
 叠碗运行结束后，检查原生终止或预算终止、轨迹与视频、模型输入和工具回执、历史压缩、失败分类和成本，再记录开发报告。网页 50 案例在开发链路稳定、预算明确后按冻结清单推进；旧记录缺失的原生分数保持缺失，不填零。每个完成的子任务先检查、再单独 commit，运行中的实验不标成完成。
 
 服务入口见 [固定模型推理服务](model-service.md)，基础闭环证据见 [本地 base 推理链路](base-inference.md)。
+
+旧 episode 的错误时间线、成本和证据见 [叠碗首次运行复盘](experiments/a-stack-bowls-01.md)。

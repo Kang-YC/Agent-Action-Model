@@ -35,6 +35,29 @@ def episode_wait_timeout(wall_seconds: int, elapsed: float) -> float | None:
     return max(1, wall_seconds - elapsed) if wall_seconds else None
 
 
+def task_outcome(result: dict, native: dict, step_limit: int) -> str:
+    if native.get("status") == "invalid_native_layout":
+        return "invalid_native_layout"
+    success = native.get("native_success") if native.get("complete") else result.get("success")
+    if success is True:
+        return "success"
+    steps = native.get("native_control_steps", result.get("step_id", 0))
+    horizon = native.get("native_step_limit") or step_limit
+    if horizon and steps >= horizon:
+        return "failure_control_step_limit"
+    if native.get("complete") or result.get("terminated") or result.get("truncated"):
+        return "failure_native"
+    return "budget_censored" if result.get("reason") in ("token_budget", "control_step_budget", "decision_budget", "wall_budget") else "incomplete"
+
+
+def simulator_error(log: str) -> str | None:
+    if "PxgCudaDeviceMemoryAllocator failed to allocate memory" in log:
+        return "gpu_memory_allocation"
+    if "Scene state is corrupted" in log:
+        return "scene_state_corrupted"
+    return None
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     root = Path(__file__).resolve().parents[1]
@@ -167,6 +190,16 @@ def main() -> None:
         summary["wall_seconds"] = time.monotonic()-started
         if (output / "sim/evaluation_outcome.json").exists():
             summary["native_outcome"] = json.loads((output / "sim/evaluation_outcome.json").read_text())
+        sim_log = output / "logs/sim.log"
+        failure_category = simulator_error(sim_log.read_text(errors="replace")) if sim_log.exists() else None
+        if "result" in summary:
+            summary["task_outcome"] = task_outcome(summary["result"], summary.get("native_outcome", {}), args.max_control_steps)
+        elif failure_category:
+            summary.update(status="simulator_error", task_outcome="aborted_simulator_error",
+                           failure_category=failure_category)
+            progress = output / "controller/progress.json"
+            if progress.exists():
+                summary["last_acknowledged_control_step"] = json.loads(progress.read_text())["step_id"]
         write(output / "summary.json", summary)
     print(json.dumps(summary, ensure_ascii=False), flush=True)
 

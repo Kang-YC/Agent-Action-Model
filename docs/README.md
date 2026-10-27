@@ -6,6 +6,7 @@
 | [固定模型推理服务](model-service.md) | 服务启停、复用、状态、文本/多图调用、依赖 |
 | [本地 base 推理链路](base-inference.md) | Codex 多图探针、Direct 入口与已完成验证记录 |
 | [A 线](a-line.md) | 叠碗开发运行、网页十任务配对清单、后续验收 |
+| [叠碗首次运行复盘](experiments/a-stack-bowls-01.md) | 147 步显存异常、证据与失败分类 |
 | [参考评测限制](reference-evaluation-limits.md) | 五案例规模、原生步数、仿真时间与墙钟预算的区别 |
 | [共享机器人契约](robot-contract.md) | 双臂目标、逐步 ACK、图像反馈、固定命令检查 |
 

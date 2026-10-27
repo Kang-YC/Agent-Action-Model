@@ -8,7 +8,7 @@ import sys
 import pytest
 
 from agent_action.a_line import published_case_plan, validate_native_budget
-from agent_action.direct import episode_wait_timeout, nonnegative_int, startup_timeout
+from agent_action.direct import episode_wait_timeout, nonnegative_int, simulator_error, startup_timeout, task_outcome
 
 
 def test_zero_wall_cap_keeps_startup_deadline_and_allows_episode_completion():
@@ -52,3 +52,19 @@ def test_all_published_cases_use_their_own_native_horizons_and_variants():
     altered["cases"][0]["native_horizon"] = 1
     with pytest.raises(ValueError, match="hash mismatch"):
         published_case_plan(altered, altered["cases"][0]["case_id"])
+
+
+@pytest.mark.parametrize(("steps", "success", "expected"), [
+    (799, False, "incomplete"), (800, False, "failure_control_step_limit"),
+    (801, False, "failure_control_step_limit"), (800, True, "success"),
+])
+def test_native_step_limit_failure_boundary(steps, success, expected):
+    assert task_outcome(dict(step_id=steps, success=success), {}, 800) == expected
+
+
+def test_simulator_faults_and_early_budgets_are_not_step_limit_failures():
+    assert simulator_error("PxgCudaDeviceMemoryAllocator failed to allocate memory 100000000 bytes! Result = 2") == "gpu_memory_allocation"
+    assert simulator_error("Scene state is corrupted. Simulation cannot continue!") == "scene_state_corrupted"
+    assert task_outcome(dict(step_id=147, reason="controller_error"), {}, 800) == "incomplete"
+    assert task_outcome(dict(step_id=1, reason="control_step_budget"), dict(native_step_limit=800), 1) == "budget_censored"
+    assert task_outcome(dict(step_id=800, success=False), dict(status="invalid_native_layout"), 800) == "invalid_native_layout"
