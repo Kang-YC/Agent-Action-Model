@@ -50,6 +50,8 @@ export PYTHONPATH="$(pwd):$(pwd)/../GPT-as-Policy"
 
 该运行是开发验证，预算截断不计作原生任务失败或成功。检查 `summary.json`、`controller/result.json`、`controller/history.json`、`sim/evaluation_outcome.json` 和 `sim/sensors.mp4`。只有原生环境给出成功判定，才能报告任务成功；模型自述不作为判分。
 
+上面的两次决策命令显式使用短验证预算。通用 Direct 入口现在默认关闭额外预算，使用原生终止；正式 A 线请使用 [A 线入口](a-line.md) 从任务或冻结案例读取控制步上限。
+
 后续先扩大开发闭环与预算，验证正常终止和成本，再冻结正式案例。当前图片上限与上下文预算面向短运行，长 episode 的历史与压缩策略仍需单独验证。
 
 ## 本次验证证据（2026-10-27）

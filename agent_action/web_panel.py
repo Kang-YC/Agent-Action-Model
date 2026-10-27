@@ -56,6 +56,8 @@ def freeze(reference: Path, robodojo: Path) -> dict:
             cases.append(record)
     panel = dict(schema="agent_action.published_direct_panel.v1", status="prepared_not_run",
                  scope="published_ten_tasks_five_cases_each", task_order=list(TASKS), cases=cases,
+                 budget_protocol=dict(control_steps="case.native_horizon", max_decisions=0,
+                                      max_total_tokens=0, wall_seconds=0),
                  native_source_comparison=native_sources,
                  sources={str(public): digest(public), str(reference / "report_web/data.json"): digest(reference / "report_web/data.json")},
                  comparison="Pair case_id, seeds, layout hash and native horizon with prior Direct. Model, context and adapter differences remain explicit.",

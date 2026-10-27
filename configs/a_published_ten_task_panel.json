@@ -3276,6 +3276,12 @@
       "native_support_trajectories": []
     }
   ],
+  "budget_protocol": {
+    "control_steps": "case.native_horizon",
+    "max_decisions": 0,
+    "max_total_tokens": 0,
+    "wall_seconds": 0
+  },
   "native_source_comparison": [
     {
       "path": "env/camera_manager/camera_manager.py",
@@ -4298,5 +4304,5 @@
   },
   "comparison": "Pair case_id, seeds, layout hash and native horizon with prior Direct. Model, context and adapter differences remain explicit.",
   "incomplete_policy": "Keep prior and new incomplete attempts separate; never replace missing native scores with zero.",
-  "panel_sha256": "17f7bf07c3134b4cb2a4c81c514195cd60b45833194ed0f9490b8f67f4eef012"
+  "panel_sha256": "95dc3b82d768b0d0e8a7ed34e4bc579e848ee658346bf99c2d5674c2c347c750"
 }

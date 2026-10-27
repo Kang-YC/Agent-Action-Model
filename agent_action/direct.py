@@ -1,4 +1,4 @@
-"""Small Codex Direct development run using the reference policy and tools."""
+"""Codex Direct with native-step defaults and optional explicit development caps."""
 
 import argparse
 import hashlib
@@ -20,6 +20,21 @@ def write(path: Path, value: dict) -> None:
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
 
 
+def nonnegative_int(value: str) -> int:
+    number = int(value)
+    if number < 0:
+        raise argparse.ArgumentTypeError("Budget must be non-negative; 0 disables the extra cap")
+    return number
+
+
+def startup_timeout(wall_seconds: int) -> int:
+    return min(300, wall_seconds) if wall_seconds else 300
+
+
+def episode_wait_timeout(wall_seconds: int, elapsed: float) -> float | None:
+    return max(1, wall_seconds - elapsed) if wall_seconds else None
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     root = Path(__file__).resolve().parents[1]
@@ -30,11 +45,12 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--task", default="classify_objects")
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--eval-seed", type=int, default=0)
     parser.add_argument("--sim-port", type=int, default=19124)
-    parser.add_argument("--max-decisions", type=int, default=2)
-    parser.add_argument("--max-control-steps", type=int, default=10)
-    parser.add_argument("--wall-seconds", type=int, default=900)
-    parser.add_argument("--max-total-tokens", type=int, default=200000)
+    parser.add_argument("--max-decisions", type=nonnegative_int, default=0, help="0 uses native termination only")
+    parser.add_argument("--max-control-steps", type=nonnegative_int, default=0, help="0 uses the task's native horizon")
+    parser.add_argument("--wall-seconds", type=nonnegative_int, default=0, help="0 disables the episode wall-clock cap")
+    parser.add_argument("--max-total-tokens", type=nonnegative_int, default=0, help="0 disables the cumulative token cap")
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
     output = args.output.resolve()
@@ -56,9 +72,12 @@ def main() -> None:
     shutil.copy2(root / "scripts/start_native.sh", harness_source / "scripts/start_native.sh")
     shutil.copy2(args.config, output / "base_model.json")
     manifest = checkpoint_manifest(config)
-    manifest.update(kind="development_direct_chain_validation", task=args.task, layout_id=args.seed,
+    manifest.update(kind="development_direct_chain_validation", task=args.task, layout_id=args.seed, eval_seed=args.eval_seed,
                     max_decisions=args.max_decisions, max_control_steps=args.max_control_steps,
                     max_total_tokens=args.max_total_tokens,
+                    extra_budget_caps=dict(decisions=args.max_decisions or None,
+                                           total_tokens=args.max_total_tokens or None,
+                                           wall_seconds=args.wall_seconds or None),
                     wall_seconds=args.wall_seconds, simulation_pauses_for_inference=True,
                     inference_config=config, codex_version=subprocess.check_output([str(args.codex), "--version"], text=True).strip(),
                     codex_sha256=hashlib.sha256(args.codex.read_bytes()).hexdigest(),
@@ -112,11 +131,11 @@ def main() -> None:
         bridge = start("bridge", [sys.executable, "-m", "agent_action.bridge", "--config", str(args.config.resolve()),
                                   "--output", str(output / "model_requests")])
         sim = start("sim", ["bash", str(harness_source / "scripts/start_native.sh"), "--task", args.task,
-                            "--port", str(args.sim_port), "--output", str(output / "sim")])
+                            "--port", str(args.sim_port), "--output", str(output / "sim"), "--eval-seed", str(args.eval_seed)])
         while '"event": "ready"' not in (output / "logs/sim.log").read_text(errors="replace"):
             if sim.poll() is not None or bridge.poll() is not None:
                 raise RuntimeError("Service exited during startup; inspect logs")
-            if time.monotonic()-started > min(300, args.wall_seconds):
+            if time.monotonic()-started > startup_timeout(args.wall_seconds):
                 raise TimeoutError("Service startup deadline")
             time.sleep(1)
         with opener.open(f"http://127.0.0.1:{config['bridge_port']}/health", timeout=10):
@@ -125,7 +144,7 @@ def main() -> None:
             "--codex", str(wrapper), "--output", str(output / "controller"), "--task", args.task,
             "--seed", str(args.seed), "--sim-port", str(args.sim_port), "--max-decisions", str(args.max_decisions),
             "--max-control-steps", str(args.max_control_steps)])
-        code = worker.wait(timeout=max(1, args.wall_seconds-(time.monotonic()-started)))
+        code = worker.wait(timeout=episode_wait_timeout(args.wall_seconds, time.monotonic()-started))
         if code:
             summary["status"] = "controller_error"
             raise RuntimeError(f"Reference controller exited {code}; inspect logs")
