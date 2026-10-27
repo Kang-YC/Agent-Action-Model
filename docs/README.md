@@ -6,6 +6,7 @@
 | [固定模型推理服务](model-service.md) | 服务启停、复用、状态、文本/多图调用、依赖 |
 | [本地 base 推理链路](base-inference.md) | Codex 多图探针、Direct 入口与已完成验证记录 |
 | [A 线](a-line.md) | 叠碗开发运行、网页十任务配对清单、后续验收 |
+| [参考评测限制](reference-evaluation-limits.md) | 五案例规模、原生步数、仿真时间与墙钟预算的区别 |
 | [共享机器人契约](robot-contract.md) | 双臂目标、逐步 ACK、图像反馈、固定命令检查 |
 
 本会话负责 A 线。模型固定为 `configs/base_model.json` 中的 checkpoint；任务与预算放在 `configs/`，实现放在 `agent_action/`，可执行入口放在 `scripts/`。大型图片、视频、原始模型请求和进程状态保存在忽略版本跟踪的 `artifacts/`；文档记录路径与验证结论。

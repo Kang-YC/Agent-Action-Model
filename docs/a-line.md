@@ -10,6 +10,8 @@ bash scripts/run_a_stack_bowls.sh --output artifacts/a-stack-bowls-new
 
 预算固定在 `configs/a_stack_bowls_development.json`：原生 800 控制步、最多 800 次有效决策、4000 万累计 token、4 小时墙钟。实际预算和命令另存到 `<run>.plan.json`，执行中不调整；预算结束与原生任务完成分别报告。当前运行目录为 `artifacts/a-stack-bowls-01/`。
 
+这些额外预算是本次开发保护设置。参考正式 panel 关闭额外决策次数、token 和墙钟上限，只使用原生控制步数约束；详见 [参考评测限制](reference-evaluation-limits.md)。后续正式对照须单独登记任何预算差异。
+
 叠碗是独立开发任务。后续网页对照清单为 `configs/a_published_ten_task_panel.json`，逐例复用网页原 Direct 的十任务、每任务五案例（含原 standard/random 配比），共 50 案例。所有布局及原生支持轨迹的哈希与历史冻结清单一致；169 个历史原生源码文件中 165 个一致，4 处差异已保存到 `artifacts/a-published-comparison-audit/`，主要涉及图像同步和日志路径，另一个任务文件不属于这十任务。十任务评分代码保持相同；模型、上下文和适配器差异仍需在结果中单列。清单已准备，尚未批量运行。
 
 ## 下一步验收
