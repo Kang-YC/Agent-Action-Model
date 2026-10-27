@@ -1,0 +1,4302 @@
+{
+  "schema": "agent_action.published_direct_panel.v1",
+  "status": "prepared_not_run",
+  "scope": "published_ten_tasks_five_cases_each",
+  "task_order": [
+    "organize_table",
+    "classify_objects_by_language",
+    "imitate_sorting_sequence",
+    "arrange_largest_number",
+    "pack_objects_into_box",
+    "classify_objects",
+    "build_tower",
+    "make_kong",
+    "fold_clothes",
+    "put_bottles_into_dustbin"
+  ],
+  "cases": [
+    {
+      "case_id": "organize_table__standard__g0__l0",
+      "task": "organize_table",
+      "runtime_task": "organize_table",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1000,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/organize_table_0.json",
+        "sha256": "e55e5cffef73b1967ad26dc0c7c8933ce05e68f329450ae0ac933abf386fa5ba"
+      },
+      "prior_direct": {
+        "id": "gpt__organize_table__standard__g0__l0",
+        "case_id": "organize_table__standard__g0__l0",
+        "method": "gpt",
+        "task": "organize_table",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.5,
+        "native_complete": true,
+        "steps": 1000,
+        "limit": 1000,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1001,
+        "duration": 40.04,
+        "instruction": "Place the mouse on the mouse pad, push the keyboard into the frame, put the figurine on the stand, place the alarm clock on the drawer, then open the drawer and put all remaining miscellaneous items inside.",
+        "corrected_steps": 0,
+        "chunks": 201,
+        "tokens": {
+          "totalTokens": 25592351,
+          "inputTokens": 25536947,
+          "cachedInputTokens": 25128832,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 55404,
+          "reasoningOutputTokens": 30272
+        },
+        "result_sha256": "57b1d2ec700a9b8d2252cc3e558c4171ee8c2a649850aae96978cf1c84c34743",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.5,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "e55e5cffef73b1967ad26dc0c7c8933ce05e68f329450ae0ac933abf386fa5ba",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "organize_table__standard__g0__l1",
+      "task": "organize_table",
+      "runtime_task": "organize_table",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1000,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/organize_table_1.json",
+        "sha256": "cc44fde5d0d4461123b2ec469d6bb02f47a621ee2f6b2bc81269213b82b2342d"
+      },
+      "prior_direct": {
+        "id": "gpt__organize_table__standard__g0__l1",
+        "case_id": "organize_table__standard__g0__l1",
+        "method": "gpt",
+        "task": "organize_table",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 1000,
+        "limit": 1000,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1001,
+        "duration": 40.04,
+        "instruction": "Place the mouse on the mouse pad, push the keyboard into the frame, put the figurine on the stand, place the alarm clock on the drawer, then open the drawer and put all remaining miscellaneous items inside.",
+        "corrected_steps": 0,
+        "chunks": 200,
+        "tokens": {
+          "totalTokens": 8478389,
+          "inputTokens": 8465048,
+          "cachedInputTokens": 8107520,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 13341,
+          "reasoningOutputTokens": 6331
+        },
+        "result_sha256": "e0afe969f9903d4b7cfd050caf30f827c8294e3e89abb740a6119d8e116fea05",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "cc44fde5d0d4461123b2ec469d6bb02f47a621ee2f6b2bc81269213b82b2342d",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "organize_table__standard__g0__l2",
+      "task": "organize_table",
+      "runtime_task": "organize_table",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1000,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/organize_table_2.json",
+        "sha256": "2b995768c4dfada0ac4c313fa20e467e645f6ff700e81fe05ef513d61ed0e343"
+      },
+      "prior_direct": {
+        "id": "gpt__organize_table__standard__g0__l2",
+        "case_id": "organize_table__standard__g0__l2",
+        "method": "gpt",
+        "task": "organize_table",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.25,
+        "native_complete": true,
+        "steps": 1000,
+        "limit": 1000,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1001,
+        "duration": 40.04,
+        "instruction": "Place the mouse on the mouse pad, push the keyboard into the frame, put the figurine on the stand, place the alarm clock on the drawer, then open the drawer and put all remaining miscellaneous items inside.",
+        "corrected_steps": 0,
+        "chunks": 200,
+        "tokens": {
+          "totalTokens": 26732930,
+          "inputTokens": 26686486,
+          "cachedInputTokens": 26286208,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 46444,
+          "reasoningOutputTokens": 25386
+        },
+        "result_sha256": "8d4e1e6eef6e7c80716bff90879e2fb7a63a4b923f636c9438da5ab00a031c56",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.25,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "2b995768c4dfada0ac4c313fa20e467e645f6ff700e81fe05ef513d61ed0e343",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "organize_table__standard__g0__l3",
+      "task": "organize_table",
+      "runtime_task": "organize_table",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 3,
+        "reset_seed": 3,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1000,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/organize_table_3.json",
+        "sha256": "12e2492a1f688b800774543f2e9805bc1e4b7a0950c1037f59e7dfe073e43711"
+      },
+      "prior_direct": {
+        "id": "gpt__organize_table__standard__g0__l3",
+        "case_id": "organize_table__standard__g0__l3",
+        "method": "gpt",
+        "task": "organize_table",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 3,
+          "reset_seed": 3,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.5,
+        "native_complete": true,
+        "steps": 1000,
+        "limit": 1000,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1001,
+        "duration": 40.04,
+        "instruction": "Place the mouse on the mouse pad, push the keyboard into the frame, put the figurine on the stand, place the alarm clock on the drawer, then open the drawer and put all remaining miscellaneous items inside.",
+        "corrected_steps": 0,
+        "chunks": 200,
+        "tokens": {
+          "totalTokens": 25911163,
+          "inputTokens": 25854481,
+          "cachedInputTokens": 25184768,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 56682,
+          "reasoningOutputTokens": 28230
+        },
+        "result_sha256": "544b98fc2e8ecc12d566f605275b9f2e94a49df3caeb6a9e1f4a6a92b4f64c7c",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.5,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "12e2492a1f688b800774543f2e9805bc1e4b7a0950c1037f59e7dfe073e43711",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "organize_table__standard__g0__l4",
+      "task": "organize_table",
+      "runtime_task": "organize_table",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 4,
+        "reset_seed": 4,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1000,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/organize_table_4.json",
+        "sha256": "82764ab142f4748fe581b4993460743ae59ba08c7d6aea3770d4bf61844dc20a"
+      },
+      "prior_direct": {
+        "id": "gpt__organize_table__standard__g0__l4",
+        "case_id": "organize_table__standard__g0__l4",
+        "method": "gpt",
+        "task": "organize_table",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 4,
+          "reset_seed": 4,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.25,
+        "native_complete": true,
+        "steps": 1000,
+        "limit": 1000,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1001,
+        "duration": 40.04,
+        "instruction": "Place the mouse on the mouse pad, push the keyboard into the frame, put the figurine on the stand, place the alarm clock on the drawer, then open the drawer and put all remaining miscellaneous items inside.",
+        "corrected_steps": 0,
+        "chunks": 200,
+        "tokens": {
+          "totalTokens": 26318755,
+          "inputTokens": 26276032,
+          "cachedInputTokens": 25859200,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 42723,
+          "reasoningOutputTokens": 21459
+        },
+        "result_sha256": "a7eb62b2db3275362c35bdcbf2edc06817605a43c33b780a7689a317baff285d",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.25,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "82764ab142f4748fe581b4993460743ae59ba08c7d6aea3770d4bf61844dc20a",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects_by_language__standard__g0__l0",
+      "task": "classify_objects_by_language",
+      "runtime_task": "classify_objects_by_language",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_by_language_0.json",
+        "sha256": "eb7bc205a8e5f3acad8fdada3bf7a26b8e11fc39d7944f434aa4989356044eb2"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects_by_language__standard__g0__l0",
+        "case_id": "classify_objects_by_language__standard__g0__l0",
+        "method": "gpt",
+        "task": "classify_objects_by_language",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.4,
+        "native_complete": true,
+        "steps": 1100,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1101,
+        "duration": 44.04,
+        "instruction": "Put car objects into the left basket, watch objects into the middle basket, and wooden_toy objects into the right basket, then reset the robot arm.",
+        "corrected_steps": 0,
+        "chunks": 220,
+        "tokens": {
+          "totalTokens": 28987945,
+          "inputTokens": 28934059,
+          "cachedInputTokens": 28502400,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 53886,
+          "reasoningOutputTokens": 30158
+        },
+        "result_sha256": "fe5e25bcc58008d53b5bb4cdca338a626e43c7a97a8a256d122909355b9e260b",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.4,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "eb7bc205a8e5f3acad8fdada3bf7a26b8e11fc39d7944f434aa4989356044eb2",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects_by_language__standard__g0__l1",
+      "task": "classify_objects_by_language",
+      "runtime_task": "classify_objects_by_language",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_by_language_1.json",
+        "sha256": "a8dfaa02ceec29c527c2ef4d98beb5862c31cc8ffe01bc978ea63987f696500b"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects_by_language__standard__g0__l1",
+        "case_id": "classify_objects_by_language__standard__g0__l1",
+        "method": "gpt",
+        "task": "classify_objects_by_language",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "idle",
+        "success": false,
+        "score": null,
+        "native_complete": false,
+        "steps": 257,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 258,
+        "duration": 10.32,
+        "instruction": "Put car objects into the left basket, watch objects into the middle basket, and chocolate_bar objects into the right basket, then reset the robot arm.",
+        "corrected_steps": 0,
+        "chunks": 56,
+        "tokens": {
+          "totalTokens": 16434295,
+          "inputTokens": 16378419,
+          "cachedInputTokens": 15473536,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 55876,
+          "reasoningOutputTokens": 13186
+        },
+        "result_sha256": "046ddfecb4a9a72a427cbffe42513a44c95788bd790d443bbb2a679604841e40",
+        "native_outcome": {
+          "native_success": null,
+          "native_score": null,
+          "complete": false
+        }
+      },
+      "historical_layout_sha256": "a8dfaa02ceec29c527c2ef4d98beb5862c31cc8ffe01bc978ea63987f696500b",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects_by_language__standard__g0__l2",
+      "task": "classify_objects_by_language",
+      "runtime_task": "classify_objects_by_language",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_by_language_2.json",
+        "sha256": "224acdad14e9087fe1c488537960aa4edc63d19167e2a41fef124e745fc1217c"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects_by_language__standard__g0__l2",
+        "case_id": "classify_objects_by_language__standard__g0__l2",
+        "method": "gpt",
+        "task": "classify_objects_by_language",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 791,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 792,
+        "duration": 31.68,
+        "instruction": "Put chocolate_bar objects into the left basket, watch objects into the middle basket, and wooden_toy objects into the right basket, then reset the robot arm.",
+        "corrected_steps": 0,
+        "chunks": 159,
+        "tokens": {
+          "totalTokens": 25137794,
+          "inputTokens": 25104491,
+          "cachedInputTokens": 24804864,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 33303,
+          "reasoningOutputTokens": 12111
+        },
+        "result_sha256": "4165b1d312b9330551c48008666456ff6a10b166f5736dcb470fb599d60ead6b",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "224acdad14e9087fe1c488537960aa4edc63d19167e2a41fef124e745fc1217c",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects_by_language__standard__g0__l3",
+      "task": "classify_objects_by_language",
+      "runtime_task": "classify_objects_by_language",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 3,
+        "reset_seed": 3,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_by_language_3.json",
+        "sha256": "c986ce753c840a80d83e706b3ddebd56f2fa7c5dd569eb015febacc9e4ce330c"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects_by_language__standard__g0__l3",
+        "case_id": "classify_objects_by_language__standard__g0__l3",
+        "method": "gpt",
+        "task": "classify_objects_by_language",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 3,
+          "reset_seed": 3,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 1100,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1101,
+        "duration": 44.04,
+        "instruction": "Put wooden_toy objects into the left basket, car objects into the middle basket, and watch objects into the right basket, then reset the robot arm.",
+        "corrected_steps": 0,
+        "chunks": 283,
+        "tokens": {
+          "totalTokens": 91730207,
+          "inputTokens": 91554993,
+          "cachedInputTokens": 89229440,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 175214,
+          "reasoningOutputTokens": 32922
+        },
+        "result_sha256": "a9eb50be2d250bae4b72d49d97d0e6b6d04d23b73391b012f1b7f8b82a17fad0",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "c986ce753c840a80d83e706b3ddebd56f2fa7c5dd569eb015febacc9e4ce330c",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects_by_language__standard__g0__l4",
+      "task": "classify_objects_by_language",
+      "runtime_task": "classify_objects_by_language",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 4,
+        "reset_seed": 4,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_by_language_4.json",
+        "sha256": "14018986e7d50443a084a961998a11e3cc3415cec04447d4bab7d0b3fd872046"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects_by_language__standard__g0__l4",
+        "case_id": "classify_objects_by_language__standard__g0__l4",
+        "method": "gpt",
+        "task": "classify_objects_by_language",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 4,
+          "reset_seed": 4,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 978,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 979,
+        "duration": 39.16,
+        "instruction": "Put wooden_toy objects into the left basket, chocolate_bar objects into the middle basket, and pepper objects into the right basket, then reset the robot arm.",
+        "corrected_steps": 0,
+        "chunks": 196,
+        "tokens": {
+          "totalTokens": 25767060,
+          "inputTokens": 25725504,
+          "cachedInputTokens": 25368448,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 41556,
+          "reasoningOutputTokens": 20463
+        },
+        "result_sha256": "a9f9c72cd4af0f0c93c1922783fb32e99dd3df65a390fc1f8e61cca4eaa1877e",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "14018986e7d50443a084a961998a11e3cc3415cec04447d4bab7d0b3fd872046",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "imitate_sorting_sequence__standard__g0__l0",
+      "task": "imitate_sorting_sequence",
+      "runtime_task": "imitate_sorting_sequence",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/imitate_sorting_sequence_0.json",
+        "sha256": "3f49325bc7198569671b2e6a478460d9ea3a323edb38a5da4da389c7a29b2f27"
+      },
+      "prior_direct": {
+        "id": "gpt__imitate_sorting_sequence__standard__g0__l0",
+        "case_id": "imitate_sorting_sequence__standard__g0__l0",
+        "method": "gpt",
+        "task": "imitate_sorting_sequence",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 450,
+        "limit": 1600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 451,
+        "duration": 18.04,
+        "instruction": "Observe the object placement order, remember it, then place the corresponding objects into the basket in the same order.",
+        "corrected_steps": 0,
+        "chunks": 90,
+        "tokens": {
+          "totalTokens": 9149147,
+          "inputTokens": 9136758,
+          "cachedInputTokens": 8997760,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 12389,
+          "reasoningOutputTokens": 3980
+        },
+        "result_sha256": "67b4d8d499c4d378a58bfd50b86600f379a24228cd0f760c2d9a7cc19db03428",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "3f49325bc7198569671b2e6a478460d9ea3a323edb38a5da4da389c7a29b2f27",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/imitate_sorting_sequence/0/0.pkl",
+          "sha256": "e87b1a5d7d76eb39c165f904a3f382929dae846488d30fd95cc505fb9f66711b"
+        }
+      ]
+    },
+    {
+      "case_id": "imitate_sorting_sequence__standard__g0__l1",
+      "task": "imitate_sorting_sequence",
+      "runtime_task": "imitate_sorting_sequence",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/imitate_sorting_sequence_1.json",
+        "sha256": "a9d1637fa0a50433be91e360bc1d25d7b95ce2b485ec055a04b4b01ed7f15038"
+      },
+      "prior_direct": {
+        "id": "gpt__imitate_sorting_sequence__standard__g0__l1",
+        "case_id": "imitate_sorting_sequence__standard__g0__l1",
+        "method": "gpt",
+        "task": "imitate_sorting_sequence",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 104,
+        "limit": 1600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 105,
+        "duration": 4.2,
+        "instruction": "Observe the object placement order, remember it, then place the corresponding objects into the basket in the same order.",
+        "corrected_steps": 0,
+        "chunks": 22,
+        "tokens": {
+          "totalTokens": 5221126,
+          "inputTokens": 5201562,
+          "cachedInputTokens": 4568448,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 19564,
+          "reasoningOutputTokens": 6602
+        },
+        "result_sha256": "4cce49d16e8fc50e4d95493cfcd45022f2d32d61f7e34f9bf922bf9bf43d9e3f",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "a9d1637fa0a50433be91e360bc1d25d7b95ce2b485ec055a04b4b01ed7f15038",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/imitate_sorting_sequence/0/1.pkl",
+          "sha256": "d365a2e9365517d91e5d7f091faaf02162b45d64784eb2c367e07d6589c96010"
+        }
+      ]
+    },
+    {
+      "case_id": "imitate_sorting_sequence__standard__g0__l2",
+      "task": "imitate_sorting_sequence",
+      "runtime_task": "imitate_sorting_sequence",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/imitate_sorting_sequence_2.json",
+        "sha256": "1b0fc859dbc088411be7eee6ee1985f07384fdce11dd903ae59a5af1d0a3834a"
+      },
+      "prior_direct": {
+        "id": "gpt__imitate_sorting_sequence__standard__g0__l2",
+        "case_id": "imitate_sorting_sequence__standard__g0__l2",
+        "method": "gpt",
+        "task": "imitate_sorting_sequence",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 378,
+        "limit": 1600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 379,
+        "duration": 15.16,
+        "instruction": "Observe the object placement order, remember it, then place the corresponding objects into the basket in the same order.",
+        "corrected_steps": 0,
+        "chunks": 76,
+        "tokens": {
+          "totalTokens": 6301459,
+          "inputTokens": 6292827,
+          "cachedInputTokens": 6171392,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 8632,
+          "reasoningOutputTokens": 1856
+        },
+        "result_sha256": "2a22436ca707b1e987a85b5b2a1aa8fdff0ba0c1339e3359f5317d0ce067180e",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "1b0fc859dbc088411be7eee6ee1985f07384fdce11dd903ae59a5af1d0a3834a",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/imitate_sorting_sequence/0/2.pkl",
+          "sha256": "8cea316ad803e28839e8e6c5f330aac4bc29d00e2c12045547a1d7fe71551254"
+        }
+      ]
+    },
+    {
+      "case_id": "imitate_sorting_sequence__standard__g0__l3",
+      "task": "imitate_sorting_sequence",
+      "runtime_task": "imitate_sorting_sequence",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 3,
+        "reset_seed": 3,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/imitate_sorting_sequence_3.json",
+        "sha256": "6135752298d155b0f2cb591da3199bd98a5349c013196fd5ed2e714e87592171"
+      },
+      "prior_direct": {
+        "id": "gpt__imitate_sorting_sequence__standard__g0__l3",
+        "case_id": "imitate_sorting_sequence__standard__g0__l3",
+        "method": "gpt",
+        "task": "imitate_sorting_sequence",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 3,
+          "reset_seed": 3,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 54,
+        "limit": 1600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 55,
+        "duration": 2.2,
+        "instruction": "Observe the object placement order, remember it, then place the corresponding objects into the basket in the same order.",
+        "corrected_steps": 0,
+        "chunks": 11,
+        "tokens": {
+          "totalTokens": 1534875,
+          "inputTokens": 1523692,
+          "cachedInputTokens": 1454080,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11183,
+          "reasoningOutputTokens": 3378
+        },
+        "result_sha256": "c9fcb6e3d6f0832bbca6d2747271121bc161e4c000785ada0b4213969e9ef3d9",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "6135752298d155b0f2cb591da3199bd98a5349c013196fd5ed2e714e87592171",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/imitate_sorting_sequence/0/3.pkl",
+          "sha256": "14821c325e3cc7ea9fc187f979a27a70f34703a3815c015284189d400dfd7889"
+        }
+      ]
+    },
+    {
+      "case_id": "imitate_sorting_sequence__standard__g0__l4",
+      "task": "imitate_sorting_sequence",
+      "runtime_task": "imitate_sorting_sequence",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 4,
+        "reset_seed": 4,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/imitate_sorting_sequence_4.json",
+        "sha256": "822665f497405d86cd25fb43d18abb2d51a3335dc049339d1bd303d70546f4a1"
+      },
+      "prior_direct": {
+        "id": "gpt__imitate_sorting_sequence__standard__g0__l4",
+        "case_id": "imitate_sorting_sequence__standard__g0__l4",
+        "method": "gpt",
+        "task": "imitate_sorting_sequence",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 4,
+          "reset_seed": 4,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 98,
+        "limit": 1600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 99,
+        "duration": 3.96,
+        "instruction": "Observe the object placement order, remember it, then place the corresponding objects into the basket in the same order.",
+        "corrected_steps": 0,
+        "chunks": 21,
+        "tokens": {
+          "totalTokens": 3944534,
+          "inputTokens": 3926058,
+          "cachedInputTokens": 3775872,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 18476,
+          "reasoningOutputTokens": 5349
+        },
+        "result_sha256": "5a4187e19b4ab673f861a1f0bb7a11c469d8a15721a92c4b22c04246fc1d0bba",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "822665f497405d86cd25fb43d18abb2d51a3335dc049339d1bd303d70546f4a1",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/imitate_sorting_sequence/0/4.pkl",
+          "sha256": "27eca96475f60a02d5540dd7d6293d0bdb9caa9313e0c8665a07d330a904d94a"
+        }
+      ]
+    },
+    {
+      "case_id": "arrange_largest_number__standard__g0__l0",
+      "task": "arrange_largest_number",
+      "runtime_task": "arrange_largest_number",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/arrange_largest_number_0.json",
+        "sha256": "8d45b23010c950c35d5618c8701c6b8203036abaaf20a228db067ec3b1e30617"
+      },
+      "prior_direct": {
+        "id": "gpt__arrange_largest_number__standard__g0__l0",
+        "case_id": "arrange_largest_number__standard__g0__l0",
+        "method": "gpt",
+        "task": "arrange_largest_number",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 877,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 878,
+        "duration": 35.12,
+        "instruction": "Arrange the numbers from left to right to form the largest possible number, and place them on the pad.",
+        "corrected_steps": 0,
+        "chunks": 176,
+        "tokens": {
+          "totalTokens": 23050663,
+          "inputTokens": 23008367,
+          "cachedInputTokens": 22385920,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 42296,
+          "reasoningOutputTokens": 23096
+        },
+        "result_sha256": "3e944a96636c79725a2db70e83e1019fe124ad1f43b22ceec8a772aea8e7ef6a",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "8d45b23010c950c35d5618c8701c6b8203036abaaf20a228db067ec3b1e30617",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "arrange_largest_number__standard__g0__l1",
+      "task": "arrange_largest_number",
+      "runtime_task": "arrange_largest_number",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/arrange_largest_number_1.json",
+        "sha256": "46bc75b456018bb220962d0c7d0403b9495aa05c5c0b947a72fbf1a6bd5b08fa"
+      },
+      "prior_direct": {
+        "id": "gpt__arrange_largest_number__standard__g0__l1",
+        "case_id": "arrange_largest_number__standard__g0__l1",
+        "method": "gpt",
+        "task": "arrange_largest_number",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 735,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 736,
+        "duration": 29.44,
+        "instruction": "Arrange the numbers from left to right to form the largest possible number, and place them on the pad.",
+        "corrected_steps": 0,
+        "chunks": 147,
+        "tokens": {
+          "totalTokens": 22556736,
+          "inputTokens": 22525348,
+          "cachedInputTokens": 22184576,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 31388,
+          "reasoningOutputTokens": 15808
+        },
+        "result_sha256": "ffc9ee18b011cd4d0063850fa4a1d9c0f57dc32db6f495686e2388df61a17edf",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "46bc75b456018bb220962d0c7d0403b9495aa05c5c0b947a72fbf1a6bd5b08fa",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "arrange_largest_number__random__g0__l0",
+      "task": "arrange_largest_number",
+      "runtime_task": "arrange_largest_number_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/arrange_largest_number_random_0.json",
+        "sha256": "c7897e5204ca76bbd7c6cb3c93a794a4e5218c0c17a4312f047930f5e7e822d5"
+      },
+      "prior_direct": {
+        "id": "gpt__arrange_largest_number__random__g0__l0",
+        "case_id": "arrange_largest_number__random__g0__l0",
+        "method": "gpt",
+        "task": "arrange_largest_number",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.3,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Arrange the numbers from left to right to form the largest possible number, and place them on the pad.",
+        "corrected_steps": 0,
+        "chunks": 210,
+        "tokens": {
+          "totalTokens": 29374714,
+          "inputTokens": 29323994,
+          "cachedInputTokens": 28941312,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 50720,
+          "reasoningOutputTokens": 21755
+        },
+        "result_sha256": "c325289a5d7851ecb5db494b0fe4a0f092f6db65fe9a59ea2b4d871d0423ac3a",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.3,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "c7897e5204ca76bbd7c6cb3c93a794a4e5218c0c17a4312f047930f5e7e822d5",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "arrange_largest_number__random__g0__l1",
+      "task": "arrange_largest_number",
+      "runtime_task": "arrange_largest_number_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/arrange_largest_number_random_1.json",
+        "sha256": "f24eb21ce320f29577217f7cf9fa44e9213435964038ed481bb99e99bb7ae370"
+      },
+      "prior_direct": {
+        "id": "gpt__arrange_largest_number__random__g0__l1",
+        "case_id": "arrange_largest_number__random__g0__l1",
+        "method": "gpt",
+        "task": "arrange_largest_number",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.25,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Arrange the numbers from left to right to form the largest possible number, and place them on the pad.",
+        "corrected_steps": 0,
+        "chunks": 210,
+        "tokens": {
+          "totalTokens": 29387089,
+          "inputTokens": 29334705,
+          "cachedInputTokens": 28822400,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 52384,
+          "reasoningOutputTokens": 29522
+        },
+        "result_sha256": "fad330d1daecb48b7e241c196daa728cc4121baa46bf56083557cf9b83991d0d",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.25,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "f24eb21ce320f29577217f7cf9fa44e9213435964038ed481bb99e99bb7ae370",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "arrange_largest_number__random__g0__l2",
+      "task": "arrange_largest_number",
+      "runtime_task": "arrange_largest_number_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/arrange_largest_number_random_2.json",
+        "sha256": "b3e22d7d04bdcdbbf00dd498b177ff2b2f463a59df568fc38963009ac6f4707a"
+      },
+      "prior_direct": {
+        "id": "gpt__arrange_largest_number__random__g0__l2",
+        "case_id": "arrange_largest_number__random__g0__l2",
+        "method": "gpt",
+        "task": "arrange_largest_number",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.3,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Arrange the numbers from left to right to form the largest possible number, and place them on the pad.",
+        "corrected_steps": 0,
+        "chunks": 210,
+        "tokens": {
+          "totalTokens": 30983023,
+          "inputTokens": 30941810,
+          "cachedInputTokens": 30515328,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 41213,
+          "reasoningOutputTokens": 16627
+        },
+        "result_sha256": "41bef9f3c2a25c4101294e466f95fad96e3d99e92acec8a86194320310d6cf04",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.3,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "b3e22d7d04bdcdbbf00dd498b177ff2b2f463a59df568fc38963009ac6f4707a",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "pack_objects_into_box__standard__g0__l0",
+      "task": "pack_objects_into_box",
+      "runtime_task": "pack_objects_into_box",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1300,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/pack_objects_into_box_0.json",
+        "sha256": "d529ff309408abf0270efa996832d3e70dcc9e070c2e90c9824fba60f396d2b2"
+      },
+      "prior_direct": {
+        "id": "gpt__pack_objects_into_box__standard__g0__l0",
+        "case_id": "pack_objects_into_box__standard__g0__l0",
+        "method": "gpt",
+        "task": "pack_objects_into_box",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.5,
+        "native_complete": true,
+        "steps": 1300,
+        "limit": 1300,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1301,
+        "duration": 52.04,
+        "instruction": "Place all the objects into the box with their front sides facing left.",
+        "corrected_steps": 0,
+        "chunks": 260,
+        "tokens": {
+          "totalTokens": 37021230,
+          "inputTokens": 36947920,
+          "cachedInputTokens": 36468608,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 73310,
+          "reasoningOutputTokens": 43137
+        },
+        "result_sha256": "4c9ad6cbc9eede34360f38dc250b94532af0aae16bda5209723dc21543156357",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.5,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "d529ff309408abf0270efa996832d3e70dcc9e070c2e90c9824fba60f396d2b2",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "pack_objects_into_box__standard__g0__l1",
+      "task": "pack_objects_into_box",
+      "runtime_task": "pack_objects_into_box",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1300,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/pack_objects_into_box_1.json",
+        "sha256": "4166accd9642b354d1dbe9d9dd4a7b37fbf52f2e749485bc38f66ca554a797a6"
+      },
+      "prior_direct": {
+        "id": "gpt__pack_objects_into_box__standard__g0__l1",
+        "case_id": "pack_objects_into_box__standard__g0__l1",
+        "method": "gpt",
+        "task": "pack_objects_into_box",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 1109,
+        "limit": 1300,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1110,
+        "duration": 44.4,
+        "instruction": "Place all the objects into the box with their front sides facing left.",
+        "corrected_steps": 0,
+        "chunks": 222,
+        "tokens": {
+          "totalTokens": 30481204,
+          "inputTokens": 30435661,
+          "cachedInputTokens": 30032384,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 45543,
+          "reasoningOutputTokens": 21532
+        },
+        "result_sha256": "79c7478ae2f8905d6fda769b699bf8efe8dc346587e958a061b2e80319121672",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "4166accd9642b354d1dbe9d9dd4a7b37fbf52f2e749485bc38f66ca554a797a6",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "pack_objects_into_box__random__g0__l0",
+      "task": "pack_objects_into_box",
+      "runtime_task": "pack_objects_into_box_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1300,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/pack_objects_into_box_random_0.json",
+        "sha256": "f51946657574f10da34a6760128dd5701ec948a3ce638b6168f5ceb6478166c4"
+      },
+      "prior_direct": {
+        "id": "gpt__pack_objects_into_box__random__g0__l0",
+        "case_id": "pack_objects_into_box__random__g0__l0",
+        "method": "gpt",
+        "task": "pack_objects_into_box",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.5,
+        "native_complete": true,
+        "steps": 1300,
+        "limit": 1300,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1301,
+        "duration": 52.04,
+        "instruction": "Place all the objects into the box with their front sides facing left.",
+        "corrected_steps": 0,
+        "chunks": 260,
+        "tokens": {
+          "totalTokens": 35814920,
+          "inputTokens": 35748441,
+          "cachedInputTokens": 35296256,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 66479,
+          "reasoningOutputTokens": 35271
+        },
+        "result_sha256": "3e8f1cb1da9193f849a3054cc9058bca7ae0a64bcc496016119b1be1257cc1f1",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.5,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "f51946657574f10da34a6760128dd5701ec948a3ce638b6168f5ceb6478166c4",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "pack_objects_into_box__random__g0__l1",
+      "task": "pack_objects_into_box",
+      "runtime_task": "pack_objects_into_box_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1300,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/pack_objects_into_box_random_1.json",
+        "sha256": "afd36f32cca5734104502a24c2085bf415315da85aad4b81800d9eb5bf0f019f"
+      },
+      "prior_direct": {
+        "id": "gpt__pack_objects_into_box__random__g0__l1",
+        "case_id": "pack_objects_into_box__random__g0__l1",
+        "method": "gpt",
+        "task": "pack_objects_into_box",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 1300,
+        "limit": 1300,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1301,
+        "duration": 52.04,
+        "instruction": "Place all the objects into the box with their front sides facing left.",
+        "corrected_steps": 0,
+        "chunks": 260,
+        "tokens": {
+          "totalTokens": 26493089,
+          "inputTokens": 26456098,
+          "cachedInputTokens": 25949184,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 36991,
+          "reasoningOutputTokens": 6492
+        },
+        "result_sha256": "f2d14acdd3266a9433d02c6b4c3555189ae2d30dffe3294b428db1d6587eb8cd",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "afd36f32cca5734104502a24c2085bf415315da85aad4b81800d9eb5bf0f019f",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "pack_objects_into_box__random__g0__l2",
+      "task": "pack_objects_into_box",
+      "runtime_task": "pack_objects_into_box_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1300,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/pack_objects_into_box_random_2.json",
+        "sha256": "a55c44608c7ea8ae11c1206d0fdc24e595b8650e7b14a86da9a0a536445c8b01"
+      },
+      "prior_direct": {
+        "id": "gpt__pack_objects_into_box__random__g0__l2",
+        "case_id": "pack_objects_into_box__random__g0__l2",
+        "method": "gpt",
+        "task": "pack_objects_into_box",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "idle",
+        "success": false,
+        "score": null,
+        "native_complete": false,
+        "steps": 960,
+        "limit": 1300,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 961,
+        "duration": 38.44,
+        "instruction": "Place all the objects into the box with their front sides facing left.",
+        "corrected_steps": 0,
+        "chunks": 192,
+        "tokens": {
+          "totalTokens": 26124680,
+          "inputTokens": 26073391,
+          "cachedInputTokens": 25659648,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 51289,
+          "reasoningOutputTokens": 29758
+        },
+        "result_sha256": "f19bfb5b2bd7a56ae8179ce8396852a7414c33fa52b8c3c61504e95eefee150c",
+        "native_outcome": {
+          "native_success": null,
+          "native_score": null,
+          "complete": false
+        }
+      },
+      "historical_layout_sha256": "a55c44608c7ea8ae11c1206d0fdc24e595b8650e7b14a86da9a0a536445c8b01",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects__standard__g0__l0",
+      "task": "classify_objects",
+      "runtime_task": "classify_objects",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_0.json",
+        "sha256": "5ceb9e18e6d8490a7db85dd001462d63265c297ea6fad0d7438364deb2de3ece"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects__standard__g0__l0",
+        "case_id": "classify_objects__standard__g0__l0",
+        "method": "gpt",
+        "task": "classify_objects",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 737,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 738,
+        "duration": 29.52,
+        "instruction": "Sort the objects by category into the three baskets.",
+        "corrected_steps": 0,
+        "chunks": 148,
+        "tokens": {
+          "totalTokens": 24918873,
+          "inputTokens": 24888758,
+          "cachedInputTokens": 24553984,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 30115,
+          "reasoningOutputTokens": 10208
+        },
+        "result_sha256": "e372e584fd52f0c2890400a22a2e495c12b62250df5383e1783491e6387d37c3",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "5ceb9e18e6d8490a7db85dd001462d63265c297ea6fad0d7438364deb2de3ece",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects__standard__g0__l1",
+      "task": "classify_objects",
+      "runtime_task": "classify_objects",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_1.json",
+        "sha256": "013d7141ffc9865d7cccf650301f642e6b83b3eb59f78cf5b1d0caf47158e17a"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects__standard__g0__l1",
+        "case_id": "classify_objects__standard__g0__l1",
+        "method": "gpt",
+        "task": "classify_objects",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 814,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 815,
+        "duration": 32.6,
+        "instruction": "Sort the objects by category into the three baskets.",
+        "corrected_steps": 0,
+        "chunks": 163,
+        "tokens": {
+          "totalTokens": 23446028,
+          "inputTokens": 23408987,
+          "cachedInputTokens": 22909184,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 37041,
+          "reasoningOutputTokens": 16006
+        },
+        "result_sha256": "d52102c8cb29ca0421305400798755e25840098c36e47a7894ed9ae36a2bffc6",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "013d7141ffc9865d7cccf650301f642e6b83b3eb59f78cf5b1d0caf47158e17a",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects__standard__g0__l2",
+      "task": "classify_objects",
+      "runtime_task": "classify_objects",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_2.json",
+        "sha256": "6b3a30251bd92a465ffdc82436e14dde84879906eeab3b0e8944865b9eef38f7"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects__standard__g0__l2",
+        "case_id": "classify_objects__standard__g0__l2",
+        "method": "gpt",
+        "task": "classify_objects",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 1003,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1004,
+        "duration": 40.16,
+        "instruction": "Sort the objects by category into the three baskets.",
+        "corrected_steps": 0,
+        "chunks": 202,
+        "tokens": {
+          "totalTokens": 27281537,
+          "inputTokens": 27245621,
+          "cachedInputTokens": 26776832,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 35916,
+          "reasoningOutputTokens": 20175
+        },
+        "result_sha256": "9d15a4e5eac5a0a3efa44f596fbb296b6e0a762c03b94507cfe93f00bd88f608",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "6b3a30251bd92a465ffdc82436e14dde84879906eeab3b0e8944865b9eef38f7",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects__standard__g0__l3",
+      "task": "classify_objects",
+      "runtime_task": "classify_objects",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 3,
+        "reset_seed": 3,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_3.json",
+        "sha256": "d11ac5e14ab8fd9c8eee0c1cc827d7827b86b3cec4b97e496ef384470f171ff5"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects__standard__g0__l3",
+        "case_id": "classify_objects__standard__g0__l3",
+        "method": "gpt",
+        "task": "classify_objects",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 3,
+          "reset_seed": 3,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 615,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 616,
+        "duration": 24.64,
+        "instruction": "Sort the objects by category into the three baskets.",
+        "corrected_steps": 0,
+        "chunks": 123,
+        "tokens": {
+          "totalTokens": 21475317,
+          "inputTokens": 21444911,
+          "cachedInputTokens": 20970368,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 30406,
+          "reasoningOutputTokens": 12352
+        },
+        "result_sha256": "4939cdd32d3936824ed32942263e1d21c112ad893455c76afcdeb62ff4d43117",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "d11ac5e14ab8fd9c8eee0c1cc827d7827b86b3cec4b97e496ef384470f171ff5",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "classify_objects__standard__g0__l4",
+      "task": "classify_objects",
+      "runtime_task": "classify_objects",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 4,
+        "reset_seed": 4,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1100,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/classify_objects_4.json",
+        "sha256": "49c99299e632b60fde270fb69ce6421739d6e517971654ae5566ef213a754aa3"
+      },
+      "prior_direct": {
+        "id": "gpt__classify_objects__standard__g0__l4",
+        "case_id": "classify_objects__standard__g0__l4",
+        "method": "gpt",
+        "task": "classify_objects",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 4,
+          "reset_seed": 4,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 598,
+        "limit": 1100,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 599,
+        "duration": 23.96,
+        "instruction": "Sort the objects by category into the three baskets.",
+        "corrected_steps": 0,
+        "chunks": 121,
+        "tokens": {
+          "totalTokens": 17409149,
+          "inputTokens": 17387815,
+          "cachedInputTokens": 17161344,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 21334,
+          "reasoningOutputTokens": 7976
+        },
+        "result_sha256": "92590790bb8dcc724ef564e561fde7e4a87d257b21e5f7fcd49ea1d8102b155a",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "49c99299e632b60fde270fb69ce6421739d6e517971654ae5566ef213a754aa3",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "build_tower__standard__g0__l0",
+      "task": "build_tower",
+      "runtime_task": "build_tower",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/build_tower_0.json",
+        "sha256": "afcf896086392357a8826f84bebe4910dcb7a5f1b84e7be435e16e3d5c3607a4"
+      },
+      "prior_direct": {
+        "id": "gpt__build_tower__standard__g0__l0",
+        "case_id": "build_tower__standard__g0__l0",
+        "method": "gpt",
+        "task": "build_tower",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.1,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Build a tower using the wooden blocks and wooden boards.",
+        "corrected_steps": 0,
+        "chunks": 210,
+        "tokens": {
+          "totalTokens": 28536185,
+          "inputTokens": 28483840,
+          "cachedInputTokens": 28046336,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 52345,
+          "reasoningOutputTokens": 25871
+        },
+        "result_sha256": "47dcc9ea7092a847d48355dec5b52a7efd332d980884e39bdbcef83c88393b9e",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.1,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "afcf896086392357a8826f84bebe4910dcb7a5f1b84e7be435e16e3d5c3607a4",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "build_tower__standard__g0__l1",
+      "task": "build_tower",
+      "runtime_task": "build_tower",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/build_tower_1.json",
+        "sha256": "c4c67f1c1c2abe8ae32d2686048e61eb6e4396c79025b30779091f14705db18c"
+      },
+      "prior_direct": {
+        "id": "gpt__build_tower__standard__g0__l1",
+        "case_id": "build_tower__standard__g0__l1",
+        "method": "gpt",
+        "task": "build_tower",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Build a tower using the wooden blocks and wooden boards.",
+        "corrected_steps": 0,
+        "chunks": 210,
+        "tokens": {
+          "totalTokens": 27757171,
+          "inputTokens": 27698013,
+          "cachedInputTokens": 27291392,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 59158,
+          "reasoningOutputTokens": 31296
+        },
+        "result_sha256": "e24f657f8e5656be3b648e7adf6a50de10cf4d588608c1ce92a4c505ef639aa0",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "c4c67f1c1c2abe8ae32d2686048e61eb6e4396c79025b30779091f14705db18c",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "build_tower__standard__g0__l2",
+      "task": "build_tower",
+      "runtime_task": "build_tower",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/build_tower_2.json",
+        "sha256": "8d6bff06259a8ae1dbaf982639c3febabccc9e681a34e18acc368647deced338"
+      },
+      "prior_direct": {
+        "id": "gpt__build_tower__standard__g0__l2",
+        "case_id": "build_tower__standard__g0__l2",
+        "method": "gpt",
+        "task": "build_tower",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.3,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Build a tower using the wooden blocks and wooden boards.",
+        "corrected_steps": 0,
+        "chunks": 210,
+        "tokens": {
+          "totalTokens": 30325438,
+          "inputTokens": 30275104,
+          "cachedInputTokens": 29605888,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 50334,
+          "reasoningOutputTokens": 16821
+        },
+        "result_sha256": "6a71a71df14a50e166bb6fdb1f141b39c2c26ddec8ae957974f1c9c9a3995f13",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.3,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "8d6bff06259a8ae1dbaf982639c3febabccc9e681a34e18acc368647deced338",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "build_tower__standard__g0__l3",
+      "task": "build_tower",
+      "runtime_task": "build_tower",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 3,
+        "reset_seed": 3,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/build_tower_3.json",
+        "sha256": "2baf81cf370a985354a616bc965938e8d3d685ebd11c1372e79a22276ac95db2"
+      },
+      "prior_direct": {
+        "id": "gpt__build_tower__standard__g0__l3",
+        "case_id": "build_tower__standard__g0__l3",
+        "method": "gpt",
+        "task": "build_tower",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 3,
+          "reset_seed": 3,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.1,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Build a tower using the wooden blocks and wooden boards.",
+        "corrected_steps": 0,
+        "chunks": 211,
+        "tokens": {
+          "totalTokens": 27872337,
+          "inputTokens": 27801274,
+          "cachedInputTokens": 26970112,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 71063,
+          "reasoningOutputTokens": 46009
+        },
+        "result_sha256": "8737c92acd28edda641c95271c7ceb51105f219b6d79024138c1c52aae1cf492",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.1,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "2baf81cf370a985354a616bc965938e8d3d685ebd11c1372e79a22276ac95db2",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "build_tower__standard__g0__l4",
+      "task": "build_tower",
+      "runtime_task": "build_tower",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 4,
+        "reset_seed": 4,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 1050,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/build_tower_4.json",
+        "sha256": "bd298ba59bcdc04051c63251c3b0fefda7eb5536a30a220bcd9a8c8dd8fa6b61"
+      },
+      "prior_direct": {
+        "id": "gpt__build_tower__standard__g0__l4",
+        "case_id": "build_tower__standard__g0__l4",
+        "method": "gpt",
+        "task": "build_tower",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 4,
+          "reset_seed": 4,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.1,
+        "native_complete": true,
+        "steps": 1050,
+        "limit": 1050,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 1051,
+        "duration": 42.04,
+        "instruction": "Build a tower using the wooden blocks and wooden boards.",
+        "corrected_steps": 0,
+        "chunks": 210,
+        "tokens": {
+          "totalTokens": 27198496,
+          "inputTokens": 27154839,
+          "cachedInputTokens": 26703488,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 43657,
+          "reasoningOutputTokens": 23633
+        },
+        "result_sha256": "dde3f1a262dcf23cc67f68cb23bbbbf3636b6d7c5f9e7083db6269fa03ce14df",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.1,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "bd298ba59bcdc04051c63251c3b0fefda7eb5536a30a220bcd9a8c8dd8fa6b61",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "make_kong__standard__g0__l0",
+      "task": "make_kong",
+      "runtime_task": "make_kong",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/make_kong_0.json",
+        "sha256": "4e13e55934b1b3bdab5f3697f7b997080e4f7652fa265f24a6b05cbb761a7228"
+      },
+      "prior_direct": {
+        "id": "gpt__make_kong__standard__g0__l0",
+        "case_id": "make_kong__standard__g0__l0",
+        "method": "gpt",
+        "task": "make_kong",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 600,
+        "limit": 600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 601,
+        "duration": 24.04,
+        "instruction": "Wait for the opponent to discard a tile, then declare a kong with the matching tiles.",
+        "corrected_steps": 0,
+        "chunks": 120,
+        "tokens": {
+          "totalTokens": 15074394,
+          "inputTokens": 15047648,
+          "cachedInputTokens": 14833408,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 26746,
+          "reasoningOutputTokens": 13210
+        },
+        "result_sha256": "87282eb1a3854dda4cb0099edf5d3f3a00cdd0d29068df25b08ea775195307f2",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "4e13e55934b1b3bdab5f3697f7b997080e4f7652fa265f24a6b05cbb761a7228",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/0.pkl",
+          "sha256": "a2b66eb5b5d4b5a3b4cf51c0a5b44358aa701433331caf9aa3763f636a1f6cb2"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/1.pkl",
+          "sha256": "c7f171a586b56fd2cd78b26a58a87e0ed4bc9b49d6b5605c7b17263fd30a4e90"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/2.pkl",
+          "sha256": "16b40a4c9d646e403a25a40d4d4840a6d534dd86fb6f4c7048c5b6a4fbefd683"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/3.pkl",
+          "sha256": "4a8561ea07549f6f105b21acab991e3c90bb4f60f1cd05c30bfb87e4a5cbb30c"
+        }
+      ]
+    },
+    {
+      "case_id": "make_kong__standard__g0__l1",
+      "task": "make_kong",
+      "runtime_task": "make_kong",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/make_kong_1.json",
+        "sha256": "e609adadc84a75aa78afc6893abb5fcc12c51d2c1d2f4535cda36544478edf12"
+      },
+      "prior_direct": {
+        "id": "gpt__make_kong__standard__g0__l1",
+        "case_id": "make_kong__standard__g0__l1",
+        "method": "gpt",
+        "task": "make_kong",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 600,
+        "limit": 600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 601,
+        "duration": 24.04,
+        "instruction": "Wait for the opponent to discard a tile, then declare a kong with the matching tiles.",
+        "corrected_steps": 0,
+        "chunks": 120,
+        "tokens": {
+          "totalTokens": 19814593,
+          "inputTokens": 19774777,
+          "cachedInputTokens": 19491072,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 39816,
+          "reasoningOutputTokens": 21309
+        },
+        "result_sha256": "08108ae38a3734d30f87411cfa1a715ca6c776082b6f9304920cbdcc0bc4c4a4",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "e609adadc84a75aa78afc6893abb5fcc12c51d2c1d2f4535cda36544478edf12",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/0.pkl",
+          "sha256": "a2b66eb5b5d4b5a3b4cf51c0a5b44358aa701433331caf9aa3763f636a1f6cb2"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/1.pkl",
+          "sha256": "c7f171a586b56fd2cd78b26a58a87e0ed4bc9b49d6b5605c7b17263fd30a4e90"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/2.pkl",
+          "sha256": "16b40a4c9d646e403a25a40d4d4840a6d534dd86fb6f4c7048c5b6a4fbefd683"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/3.pkl",
+          "sha256": "4a8561ea07549f6f105b21acab991e3c90bb4f60f1cd05c30bfb87e4a5cbb30c"
+        }
+      ]
+    },
+    {
+      "case_id": "make_kong__standard__g0__l2",
+      "task": "make_kong",
+      "runtime_task": "make_kong",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/make_kong_2.json",
+        "sha256": "09af2487241bf330bb495da875a0f812630db5de4ed2e8621aeefdf297a625cf"
+      },
+      "prior_direct": {
+        "id": "gpt__make_kong__standard__g0__l2",
+        "case_id": "make_kong__standard__g0__l2",
+        "method": "gpt",
+        "task": "make_kong",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 600,
+        "limit": 600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 601,
+        "duration": 24.04,
+        "instruction": "Wait for the opponent to discard a tile, then declare a kong with the matching tiles.",
+        "corrected_steps": 0,
+        "chunks": 120,
+        "tokens": {
+          "totalTokens": 21178573,
+          "inputTokens": 21144679,
+          "cachedInputTokens": 20809856,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 33894,
+          "reasoningOutputTokens": 13296
+        },
+        "result_sha256": "2cc492932e944b08a8b248fc8d8c6f4ba79ffc7485129e56224a07cd2c4bb6d1",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "09af2487241bf330bb495da875a0f812630db5de4ed2e8621aeefdf297a625cf",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/0.pkl",
+          "sha256": "a2b66eb5b5d4b5a3b4cf51c0a5b44358aa701433331caf9aa3763f636a1f6cb2"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/1.pkl",
+          "sha256": "c7f171a586b56fd2cd78b26a58a87e0ed4bc9b49d6b5605c7b17263fd30a4e90"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/2.pkl",
+          "sha256": "16b40a4c9d646e403a25a40d4d4840a6d534dd86fb6f4c7048c5b6a4fbefd683"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/3.pkl",
+          "sha256": "4a8561ea07549f6f105b21acab991e3c90bb4f60f1cd05c30bfb87e4a5cbb30c"
+        }
+      ]
+    },
+    {
+      "case_id": "make_kong__standard__g0__l3",
+      "task": "make_kong",
+      "runtime_task": "make_kong",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 3,
+        "reset_seed": 3,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/make_kong_3.json",
+        "sha256": "4e24a48c7ee599fc50c04c174f3d1e49802b1c3cd33f539ec4ff2878021ebc58"
+      },
+      "prior_direct": {
+        "id": "gpt__make_kong__standard__g0__l3",
+        "case_id": "make_kong__standard__g0__l3",
+        "method": "gpt",
+        "task": "make_kong",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 3,
+          "reset_seed": 3,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 600,
+        "limit": 600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 601,
+        "duration": 24.04,
+        "instruction": "Wait for the opponent to discard a tile, then declare a kong with the matching tiles.",
+        "corrected_steps": 0,
+        "chunks": 120,
+        "tokens": {
+          "totalTokens": 32221117,
+          "inputTokens": 32156050,
+          "cachedInputTokens": 31367168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 65067,
+          "reasoningOutputTokens": 16462
+        },
+        "result_sha256": "fe26e6af82d30d8a415b872481cb6b9a2a004f187a98cde47c5255e84a22f57c",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "4e24a48c7ee599fc50c04c174f3d1e49802b1c3cd33f539ec4ff2878021ebc58",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/0.pkl",
+          "sha256": "a2b66eb5b5d4b5a3b4cf51c0a5b44358aa701433331caf9aa3763f636a1f6cb2"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/1.pkl",
+          "sha256": "c7f171a586b56fd2cd78b26a58a87e0ed4bc9b49d6b5605c7b17263fd30a4e90"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/2.pkl",
+          "sha256": "16b40a4c9d646e403a25a40d4d4840a6d534dd86fb6f4c7048c5b6a4fbefd683"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/3.pkl",
+          "sha256": "4a8561ea07549f6f105b21acab991e3c90bb4f60f1cd05c30bfb87e4a5cbb30c"
+        }
+      ]
+    },
+    {
+      "case_id": "make_kong__standard__g0__l4",
+      "task": "make_kong",
+      "runtime_task": "make_kong",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 4,
+        "reset_seed": 4,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 600,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/make_kong_4.json",
+        "sha256": "c0cbfe6e11a00ebb75a445d335c92607faa74d844e06a114a0f0c33b2f308ae7"
+      },
+      "prior_direct": {
+        "id": "gpt__make_kong__standard__g0__l4",
+        "case_id": "make_kong__standard__g0__l4",
+        "method": "gpt",
+        "task": "make_kong",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 4,
+          "reset_seed": 4,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 600,
+        "limit": 600,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 601,
+        "duration": 24.04,
+        "instruction": "Wait for the opponent to discard a tile, then declare a kong with the matching tiles.",
+        "corrected_steps": 0,
+        "chunks": 120,
+        "tokens": {
+          "totalTokens": 16898608,
+          "inputTokens": 16862202,
+          "cachedInputTokens": 16164608,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 36406,
+          "reasoningOutputTokens": 20811
+        },
+        "result_sha256": "a81b49fbf7ffba1eec96fd91e2a09ef54cd4ce77674f0e01e93fdd2bf997c106",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "c0cbfe6e11a00ebb75a445d335c92607faa74d844e06a114a0f0c33b2f308ae7",
+      "matches_historical_layout": true,
+      "native_support_trajectories": [
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/0.pkl",
+          "sha256": "a2b66eb5b5d4b5a3b4cf51c0a5b44358aa701433331caf9aa3763f636a1f6cb2"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/1.pkl",
+          "sha256": "c7f171a586b56fd2cd78b26a58a87e0ed4bc9b49d6b5605c7b17263fd30a4e90"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/2.pkl",
+          "sha256": "16b40a4c9d646e403a25a40d4d4840a6d534dd86fb6f4c7048c5b6a4fbefd683"
+        },
+        {
+          "path": "Assets/Traj/RoboDojo/make_kong/3.pkl",
+          "sha256": "4a8561ea07549f6f105b21acab991e3c90bb4f60f1cd05c30bfb87e4a5cbb30c"
+        }
+      ]
+    },
+    {
+      "case_id": "fold_clothes__standard__g0__l0",
+      "task": "fold_clothes",
+      "runtime_task": "fold_clothes",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 500,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/fold_clothes_0.json",
+        "sha256": "53de16e28978c71cfaa0620712633a0e07ed9d4bb79cdb63c5a953fa26f1b5ba"
+      },
+      "prior_direct": {
+        "id": "gpt__fold_clothes__standard__g0__l0",
+        "case_id": "fold_clothes__standard__g0__l0",
+        "method": "gpt",
+        "task": "fold_clothes",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 268,
+        "limit": 500,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 269,
+        "duration": 10.76,
+        "instruction": "Fold the clothes neatly.",
+        "corrected_steps": 0,
+        "chunks": 54,
+        "tokens": {
+          "totalTokens": 6527428,
+          "inputTokens": 6516777,
+          "cachedInputTokens": 6370048,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10651,
+          "reasoningOutputTokens": 3526
+        },
+        "result_sha256": "7c2fdb844f21451d8ad74215efab47f539ca87eb21c730405d26e2b04dd46965",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "53de16e28978c71cfaa0620712633a0e07ed9d4bb79cdb63c5a953fa26f1b5ba",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "fold_clothes__standard__g0__l1",
+      "task": "fold_clothes",
+      "runtime_task": "fold_clothes",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 500,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/fold_clothes_1.json",
+        "sha256": "c43d694499bdb86c1ec3b8c6f2362893e0cfbbb5d00921378fc8c6fec2f79583"
+      },
+      "prior_direct": {
+        "id": "gpt__fold_clothes__standard__g0__l1",
+        "case_id": "fold_clothes__standard__g0__l1",
+        "method": "gpt",
+        "task": "fold_clothes",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 236,
+        "limit": 500,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 237,
+        "duration": 9.48,
+        "instruction": "Fold the clothes neatly.",
+        "corrected_steps": 0,
+        "chunks": 48,
+        "tokens": {
+          "totalTokens": 6197259,
+          "inputTokens": 6188073,
+          "cachedInputTokens": 6050304,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 9186,
+          "reasoningOutputTokens": 3020
+        },
+        "result_sha256": "73483ec3f436be0ed6977aabdf93a42e30e98eb1a26a2a495f12507c308d1bee",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "c43d694499bdb86c1ec3b8c6f2362893e0cfbbb5d00921378fc8c6fec2f79583",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "fold_clothes__random__g0__l0",
+      "task": "fold_clothes",
+      "runtime_task": "fold_clothes_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 500,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/fold_clothes_random_0.json",
+        "sha256": "91ca045a523167ea32cf84551db921862b49d107995586a853c6b9eff1db10f0"
+      },
+      "prior_direct": {
+        "id": "gpt__fold_clothes__random__g0__l0",
+        "case_id": "fold_clothes__random__g0__l0",
+        "method": "gpt",
+        "task": "fold_clothes",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 500,
+        "limit": 500,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 501,
+        "duration": 20.04,
+        "instruction": "Fold the clothes neatly.",
+        "corrected_steps": 0,
+        "chunks": 100,
+        "tokens": {
+          "totalTokens": 18715897,
+          "inputTokens": 18676529,
+          "cachedInputTokens": 17792512,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 39368,
+          "reasoningOutputTokens": 10479
+        },
+        "result_sha256": "79273a88d860bed1838e90ac0b224ea4123a62b4d54aa94a9fb3f73a24a41473",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "91ca045a523167ea32cf84551db921862b49d107995586a853c6b9eff1db10f0",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "fold_clothes__random__g0__l1",
+      "task": "fold_clothes",
+      "runtime_task": "fold_clothes_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 500,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/fold_clothes_random_1.json",
+        "sha256": "d6ccfa56ee655613306344c2c4ad493bc54588ff082d961604da322929089658"
+      },
+      "prior_direct": {
+        "id": "gpt__fold_clothes__random__g0__l1",
+        "case_id": "fold_clothes__random__g0__l1",
+        "method": "gpt",
+        "task": "fold_clothes",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 500,
+        "limit": 500,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 501,
+        "duration": 20.04,
+        "instruction": "Fold the clothes neatly.",
+        "corrected_steps": 0,
+        "chunks": 104,
+        "tokens": {
+          "totalTokens": 20311410,
+          "inputTokens": 20254823,
+          "cachedInputTokens": 19831680,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 56587,
+          "reasoningOutputTokens": 7563
+        },
+        "result_sha256": "89befed9f225ab63b2b068412069c51d9713b540fed238b33b18769c151bca94",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "d6ccfa56ee655613306344c2c4ad493bc54588ff082d961604da322929089658",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "fold_clothes__random__g0__l2",
+      "task": "fold_clothes",
+      "runtime_task": "fold_clothes_random",
+      "variant": "random",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 500,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/fold_clothes_random_2.json",
+        "sha256": "cdaab145fbadb25e0b452ae5ece2d384c8fe2201e8decb646db67c08f6723384"
+      },
+      "prior_direct": {
+        "id": "gpt__fold_clothes__random__g0__l2",
+        "case_id": "fold_clothes__random__g0__l2",
+        "method": "gpt",
+        "task": "fold_clothes",
+        "variant": "random",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 257,
+        "limit": 500,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 258,
+        "duration": 10.32,
+        "instruction": "Fold the clothes neatly.",
+        "corrected_steps": 0,
+        "chunks": 52,
+        "tokens": {
+          "totalTokens": 5832845,
+          "inputTokens": 5821613,
+          "cachedInputTokens": 5563776,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11232,
+          "reasoningOutputTokens": 4406
+        },
+        "result_sha256": "be04a965097c6bd01fa073fd201c214327c42e07deb1b2a768e37b546e642bac",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "cdaab145fbadb25e0b452ae5ece2d384c8fe2201e8decb646db67c08f6723384",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "put_bottles_into_dustbin__standard__g0__l0",
+      "task": "put_bottles_into_dustbin",
+      "runtime_task": "put_bottles_into_dustbin",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 0,
+        "reset_seed": 0,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 700,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/put_bottles_into_dustbin_0.json",
+        "sha256": "3c2168f460d48dde2d72d55429f1af7e850725b642dfcb8c8d5e31ed2ec25537"
+      },
+      "prior_direct": {
+        "id": "gpt__put_bottles_into_dustbin__standard__g0__l0",
+        "case_id": "put_bottles_into_dustbin__standard__g0__l0",
+        "method": "gpt",
+        "task": "put_bottles_into_dustbin",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 0,
+          "reset_seed": 0,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.4,
+        "native_complete": true,
+        "steps": 700,
+        "limit": 700,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 701,
+        "duration": 28.04,
+        "instruction": "Pick up the bottles and throw them into the dustbin, using handover when needed.",
+        "corrected_steps": 0,
+        "chunks": 140,
+        "tokens": {
+          "totalTokens": 20863002,
+          "inputTokens": 20835445,
+          "cachedInputTokens": 20583424,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 27557,
+          "reasoningOutputTokens": 15479
+        },
+        "result_sha256": "4f5e9bd9c8c3eaddc8b5b966f2fdf6e68412256e08cd7c8ed53adb07cc057e8c",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.4,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "3c2168f460d48dde2d72d55429f1af7e850725b642dfcb8c8d5e31ed2ec25537",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "put_bottles_into_dustbin__standard__g0__l1",
+      "task": "put_bottles_into_dustbin",
+      "runtime_task": "put_bottles_into_dustbin",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 1,
+        "reset_seed": 1,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 700,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/put_bottles_into_dustbin_1.json",
+        "sha256": "baf037612b844efdcf660d2f6f6ea064fb288e064a9d2d944c4c75ef0396968b"
+      },
+      "prior_direct": {
+        "id": "gpt__put_bottles_into_dustbin__standard__g0__l1",
+        "case_id": "put_bottles_into_dustbin__standard__g0__l1",
+        "method": "gpt",
+        "task": "put_bottles_into_dustbin",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 1,
+          "reset_seed": 1,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "success",
+        "success": true,
+        "score": 1.0,
+        "native_complete": true,
+        "steps": 602,
+        "limit": 700,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 603,
+        "duration": 24.12,
+        "instruction": "Pick up the bottles and throw them into the dustbin, using handover when needed.",
+        "corrected_steps": 0,
+        "chunks": 121,
+        "tokens": {
+          "totalTokens": 18399564,
+          "inputTokens": 18375991,
+          "cachedInputTokens": 18142848,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 23573,
+          "reasoningOutputTokens": 9702
+        },
+        "result_sha256": "051d003f7732a9ac5bba174580fc3e344c0ccadf1ab251d374592e313431b72f",
+        "native_outcome": {
+          "native_success": true,
+          "native_score": 1.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "baf037612b844efdcf660d2f6f6ea064fb288e064a9d2d944c4c75ef0396968b",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "put_bottles_into_dustbin__standard__g0__l2",
+      "task": "put_bottles_into_dustbin",
+      "runtime_task": "put_bottles_into_dustbin",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 2,
+        "reset_seed": 2,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 700,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/put_bottles_into_dustbin_2.json",
+        "sha256": "7110decf67ccb6d77942719bf2f79d567c5d1d080413d2c713d3b41e691c11fe"
+      },
+      "prior_direct": {
+        "id": "gpt__put_bottles_into_dustbin__standard__g0__l2",
+        "case_id": "put_bottles_into_dustbin__standard__g0__l2",
+        "method": "gpt",
+        "task": "put_bottles_into_dustbin",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 2,
+          "reset_seed": 2,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 700,
+        "limit": 700,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 701,
+        "duration": 28.04,
+        "instruction": "Pick up the bottles and throw them into the dustbin, using handover when needed.",
+        "corrected_steps": 0,
+        "chunks": 140,
+        "tokens": {
+          "totalTokens": 16924289,
+          "inputTokens": 16870955,
+          "cachedInputTokens": 16404096,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 53334,
+          "reasoningOutputTokens": 10878
+        },
+        "result_sha256": "2ab91828715921322d7dabc555fb13824aa38614070418be6eaff5b14bc90337",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "7110decf67ccb6d77942719bf2f79d567c5d1d080413d2c713d3b41e691c11fe",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "put_bottles_into_dustbin__standard__g0__l3",
+      "task": "put_bottles_into_dustbin",
+      "runtime_task": "put_bottles_into_dustbin",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 3,
+        "reset_seed": 3,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 700,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/put_bottles_into_dustbin_3.json",
+        "sha256": "659a6fc1bffc692e8e61d07544d1c5145a3c17e8d8e75fc4af543b1a9fba41f5"
+      },
+      "prior_direct": {
+        "id": "gpt__put_bottles_into_dustbin__standard__g0__l3",
+        "case_id": "put_bottles_into_dustbin__standard__g0__l3",
+        "method": "gpt",
+        "task": "put_bottles_into_dustbin",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 3,
+          "reset_seed": 3,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.0,
+        "native_complete": true,
+        "steps": 700,
+        "limit": 700,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 701,
+        "duration": 28.04,
+        "instruction": "Pick up the bottles and throw them into the dustbin, using handover when needed.",
+        "corrected_steps": 0,
+        "chunks": 140,
+        "tokens": {
+          "totalTokens": 19415991,
+          "inputTokens": 19365042,
+          "cachedInputTokens": 18906368,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 50949,
+          "reasoningOutputTokens": 9847
+        },
+        "result_sha256": "46514ec5b0c4f33ab5c836b860aef3ff8c8e43ae658280ad63a1312c47288154",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.0,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "659a6fc1bffc692e8e61d07544d1c5145a3c17e8d8e75fc4af543b1a9fba41f5",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    },
+    {
+      "case_id": "put_bottles_into_dustbin__standard__g0__l4",
+      "task": "put_bottles_into_dustbin",
+      "runtime_task": "put_bottles_into_dustbin",
+      "variant": "standard",
+      "seeds": {
+        "eval_seed": 0,
+        "layout_id": 4,
+        "reset_seed": 4,
+        "simulator_initial_seed": 0,
+        "policy_rng_seed": 0
+      },
+      "native_horizon": 700,
+      "control_dt": 0.04,
+      "layout": {
+        "path": "Assets/Eval_Layout/RoboDojo/arx_x5/0/put_bottles_into_dustbin_4.json",
+        "sha256": "79fdd9de9ace106330d3a338380beb9fde98ee37ad87e7ee76a0b08684f2c695"
+      },
+      "prior_direct": {
+        "id": "gpt__put_bottles_into_dustbin__standard__g0__l4",
+        "case_id": "put_bottles_into_dustbin__standard__g0__l4",
+        "method": "gpt",
+        "task": "put_bottles_into_dustbin",
+        "variant": "standard",
+        "seeds": {
+          "eval_seed": 0,
+          "layout_id": 4,
+          "reset_seed": 4,
+          "simulator_initial_seed": 0,
+          "policy_rng_seed": 0
+        },
+        "status": "failure",
+        "success": false,
+        "score": 0.4,
+        "native_complete": true,
+        "steps": 700,
+        "limit": 700,
+        "dt": 0.04,
+        "fps": 25.0,
+        "frames": 701,
+        "duration": 28.04,
+        "instruction": "Pick up the bottles and throw them into the dustbin, using handover when needed.",
+        "corrected_steps": 0,
+        "chunks": 140,
+        "tokens": {
+          "totalTokens": 19218893,
+          "inputTokens": 19184350,
+          "cachedInputTokens": 18881280,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 34543,
+          "reasoningOutputTokens": 18448
+        },
+        "result_sha256": "5e928921d8d6f14cbcbac57ba75c7a9056ba5727ce808400c48e85dd6ea5cb04",
+        "native_outcome": {
+          "native_success": false,
+          "native_score": 0.4,
+          "complete": true
+        }
+      },
+      "historical_layout_sha256": "79fdd9de9ace106330d3a338380beb9fde98ee37ad87e7ee76a0b08684f2c695",
+      "matches_historical_layout": true,
+      "native_support_trajectories": []
+    }
+  ],
+  "native_source_comparison": [
+    {
+      "path": "env/camera_manager/camera_manager.py",
+      "historical_sha256": "1a4250cb3bdc7305fe362a7c6b113f57e6f3e9e4983b69bd61e2c84e8e995471",
+      "current_sha256": "1a4250cb3bdc7305fe362a7c6b113f57e6f3e9e4983b69bd61e2c84e8e995471",
+      "matches": true
+    },
+    {
+      "path": "env/camera_manager/capture/camera_view.py",
+      "historical_sha256": "364cd10dfd2be164efb4adf7a52adf2e7b38e49f4da90e70575d2ceaa7a6cada",
+      "current_sha256": "364cd10dfd2be164efb4adf7a52adf2e7b38e49f4da90e70575d2ceaa7a6cada",
+      "matches": true
+    },
+    {
+      "path": "env/camera_manager/capture/tiled_capture_manager.py",
+      "historical_sha256": "9e70ba9165130d6adf4b63989a447db269b741597bcff7f9095a577f084ff126",
+      "current_sha256": "9e70ba9165130d6adf4b63989a447db269b741597bcff7f9095a577f084ff126",
+      "matches": true
+    },
+    {
+      "path": "env/description_manager/desc_manager.py",
+      "historical_sha256": "bb566028b523a4cc27363cee2e526c2d3e008e671c9773d4f0b8401f58f0388e",
+      "current_sha256": "bb566028b523a4cc27363cee2e526c2d3e008e671c9773d4f0b8401f58f0388e",
+      "matches": true
+    },
+    {
+      "path": "env/environment/__init__.py",
+      "historical_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "current_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "env/environment/base_env.py",
+      "historical_sha256": "ade58ebc19c79bdbf720def30786a0c397b1c7d2141fb6a1bfd63c80f8a3db8e",
+      "current_sha256": "ade58ebc19c79bdbf720def30786a0c397b1c7d2141fb6a1bfd63c80f8a3db8e",
+      "matches": true
+    },
+    {
+      "path": "env/environment/isaac/__init__.py",
+      "historical_sha256": "123023ddc75a0f9b1139c7322bee64a27f0e756b6e84242f43a1481428596126",
+      "current_sha256": "123023ddc75a0f9b1139c7322bee64a27f0e756b6e84242f43a1481428596126",
+      "matches": true
+    },
+    {
+      "path": "env/environment/isaac/direct_rl_env.py",
+      "historical_sha256": "151096897a8da352aed474dc840a74a02164af422af7fa9cae38a9681871b0ca",
+      "current_sha256": "151096897a8da352aed474dc840a74a02164af422af7fa9cae38a9681871b0ca",
+      "matches": true
+    },
+    {
+      "path": "env/environment/isaac/isaac_rl_env.py",
+      "historical_sha256": "144af40adc2113751bc1bd72caadab145e918b316de53ef3e4e42358c01a1fbb",
+      "current_sha256": "144af40adc2113751bc1bd72caadab145e918b316de53ef3e4e42358c01a1fbb",
+      "matches": true
+    },
+    {
+      "path": "env/environment/task_env.py",
+      "historical_sha256": "ac816cf26efabbb8ac4276d2a2a09fbd557e3db805514db0c3dd7ac22b58e931",
+      "current_sha256": "ac816cf26efabbb8ac4276d2a2a09fbd557e3db805514db0c3dd7ac22b58e931",
+      "matches": true
+    },
+    {
+      "path": "env/global_configs.py",
+      "historical_sha256": "e96f6141b42e635d69bba5b4727fb1fec54f8965431b3a70d95fe5dcd3d0ee45",
+      "current_sha256": "e96f6141b42e635d69bba5b4727fb1fec54f8965431b3a70d95fe5dcd3d0ee45",
+      "matches": true
+    },
+    {
+      "path": "env/observation_manager/obs_manager.py",
+      "historical_sha256": "28dd0450643042b1bd2a2ae8f7e9defdf92b4ad7938e00829e37273553d54d13",
+      "current_sha256": "771d6cda443b591f3e7850b901a06b4e653a2feefcbabd23608042377fe9be4b",
+      "matches": false
+    },
+    {
+      "path": "env/planner_manager/curobo_planner.py",
+      "historical_sha256": "3cd830c002901959409ef6f64d54106d8106b48471b266409abc2199f3cb33e1",
+      "current_sha256": "3cd830c002901959409ef6f64d54106d8106b48471b266409abc2199f3cb33e1",
+      "matches": true
+    },
+    {
+      "path": "env/reward_manager/func_parser.py",
+      "historical_sha256": "eb928a05c3eb6bae429a922c59e64272c2c3851c22d779143d45627e47b3a504",
+      "current_sha256": "eb928a05c3eb6bae429a922c59e64272c2c3851c22d779143d45627e47b3a504",
+      "matches": true
+    },
+    {
+      "path": "env/reward_manager/reward_manager.py",
+      "historical_sha256": "bc56efd3aaa861b4b38960dc4fb7778a9b4da9cf131f815ac3170300dd233a41",
+      "current_sha256": "bc56efd3aaa861b4b38960dc4fb7778a9b4da9cf131f815ac3170300dd233a41",
+      "matches": true
+    },
+    {
+      "path": "env/robot_manager/control_manager.py",
+      "historical_sha256": "81b7ecc3bed8248c16aa1517e686682d8e28ccfa9e550d45011b579a9219caab",
+      "current_sha256": "81b7ecc3bed8248c16aa1517e686682d8e28ccfa9e550d45011b579a9219caab",
+      "matches": true
+    },
+    {
+      "path": "env/robot_manager/robot_class/franka.py",
+      "historical_sha256": "1f8ed55431863fd633baa8dbe67bd7ba3a0e85c9c4bbbb7ff2d31f436691caf7",
+      "current_sha256": "1f8ed55431863fd633baa8dbe67bd7ba3a0e85c9c4bbbb7ff2d31f436691caf7",
+      "matches": true
+    },
+    {
+      "path": "env/robot_manager/robot_class/x5.py",
+      "historical_sha256": "107274d0944a4416a1b5216b3ebf05e5f6e96c17eb8a50e4bcd3e134db20ce0f",
+      "current_sha256": "107274d0944a4416a1b5216b3ebf05e5f6e96c17eb8a50e4bcd3e134db20ce0f",
+      "matches": true
+    },
+    {
+      "path": "env/robot_manager/robot_config/franka.py",
+      "historical_sha256": "8bf57a07913573e74dad97aec6c50e58b67746fa90875915d74ce213856ce35a",
+      "current_sha256": "8bf57a07913573e74dad97aec6c50e58b67746fa90875915d74ce213856ce35a",
+      "matches": true
+    },
+    {
+      "path": "env/robot_manager/robot_config/x5.py",
+      "historical_sha256": "13d35630f833d1b0a1e3df0bea05f843e88aae1248b59af8aadfefa9cad29bbb",
+      "current_sha256": "13d35630f833d1b0a1e3df0bea05f843e88aae1248b59af8aadfefa9cad29bbb",
+      "matches": true
+    },
+    {
+      "path": "env/robot_manager/robot_manager.py",
+      "historical_sha256": "1306cb6d17b58a04ad8fc298edb6eb9122469048dbc9717dcf246f4f985d9974",
+      "current_sha256": "1306cb6d17b58a04ad8fc298edb6eb9122469048dbc9717dcf246f4f985d9974",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/layout_manager.py",
+      "historical_sha256": "7f244bec972e09236a94d8b4761b248ba19ec3f61c631d3c83c00b82912a14b8",
+      "current_sha256": "7f244bec972e09236a94d8b4761b248ba19ec3f61c631d3c83c00b82912a14b8",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/articulation.py",
+      "historical_sha256": "c3a1aff5ab15b915e29f66d9ef679fd9bf7f9bc328a2d4177f87e9eb0bca1d73",
+      "current_sha256": "c3a1aff5ab15b915e29f66d9ef679fd9bf7f9bc328a2d4177f87e9eb0bca1d73",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/background.py",
+      "historical_sha256": "04afea9b5c4e21a105ba3b08ce0e5b6692c082cf17ec1053fdffd5dba1c9511b",
+      "current_sha256": "04afea9b5c4e21a105ba3b08ce0e5b6692c082cf17ec1053fdffd5dba1c9511b",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/dynamic.py",
+      "historical_sha256": "7a4652c649f503681914e37c50c959c7ca8457918bb00628413f4288993f8ea7",
+      "current_sha256": "7a4652c649f503681914e37c50c959c7ca8457918bb00628413f4288993f8ea7",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/fluid.py",
+      "historical_sha256": "12b183d4d798d6b7188fd42747ee1927747318c386a91135551d1fa0561c41b5",
+      "current_sha256": "12b183d4d798d6b7188fd42747ee1927747318c386a91135551d1fa0561c41b5",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/garment.py",
+      "historical_sha256": "85f38bd85b52da8dd2ce34ce3692d45848016a9f0f14ecf13114705d4a1ff46a",
+      "current_sha256": "85f38bd85b52da8dd2ce34ce3692d45848016a9f0f14ecf13114705d4a1ff46a",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/geometry.py",
+      "historical_sha256": "3100d61b152b894b3b59be0b3be1d2708f2d8f363ddb8311dabfb5411c731f3d",
+      "current_sha256": "3100d61b152b894b3b59be0b3be1d2708f2d8f363ddb8311dabfb5411c731f3d",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/ground.py",
+      "historical_sha256": "12dd51addae6f5b7c6ad410b4ae7248231d216cf63513c564057d577a09a2972",
+      "current_sha256": "12dd51addae6f5b7c6ad410b4ae7248231d216cf63513c564057d577a09a2972",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/light.py",
+      "historical_sha256": "ba8c8529c6608592d4d0eb9638820b70ae6b3c0cd616631bc6dabdb1c20e421a",
+      "current_sha256": "ba8c8529c6608592d4d0eb9638820b70ae6b3c0cd616631bc6dabdb1c20e421a",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/physics_material.py",
+      "historical_sha256": "a1ac0dc9928e9253e644ceb9a604aed262514aaad0473aff303bfae448e76c29",
+      "current_sha256": "a1ac0dc9928e9253e644ceb9a604aed262514aaad0473aff303bfae448e76c29",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/primitives.py",
+      "historical_sha256": "848f4ab08d86307812ebaea18cc86a51638395f0e6ea194b412d45a699ced926",
+      "current_sha256": "848f4ab08d86307812ebaea18cc86a51638395f0e6ea194b412d45a699ced926",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/rigid.py",
+      "historical_sha256": "ac50a7792b43be99e2f4362b946e9319a6aeb9c26be2766ebca6b780296cfa9b",
+      "current_sha256": "ac50a7792b43be99e2f4362b946e9319a6aeb9c26be2766ebca6b780296cfa9b",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/room.py",
+      "historical_sha256": "946aa1afc23ab9b8fd17394517a5f54605bbbc609582d0854fed2078b3b2d8ee",
+      "current_sha256": "946aa1afc23ab9b8fd17394517a5f54605bbbc609582d0854fed2078b3b2d8ee",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/objects/table.py",
+      "historical_sha256": "c0e71396b0d53a250f74c75490e91086d67962237400a49f886a13ec07875308",
+      "current_sha256": "c0e71396b0d53a250f74c75490e91086d67962237400a49f886a13ec07875308",
+      "matches": true
+    },
+    {
+      "path": "env/scene_manager/scene_manager.py",
+      "historical_sha256": "87776a7803ec5b1666dd3478295978986f8ecec7ef989aa45e697da9854556df",
+      "current_sha256": "87776a7803ec5b1666dd3478295978986f8ecec7ef989aa45e697da9854556df",
+      "matches": true
+    },
+    {
+      "path": "env/seed_manager/seed_manager.py",
+      "historical_sha256": "292eee4003de1c22b288ec3bc1d04d95c7aee5368f30991679ea1cc4c37247b3",
+      "current_sha256": "292eee4003de1c22b288ec3bc1d04d95c7aee5368f30991679ea1cc4c37247b3",
+      "matches": true
+    },
+    {
+      "path": "env/seeding.py",
+      "historical_sha256": "2d7286b78c8060c6e838b55be025f51d09262a4a63bcb3884077a1492e66400a",
+      "current_sha256": "2d7286b78c8060c6e838b55be025f51d09262a4a63bcb3884077a1492e66400a",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/arx_x5.yml",
+      "historical_sha256": "7691350159fdeca92fd1b0b2da36913464ccdea3f3251eefb0176aa51db0807f",
+      "current_sha256": "7691350159fdeca92fd1b0b2da36913464ccdea3f3251eefb0176aa51db0807f",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/camera/camera_config.yml",
+      "historical_sha256": "c1752170da855e735beba27fddbf78dad16f2395e4ef8b24e9827a768e616a62",
+      "current_sha256": "c1752170da855e735beba27fddbf78dad16f2395e4ef8b24e9827a768e616a62",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/camera/template.py",
+      "historical_sha256": "68287ed1daec3b8ed7f053bf97a4d48bbddeb8b5757b53e438ac3c4240a9e61b",
+      "current_sha256": "68287ed1daec3b8ed7f053bf97a4d48bbddeb8b5757b53e438ac3c4240a9e61b",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/robot/dual_x5.yml",
+      "historical_sha256": "4eefaccc75c5f83443b7bb85ef1de68ee7a3772e27af2b04a5e8d8769ab9baa1",
+      "current_sha256": "4eefaccc75c5f83443b7bb85ef1de68ee7a3772e27af2b04a5e8d8769ab9baa1",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/robot/dual_x5_and_franka_competition.yml",
+      "historical_sha256": "ec893f9fde577d0d1209e7dcb85ec2dd74288b636d0c68316cb07bc817b743ab",
+      "current_sha256": "ec893f9fde577d0d1209e7dcb85ec2dd74288b636d0c68316cb07bc817b743ab",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/scene/conveyor.yml",
+      "historical_sha256": "c1dfd27faf978f90dfc4825cd83bd203823547c46793f4f9201ce9f4b43beee7",
+      "current_sha256": "c1dfd27faf978f90dfc4825cd83bd203823547c46793f4f9201ce9f4b43beee7",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/scene/default.yml",
+      "historical_sha256": "729df024b9707a55449da94f980c1ca116035e09a1284e2fe071f1b38efd061a",
+      "current_sha256": "729df024b9707a55449da94f980c1ca116035e09a1284e2fe071f1b38efd061a",
+      "matches": true
+    },
+    {
+      "path": "env_cfg/sim/sim_config.yml",
+      "historical_sha256": "e442ede1c3d90fcfb50b9461c854d31b22dad9bfbb23397db228b27a6a486963",
+      "current_sha256": "e442ede1c3d90fcfb50b9461c854d31b22dad9bfbb23397db228b27a6a486963",
+      "matches": true
+    },
+    {
+      "path": "src/eval_client/eval_env.py",
+      "historical_sha256": "d49bc0318a7c65a5f0f57778e7032977b9222efb210092c60cbe50c7e31f793c",
+      "current_sha256": "9637910e6eaf00a9da8623a3f0e8f4090ecb4bf859ac003372f5d18ff860c379",
+      "matches": false
+    },
+    {
+      "path": "src/eval_client/main.py",
+      "historical_sha256": "03faefcbcb6f08fad59217d527e0e38b3b6f066ab135f2ee636d4d907320d991",
+      "current_sha256": "8cf82d11883e00d0dd266ea78c6f6aa95df8c603367d81b4d96ca3b651e20f6e",
+      "matches": false
+    },
+    {
+      "path": "src/eval_client/physx_warning_monitor.py",
+      "historical_sha256": "6a9f8e8d75b1031d2cf2feb6dd72d37370d85d5bd80c4bea798622e23ce8dae6",
+      "current_sha256": "6a9f8e8d75b1031d2cf2feb6dd72d37370d85d5bd80c4bea798622e23ce8dae6",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/_task.yml",
+      "historical_sha256": "655a87cd59fa6272bf352d32deb8ade162737b49a9824e16d428fecf0803380b",
+      "current_sha256": "655a87cd59fa6272bf352d32deb8ade162737b49a9824e16d428fecf0803380b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/align_blocks.yml",
+      "historical_sha256": "082c9d7a32968052b8ce954bee212c7ec0a96b756150701d4b531abdea59be2b",
+      "current_sha256": "082c9d7a32968052b8ce954bee212c7ec0a96b756150701d4b531abdea59be2b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/arrange_largest_number.yml",
+      "historical_sha256": "3bf6b7e286ea328fb1e4a994a8d30af9afb4b0b4dcd7ceafed43cc6160c9978f",
+      "current_sha256": "3bf6b7e286ea328fb1e4a994a8d30af9afb4b0b4dcd7ceafed43cc6160c9978f",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/arrange_largest_number_random.yml",
+      "historical_sha256": "145b26eb5c8ed7d084a4ddc6e21694c542f4a86150756188ea38dcf66e565603",
+      "current_sha256": "145b26eb5c8ed7d084a4ddc6e21694c542f4a86150756188ea38dcf66e565603",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/build_tower.yml",
+      "historical_sha256": "e1bab8756bbc5664e3171e2389c060a79a3fbbf92a6af4ef555dcaf59fce275c",
+      "current_sha256": "e1bab8756bbc5664e3171e2389c060a79a3fbbf92a6af4ef555dcaf59fce275c",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/classify_objects.yml",
+      "historical_sha256": "80a754d2aedd6a89f58185eae36f5b2eb1a28250f40a67325f576fde34650384",
+      "current_sha256": "80a754d2aedd6a89f58185eae36f5b2eb1a28250f40a67325f576fde34650384",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/classify_objects_by_language.yml",
+      "historical_sha256": "ac6c739ca82a64b53c799af79b44363db1a88246f76d867f8830729e5613507b",
+      "current_sha256": "ac6c739ca82a64b53c799af79b44363db1a88246f76d867f8830729e5613507b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/cover_blocks.yml",
+      "historical_sha256": "68f90c85fad2b152cf7853cf48888d09ce74bb27a692ff2feacd11160771c5a7",
+      "current_sha256": "68f90c85fad2b152cf7853cf48888d09ce74bb27a692ff2feacd11160771c5a7",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/deposit_coin.yml",
+      "historical_sha256": "f547b12216fb9a5dfe2e7d7e882d89e1e53ee1a805c943ba09a3c2cdea8c17a3",
+      "current_sha256": "f547b12216fb9a5dfe2e7d7e882d89e1e53ee1a805c943ba09a3c2cdea8c17a3",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/fasten_screws.yml",
+      "historical_sha256": "5fbe4cf5b3ee2eafc2771137b13176f01617f8b2131f02503e676a7b62e2eabf",
+      "current_sha256": "5fbe4cf5b3ee2eafc2771137b13176f01617f8b2131f02503e676a7b62e2eabf",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/fill_egg_holder.yml",
+      "historical_sha256": "d79129278c9a5488d63bb1d3865f2c6b39f21f85957ec94ace091af9ae29e31f",
+      "current_sha256": "d79129278c9a5488d63bb1d3865f2c6b39f21f85957ec94ace091af9ae29e31f",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/fill_pen_holder.yml",
+      "historical_sha256": "ac72e5582495e8757c547997b317e2fe990370009527b1faa6bfbf4e1275537c",
+      "current_sha256": "ac72e5582495e8757c547997b317e2fe990370009527b1faa6bfbf4e1275537c",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/fold_clothes.yml",
+      "historical_sha256": "56447e3f592e0db388ebb7482ec758ecd5485ec81b9227c2dffe5390bd7d8c8e",
+      "current_sha256": "56447e3f592e0db388ebb7482ec758ecd5485ec81b9227c2dffe5390bd7d8c8e",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/fold_clothes_random.yml",
+      "historical_sha256": "eafe52c0abcc1889069383b008cbe95c6af2d18ceafb1aecc78f0fae3b491b04",
+      "current_sha256": "eafe52c0abcc1889069383b008cbe95c6af2d18ceafb1aecc78f0fae3b491b04",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/general_pickup.yml",
+      "historical_sha256": "35de68117cb0ed596b30db1c62f1f9090f2cd1237242a03d5aaeb7186e791d93",
+      "current_sha256": "35de68117cb0ed596b30db1c62f1f9090f2cd1237242a03d5aaeb7186e791d93",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/hang_mugs.yml",
+      "historical_sha256": "0086d374d3f7e82abb85e43a17cdfa437e1ac645a0171fb47496c2b81427dce9",
+      "current_sha256": "0086d374d3f7e82abb85e43a17cdfa437e1ac645a0171fb47496c2b81427dce9",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/hang_mugs_random.yml",
+      "historical_sha256": "847dfd39059275a671b5beff0243bf7bbaeebd9e5c0612a1877cdf12b9007dc6",
+      "current_sha256": "847dfd39059275a671b5beff0243bf7bbaeebd9e5c0612a1877cdf12b9007dc6",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/imitate_sorting_sequence.yml",
+      "historical_sha256": "d9e194d8c742288601c641ccb75052a67da46e536c0b06c7fb7311d9e2c61a42",
+      "current_sha256": "d9e194d8c742288601c641ccb75052a67da46e536c0b06c7fb7311d9e2c61a42",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/insert_key.yml",
+      "historical_sha256": "c0b409d5c020e0ad706c378b6f63b39dfe7bed4682d978907c40e1cfa7623335",
+      "current_sha256": "c0b409d5c020e0ad706c378b6f63b39dfe7bed4682d978907c40e1cfa7623335",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/insert_tubes.yml",
+      "historical_sha256": "5c070e5c764a2ea93f8de0b52e6a664a23c717963fe09fe3af17918a4a1ee9ef",
+      "current_sha256": "5c070e5c764a2ea93f8de0b52e6a664a23c717963fe09fe3af17918a4a1ee9ef",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/make_kong.yml",
+      "historical_sha256": "8a33c9e57b6e6c719c4800911c37272ba055ad0f4cda2f1de9d531ee2910351a",
+      "current_sha256": "8a33c9e57b6e6c719c4800911c37272ba055ad0f4cda2f1de9d531ee2910351a",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/make_toast.yml",
+      "historical_sha256": "d190a26233db174538ff0052b4c2958a3b107f0ccc63d0fdfe28da4c7f5dc57b",
+      "current_sha256": "d190a26233db174538ff0052b4c2958a3b107f0ccc63d0fdfe28da4c7f5dc57b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/make_toast_random.yml",
+      "historical_sha256": "ca2c1e55a0975c8b019523710e90131504d8d2afeb829be362e4d7927fe97b48",
+      "current_sha256": "ca2c1e55a0975c8b019523710e90131504d8d2afeb829be362e4d7927fe97b48",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/match_and_pick_from_conveyor.yml",
+      "historical_sha256": "0ae1c2537d9b1880748316928cfd7ba4c6421ecccfedb85c4c5395a7a86c5361",
+      "current_sha256": "0ae1c2537d9b1880748316928cfd7ba4c6421ecccfedb85c4c5395a7a86c5361",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/organize_table.yml",
+      "historical_sha256": "9ffa15dd279060d4f042285a2c53a341c7208e2f89a2f3dd36ee08b22aa453fa",
+      "current_sha256": "9ffa15dd279060d4f042285a2c53a341c7208e2f89a2f3dd36ee08b22aa453fa",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/pack_objects_into_box.yml",
+      "historical_sha256": "e232962b8394d08c04c5da14deb88d7b233afa00ab99af8001c084218951d7ca",
+      "current_sha256": "e232962b8394d08c04c5da14deb88d7b233afa00ab99af8001c084218951d7ca",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/pack_objects_into_box_random.yml",
+      "historical_sha256": "7ac7f034fcb169e33a7f0a03b2b77e54d0206ed715409359b579055a701196ef",
+      "current_sha256": "7ac7f034fcb169e33a7f0a03b2b77e54d0206ed715409359b579055a701196ef",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/pick_from_conveyor_by_image.yml",
+      "historical_sha256": "6b310b70a0ead9d09e7c221c6bbc952140a44b1d43034613bf02e954eebcf9dd",
+      "current_sha256": "6b310b70a0ead9d09e7c221c6bbc952140a44b1d43034613bf02e954eebcf9dd",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/play_Xylophone.yml",
+      "historical_sha256": "28adedb0f03c49693af32cea37855f3f95ec3f76f031bfd571fb8bfffb2ec59c",
+      "current_sha256": "28adedb0f03c49693af32cea37855f3f95ec3f76f031bfd571fb8bfffb2ec59c",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/play_stacking_toy.yml",
+      "historical_sha256": "a09afc106161064a2ea6a40882d717f7872bd4875309a97431d6863a9b7ffa1c",
+      "current_sha256": "a09afc106161064a2ea6a40882d717f7872bd4875309a97431d6863a9b7ffa1c",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/play_tic_tac_toe.yml",
+      "historical_sha256": "63f863a7fb81a040f65803c64f97c4e9577d4fe32cd0f92563bdc72d1aa336d2",
+      "current_sha256": "63f863a7fb81a040f65803c64f97c4e9577d4fe32cd0f92563bdc72d1aa336d2",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/plug_in_charger.yml",
+      "historical_sha256": "2046b47112049e038ecfa24a8c8044fb1db84f629a4a32eeb24822157d2d4dcb",
+      "current_sha256": "2046b47112049e038ecfa24a8c8044fb1db84f629a4a32eeb24822157d2d4dcb",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/pour_balls_into_vase.yml",
+      "historical_sha256": "084a707af61d24123912777b417fe0c0b230eb9653e686af42570791e924ff8b",
+      "current_sha256": "084a707af61d24123912777b417fe0c0b230eb9653e686af42570791e924ff8b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/pour_by_language.yml",
+      "historical_sha256": "efb2e3c3cb08dd6d2d2ae011b3e9a218b5f1f0a92f025b8e3b9e8abd7011c250",
+      "current_sha256": "efb2e3c3cb08dd6d2d2ae011b3e9a218b5f1f0a92f025b8e3b9e8abd7011c250",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/pour_liquid_into_cup.yml",
+      "historical_sha256": "32092b11667b3306579b04225303610c061585ace28531fa9996afc339c5a2ba",
+      "current_sha256": "32092b11667b3306579b04225303610c061585ace28531fa9996afc339c5a2ba",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/pour_liquid_into_cup_random.yml",
+      "historical_sha256": "1603feeab6f0f7dc9c4897e7f40f322b86112b6ab987dad0598f42ac1b35db69",
+      "current_sha256": "1603feeab6f0f7dc9c4897e7f40f322b86112b6ab987dad0598f42ac1b35db69",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/press_by_number.yml",
+      "historical_sha256": "b784643495bcbca933f5a5fbc91b7dad3465fe888239b358d516977c78c38f63",
+      "current_sha256": "b784643495bcbca933f5a5fbc91b7dad3465fe888239b358d516977c78c38f63",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/push_T.yml",
+      "historical_sha256": "b55ea11002ff3e5dc63982ca8c1247fd7bee4f4a607f4d674e220b86cf120a25",
+      "current_sha256": "b55ea11002ff3e5dc63982ca8c1247fd7bee4f4a607f4d674e220b86cf120a25",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/push_T_random.yml",
+      "historical_sha256": "07609ec20cea40afa1d5720e895fb1b445411f261b2e5b6850e75d0f1930d32d",
+      "current_sha256": "07609ec20cea40afa1d5720e895fb1b445411f261b2e5b6850e75d0f1930d32d",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/put_bottles_into_dustbin.yml",
+      "historical_sha256": "7eddf43e287b6e8aea686c6d686fb87e13ac1be1cb5aac16a8a2b0d2e9eb976e",
+      "current_sha256": "7eddf43e287b6e8aea686c6d686fb87e13ac1be1cb5aac16a8a2b0d2e9eb976e",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/solve_equation.yml",
+      "historical_sha256": "bdaad2ff1cc8b7ec6413a3715d49ea9cefd664e7e204544977832e18785f1e75",
+      "current_sha256": "bdaad2ff1cc8b7ec6413a3715d49ea9cefd664e7e204544977832e18785f1e75",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/sort_nesting_dolls_by_size.yml",
+      "historical_sha256": "8927cb2ebb18449554d851e629bd7d568e12e46c5c3c636c8e7122f4fab1ed1f",
+      "current_sha256": "8927cb2ebb18449554d851e629bd7d568e12e46c5c3c636c8e7122f4fab1ed1f",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/sort_nesting_dolls_by_size_random.yml",
+      "historical_sha256": "f895d3ce7eaae99454706afccd09011f56d077998bcc1e95840116658b78f139",
+      "current_sha256": "f895d3ce7eaae99454706afccd09011f56d077998bcc1e95840116658b78f139",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/stack_blocks.yml",
+      "historical_sha256": "2802e88ebc3e2d3d05ce345d75e9ad6151a6690e4ef1e0021a5223d291a402d2",
+      "current_sha256": "2802e88ebc3e2d3d05ce345d75e9ad6151a6690e4ef1e0021a5223d291a402d2",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/stack_blocks_by_language.yml",
+      "historical_sha256": "4fbfed4f7fc49120831087e709a8dbdfdb4504eb143196000d5790b54eb3bc40",
+      "current_sha256": "4fbfed4f7fc49120831087e709a8dbdfdb4504eb143196000d5790b54eb3bc40",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/stack_blocks_random.yml",
+      "historical_sha256": "e25d2a096601da30abdcfe1256a464eaf48c0c8f844eb2c737232626d49639d5",
+      "current_sha256": "e25d2a096601da30abdcfe1256a464eaf48c0c8f844eb2c737232626d49639d5",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/stack_bowls.yml",
+      "historical_sha256": "4e2aaa12b8b0f58ca801f1a93638c46d3b49ebad809c5a8011382ccda846dcb1",
+      "current_sha256": "4e2aaa12b8b0f58ca801f1a93638c46d3b49ebad809c5a8011382ccda846dcb1",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/stack_bowls_random.yml",
+      "historical_sha256": "5c08af1bcc925d958d53de51e8ebd336006203f1bc81e4ef68f3719eadfabb49",
+      "current_sha256": "5c08af1bcc925d958d53de51e8ebd336006203f1bc81e4ef68f3719eadfabb49",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/store_laptop_and_headphones.yml",
+      "historical_sha256": "0fdaab803a9370a9e2d1fc8d86a5788daa3940c08fd6f767334f625642fca3e2",
+      "current_sha256": "0fdaab803a9370a9e2d1fc8d86a5788daa3940c08fd6f767334f625642fca3e2",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/store_laptop_and_headphones_random.yml",
+      "historical_sha256": "93f0ca39bc8bb32df94e84a02f22ed4d7860f37cdc0b9dd17e44721445849576",
+      "current_sha256": "93f0ca39bc8bb32df94e84a02f22ed4d7860f37cdc0b9dd17e44721445849576",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/store_tools_in_toolbox.yml",
+      "historical_sha256": "641c8ef92393bd986e408d26a84b1cfcdac27466a5ac5f0b3ebe4bb84430c527",
+      "current_sha256": "641c8ef92393bd986e408d26a84b1cfcdac27466a5ac5f0b3ebe4bb84430c527",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/swap_T.yml",
+      "historical_sha256": "1daf769911e13714b4aeabd208292931e32f4dd39968893152bb7bb477c46c9b",
+      "current_sha256": "1daf769911e13714b4aeabd208292931e32f4dd39968893152bb7bb477c46c9b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/swap_blocks.yml",
+      "historical_sha256": "b6bb2a9df494719f26c6b1aab2e7576107ae76e2fbac8b63a5770f21e0e9f05f",
+      "current_sha256": "b6bb2a9df494719f26c6b1aab2e7576107ae76e2fbac8b63a5770f21e0e9f05f",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/sweep_blocks.yml",
+      "historical_sha256": "98aa25ac39be9d335c71b2b586bbba372789e9d61e652e1147152c87febbf1f5",
+      "current_sha256": "98aa25ac39be9d335c71b2b586bbba372789e9d61e652e1147152c87febbf1f5",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/config/sweep_blocks_random.yml",
+      "historical_sha256": "4ebff5e2cad07f958dc4b2793b86b1aa803c0809394818ee3752d300e58b6187",
+      "current_sha256": "4ebff5e2cad07f958dc4b2793b86b1aa803c0809394818ee3752d300e58b6187",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/task_registry.py",
+      "historical_sha256": "11218028f772d9253ee709a7d85aa72d1e1fd87e4f8d33ee3787d6064438f9ab",
+      "current_sha256": "11218028f772d9253ee709a7d85aa72d1e1fd87e4f8d33ee3787d6064438f9ab",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/align_blocks.py",
+      "historical_sha256": "c8597e96132cd7c9d30f3ae101f7bbe8ac28597b629599d75d442bbea4c6e74c",
+      "current_sha256": "c8597e96132cd7c9d30f3ae101f7bbe8ac28597b629599d75d442bbea4c6e74c",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/arrange_largest_number.py",
+      "historical_sha256": "277acd20ae4345dc71267762e588b7b0343387c71685183890f044a4808b7a20",
+      "current_sha256": "277acd20ae4345dc71267762e588b7b0343387c71685183890f044a4808b7a20",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/arrange_largest_number_random.py",
+      "historical_sha256": "01757509978663bf7c0c95059e8ae18d45b8fe0953f6b54540e2bd6bf141182e",
+      "current_sha256": "01757509978663bf7c0c95059e8ae18d45b8fe0953f6b54540e2bd6bf141182e",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/build_tower.py",
+      "historical_sha256": "814cf6ffb459871e5cf49f4e127903dbfbc30926f33db71de0b84a71ab235d6e",
+      "current_sha256": "814cf6ffb459871e5cf49f4e127903dbfbc30926f33db71de0b84a71ab235d6e",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/classify_objects.py",
+      "historical_sha256": "aef4333c088766375e21a928d53a9a93aaee285fecae41e22385acdc74dd11ac",
+      "current_sha256": "aef4333c088766375e21a928d53a9a93aaee285fecae41e22385acdc74dd11ac",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/classify_objects_by_language.py",
+      "historical_sha256": "242a8f048f487eb174ef246be78613bbb5f153549ee11a2650412718cf3b36c9",
+      "current_sha256": "242a8f048f487eb174ef246be78613bbb5f153549ee11a2650412718cf3b36c9",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/cover_blocks.py",
+      "historical_sha256": "9d14931b16842b93bea8abf9a07991a93a7e663b93c5fd1695108c8b922ab862",
+      "current_sha256": "9d14931b16842b93bea8abf9a07991a93a7e663b93c5fd1695108c8b922ab862",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/deposit_coin.py",
+      "historical_sha256": "f9868ef827ec17b8db6c4650cc5d9a9e593d20d00ee822e2212ce229ec01fb61",
+      "current_sha256": "f9868ef827ec17b8db6c4650cc5d9a9e593d20d00ee822e2212ce229ec01fb61",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/fasten_screws.py",
+      "historical_sha256": "2e187a28e33e44efb87baae6463b3ec35264ccd41e35c21a1be44f6361675185",
+      "current_sha256": "2e187a28e33e44efb87baae6463b3ec35264ccd41e35c21a1be44f6361675185",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/fill_egg_holder.py",
+      "historical_sha256": "506dfb772f8882ae53966e3580affde19c3c0f11591c78cc5f5b1d997ba04f7e",
+      "current_sha256": "506dfb772f8882ae53966e3580affde19c3c0f11591c78cc5f5b1d997ba04f7e",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/fill_pen_holder.py",
+      "historical_sha256": "8706dce239487e078b21af0b95bcc5cd4eabdcdadcdcbc6400d6b138d982f1e6",
+      "current_sha256": "8706dce239487e078b21af0b95bcc5cd4eabdcdadcdcbc6400d6b138d982f1e6",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/fold_clothes.py",
+      "historical_sha256": "ecea9c287d0579605330168e6f36734704fb14a6b1e5dec82b6f2ee3a56ec20a",
+      "current_sha256": "ecea9c287d0579605330168e6f36734704fb14a6b1e5dec82b6f2ee3a56ec20a",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/fold_clothes_random.py",
+      "historical_sha256": "9e40abe3f7201a8c13961edc1ca8075260c315584d3d6b93fa1df966d13d1e88",
+      "current_sha256": "9e40abe3f7201a8c13961edc1ca8075260c315584d3d6b93fa1df966d13d1e88",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/general_pickup.py",
+      "historical_sha256": "1a9eef7fe518f9d2c6805ad1a8f97c1045fa83726f84b9c63f67ffdfabbc40a7",
+      "current_sha256": "1a9eef7fe518f9d2c6805ad1a8f97c1045fa83726f84b9c63f67ffdfabbc40a7",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/hang_mugs.py",
+      "historical_sha256": "4bc6586bd87de030b9c580fea2a45e7977c3b6a4d75cf3c43b546d349d42e906",
+      "current_sha256": "4bc6586bd87de030b9c580fea2a45e7977c3b6a4d75cf3c43b546d349d42e906",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/hang_mugs_random.py",
+      "historical_sha256": "ebfa4a95deb954aa7a9063a07fe366cb5ea1835d3f52342b10d531225dfeee92",
+      "current_sha256": "ebfa4a95deb954aa7a9063a07fe366cb5ea1835d3f52342b10d531225dfeee92",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/imitate_sorting_sequence.py",
+      "historical_sha256": "18400cb3c5f5103492819df2dcdf05a77916106e8a503cb62b4ee6cdbaa9305b",
+      "current_sha256": "18400cb3c5f5103492819df2dcdf05a77916106e8a503cb62b4ee6cdbaa9305b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/insert_key.py",
+      "historical_sha256": "180978a2915744f0596fbca4ea0ad6dcb47dce005d43f06807249bc8b4d1a828",
+      "current_sha256": "180978a2915744f0596fbca4ea0ad6dcb47dce005d43f06807249bc8b4d1a828",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/insert_tubes.py",
+      "historical_sha256": "9a68795ddbd0b816ffd7627e673390ecd83594c0e9d374d4e3abf3435ad439e1",
+      "current_sha256": "9a68795ddbd0b816ffd7627e673390ecd83594c0e9d374d4e3abf3435ad439e1",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/make_kong.py",
+      "historical_sha256": "b9266689d65f9213b05219ad952344f9fd63be8892097ec0103af99791b245d5",
+      "current_sha256": "b9266689d65f9213b05219ad952344f9fd63be8892097ec0103af99791b245d5",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/make_toast.py",
+      "historical_sha256": "1047f484a73d1f92304393879b51f87e33d661b6ad7937198352fe37a0d3233d",
+      "current_sha256": "1047f484a73d1f92304393879b51f87e33d661b6ad7937198352fe37a0d3233d",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/make_toast_random.py",
+      "historical_sha256": "69fb879b89e98f7369971834eb6d1b95c5a65f5ffe978b2cffae0b12c6b756ca",
+      "current_sha256": "69fb879b89e98f7369971834eb6d1b95c5a65f5ffe978b2cffae0b12c6b756ca",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/match_and_pick_from_conveyor.py",
+      "historical_sha256": "53110b8a0c971bd3ae8878bfb7d0dcd9626bd9b610d4e7fc91772313b435a5c0",
+      "current_sha256": "53110b8a0c971bd3ae8878bfb7d0dcd9626bd9b610d4e7fc91772313b435a5c0",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/organize_table.py",
+      "historical_sha256": "aceb298e78f3f39e4cf9a9f4c5a4f747b2c55f1a6006de2065e110a05f4295d6",
+      "current_sha256": "aceb298e78f3f39e4cf9a9f4c5a4f747b2c55f1a6006de2065e110a05f4295d6",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/pack_objects_into_box.py",
+      "historical_sha256": "84a1cf1dd5e166f36291130f9d8cb5dfe4b3f4732a46674bef6374a7ea2d66be",
+      "current_sha256": "84a1cf1dd5e166f36291130f9d8cb5dfe4b3f4732a46674bef6374a7ea2d66be",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/pack_objects_into_box_random.py",
+      "historical_sha256": "4db259a1b97cdcc39ebc9794244fadc79d31c4ae64069c9b11a233356fcb655c",
+      "current_sha256": "4db259a1b97cdcc39ebc9794244fadc79d31c4ae64069c9b11a233356fcb655c",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/pick_from_conveyor_by_image.py",
+      "historical_sha256": "a0d29576d0aab8232d2fd3ebcc8c510e81c70b4cc04602a5be3e99ee2275e01d",
+      "current_sha256": "a0d29576d0aab8232d2fd3ebcc8c510e81c70b4cc04602a5be3e99ee2275e01d",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/play_Xylophone.py",
+      "historical_sha256": "b7a4b0bc0457bcf55d714ca1867476fc4aabc53084adfc78d3ff5d1437bf7847",
+      "current_sha256": "b7a4b0bc0457bcf55d714ca1867476fc4aabc53084adfc78d3ff5d1437bf7847",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/play_stacking_toy.py",
+      "historical_sha256": "23361329ee7efe330da1f1c241415205bafed2b6c082a913659d868a80d338c3",
+      "current_sha256": "23361329ee7efe330da1f1c241415205bafed2b6c082a913659d868a80d338c3",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/play_tic_tac_toe.py",
+      "historical_sha256": "8f75ebfe55c997ad9bd3b342db46e843e87397db94356f31cadcbe0cb483bca7",
+      "current_sha256": "8f75ebfe55c997ad9bd3b342db46e843e87397db94356f31cadcbe0cb483bca7",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/plug_in_charger.py",
+      "historical_sha256": "aaa59ade46dc54f430e1148e3f6fae487970cd29eb2c07b5ff7b4045edb831b6",
+      "current_sha256": "aaa59ade46dc54f430e1148e3f6fae487970cd29eb2c07b5ff7b4045edb831b6",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/pour_balls_into_vase.py",
+      "historical_sha256": "eae388b93ec196c401f76bbab3b0119cb2164f90bece0225d4fb925d3f2b73ab",
+      "current_sha256": "eae388b93ec196c401f76bbab3b0119cb2164f90bece0225d4fb925d3f2b73ab",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/pour_by_language.py",
+      "historical_sha256": "f7a15a7fca2c649a7918d68960ede27e667f409a339b668dd9876db890724cfb",
+      "current_sha256": "f7a15a7fca2c649a7918d68960ede27e667f409a339b668dd9876db890724cfb",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/pour_liquid_into_cup.py",
+      "historical_sha256": "73f8c91b57c352fdc1e7ba3fe5354b3c10e4156d8e5ba777762ad0fa1aff5663",
+      "current_sha256": "73f8c91b57c352fdc1e7ba3fe5354b3c10e4156d8e5ba777762ad0fa1aff5663",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/pour_liquid_into_cup_random.py",
+      "historical_sha256": "a1c4097b6e34b2c62885b3a9c7d2584a93d9e296dc41d311a80c2e6d541d53af",
+      "current_sha256": "a1c4097b6e34b2c62885b3a9c7d2584a93d9e296dc41d311a80c2e6d541d53af",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/press_by_number.py",
+      "historical_sha256": "006f969087c00c417a63875a9de153f698c52d1f1ca0caf0aa16076aa15059c5",
+      "current_sha256": "006f969087c00c417a63875a9de153f698c52d1f1ca0caf0aa16076aa15059c5",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/push_T.py",
+      "historical_sha256": "a01d753bc320ffbf492ccc29e5f7ab3b39e6c7d255cd25804db1934a30fa5b41",
+      "current_sha256": "a01d753bc320ffbf492ccc29e5f7ab3b39e6c7d255cd25804db1934a30fa5b41",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/push_T_random.py",
+      "historical_sha256": "dc8d9c8e0d2e8dfffa2b7d433a8278c0eaf707cc4861b15035364c2e70061dab",
+      "current_sha256": "dc8d9c8e0d2e8dfffa2b7d433a8278c0eaf707cc4861b15035364c2e70061dab",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/put_bottles_into_dustbin.py",
+      "historical_sha256": "3ba6e19df0c5ff19ba961092f031ce14e91e72a9a4a5934eece6000a1ffa1c48",
+      "current_sha256": "3ba6e19df0c5ff19ba961092f031ce14e91e72a9a4a5934eece6000a1ffa1c48",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/solve_equation.py",
+      "historical_sha256": "e287a2f36b82b28e8ca7824f63b1b723b02972ea6dfc115ff32b2882729751f7",
+      "current_sha256": "e287a2f36b82b28e8ca7824f63b1b723b02972ea6dfc115ff32b2882729751f7",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/sort_nesting_dolls_by_size.py",
+      "historical_sha256": "1838fa6b515bad3796895cb5c1883c6a42789b7dada5434765764600e70beb49",
+      "current_sha256": "1838fa6b515bad3796895cb5c1883c6a42789b7dada5434765764600e70beb49",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/sort_nesting_dolls_by_size_random.py",
+      "historical_sha256": "b793ab5bd32bd2c10bd46874440904837f9c4e290e7508b06426e2e96425709a",
+      "current_sha256": "b793ab5bd32bd2c10bd46874440904837f9c4e290e7508b06426e2e96425709a",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/stack_blocks.py",
+      "historical_sha256": "50bd388f9e47002966fbb0146742467a820295b8686e0f86379f0efbcfffcc1b",
+      "current_sha256": "50bd388f9e47002966fbb0146742467a820295b8686e0f86379f0efbcfffcc1b",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/stack_blocks_by_language.py",
+      "historical_sha256": "68fc05bf1534a400e6dc93aab04e7561fa43485a226e3a74b4560ac154c1b6fb",
+      "current_sha256": "36a83925f35c7a4caac5add328dd35cb1d346bad833d3064f455d88221e7a41e",
+      "matches": false
+    },
+    {
+      "path": "task/RoboDojo/tasks/stack_blocks_random.py",
+      "historical_sha256": "19d4e5cd693e068ad64de75cbcd24977ab8d39e22fa17362a391dcd733bc9bb5",
+      "current_sha256": "19d4e5cd693e068ad64de75cbcd24977ab8d39e22fa17362a391dcd733bc9bb5",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/stack_bowls.py",
+      "historical_sha256": "022c129ec3493183b1a26688a0402f5a00a1546ae011999e9c19f4c0029e2b7d",
+      "current_sha256": "022c129ec3493183b1a26688a0402f5a00a1546ae011999e9c19f4c0029e2b7d",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/stack_bowls_random.py",
+      "historical_sha256": "a0e20469eb44a9ee98650d09386814c1df5264c68ec139f06aabf0c86f092514",
+      "current_sha256": "a0e20469eb44a9ee98650d09386814c1df5264c68ec139f06aabf0c86f092514",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/store_laptop_and_headphones.py",
+      "historical_sha256": "2bee4e31f0594900629fe7f43266e16fecb310b152930ce51524507136809a92",
+      "current_sha256": "2bee4e31f0594900629fe7f43266e16fecb310b152930ce51524507136809a92",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/store_laptop_and_headphones_random.py",
+      "historical_sha256": "58c3c5113054a379214d64ae406ed8dde99603cf684ce9cd8c7bcb72ed334382",
+      "current_sha256": "58c3c5113054a379214d64ae406ed8dde99603cf684ce9cd8c7bcb72ed334382",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/store_tools_in_toolbox.py",
+      "historical_sha256": "2969fc3eb171560b3c0bcea62b9f38b8b35f3aecc9bcc7085c3b1cec365b48fc",
+      "current_sha256": "2969fc3eb171560b3c0bcea62b9f38b8b35f3aecc9bcc7085c3b1cec365b48fc",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/swap_T.py",
+      "historical_sha256": "57fc289b3957caa454e1d8e005e3a57c973d6ab40121845c94799e61e4bfafdf",
+      "current_sha256": "57fc289b3957caa454e1d8e005e3a57c973d6ab40121845c94799e61e4bfafdf",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/swap_blocks.py",
+      "historical_sha256": "08ed24ae9dff27f4e5c850161a02f62ce237859c096d9b06a853a7890e0ad4ed",
+      "current_sha256": "08ed24ae9dff27f4e5c850161a02f62ce237859c096d9b06a853a7890e0ad4ed",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/sweep_blocks.py",
+      "historical_sha256": "65786217e199c1e2b26ec8e2c232bf98ecb304a20939d0908fe12bc41e990614",
+      "current_sha256": "65786217e199c1e2b26ec8e2c232bf98ecb304a20939d0908fe12bc41e990614",
+      "matches": true
+    },
+    {
+      "path": "task/RoboDojo/tasks/sweep_blocks_random.py",
+      "historical_sha256": "68b6127038322cf001d5f614060b8a1d96e64a49efddfcdcae91127d5c206bc5",
+      "current_sha256": "68b6127038322cf001d5f614060b8a1d96e64a49efddfcdcae91127d5c206bc5",
+      "matches": true
+    },
+    {
+      "path": "utils/cluttered_generator.py",
+      "historical_sha256": "f59cfcfed2b4cce5ae9aeaf3339c86d17e237874e3526bded3cb05136dbcbd50",
+      "current_sha256": "f59cfcfed2b4cce5ae9aeaf3339c86d17e237874e3526bded3cb05136dbcbd50",
+      "matches": true
+    },
+    {
+      "path": "utils/ensure_usd_path.py",
+      "historical_sha256": "7c8e71cf91636e630b1b174098fe0b38740857daeaf207e2fae772c4727b11bf",
+      "current_sha256": "7c8e71cf91636e630b1b174098fe0b38740857daeaf207e2fae772c4727b11bf",
+      "matches": true
+    },
+    {
+      "path": "utils/load_file.py",
+      "historical_sha256": "ef3a6dc96aa1a7442cfd24f7be9671052a98d2f20783c3e71032332704132943",
+      "current_sha256": "ef3a6dc96aa1a7442cfd24f7be9671052a98d2f20783c3e71032332704132943",
+      "matches": true
+    },
+    {
+      "path": "utils/path.py",
+      "historical_sha256": "1d427c7cf33e748e01d0d083c9432d8be8b5c3a1f35c5fb0f6ebb0714098f1d1",
+      "current_sha256": "1d427c7cf33e748e01d0d083c9432d8be8b5c3a1f35c5fb0f6ebb0714098f1d1",
+      "matches": true
+    },
+    {
+      "path": "utils/pipeline_utils.py",
+      "historical_sha256": "d5d8da29e6ca84ab04323a2f79130f930572785b4399634e06a42834ed4087ae",
+      "current_sha256": "d5d8da29e6ca84ab04323a2f79130f930572785b4399634e06a42834ed4087ae",
+      "matches": true
+    },
+    {
+      "path": "utils/rotations.py",
+      "historical_sha256": "8e814f79938bdb9e85f1c024825617cc08d281b61728c6410b23ef1bd852c340",
+      "current_sha256": "8e814f79938bdb9e85f1c024825617cc08d281b61728c6410b23ef1bd852c340",
+      "matches": true
+    },
+    {
+      "path": "utils/save_file.py",
+      "historical_sha256": "6cff5950f73bf7a1ed404f804d6f08af712974f22c3955de4cdf142f211aaf00",
+      "current_sha256": "6cff5950f73bf7a1ed404f804d6f08af712974f22c3955de4cdf142f211aaf00",
+      "matches": true
+    },
+    {
+      "path": "utils/transformer.py",
+      "historical_sha256": "73de4f5e1e0ff60d4f2e1aaf6104368e8f919269facb68b4fa0344d35bc08cbe",
+      "current_sha256": "73de4f5e1e0ff60d4f2e1aaf6104368e8f919269facb68b4fa0344d35bc08cbe",
+      "matches": true
+    },
+    {
+      "path": "utils/update_embodiment_config_path.py",
+      "historical_sha256": "6a8252e1dcb3fa7aba15fbbecf4408a908beb324f11624d979e867d2ea332259",
+      "current_sha256": "6a8252e1dcb3fa7aba15fbbecf4408a908beb324f11624d979e867d2ea332259",
+      "matches": true
+    },
+    {
+      "path": "utils/usd_schema.py",
+      "historical_sha256": "260d30b0ada2976136cad3e49e810b4409304eb4a2bc60bd9ed710864d3953ac",
+      "current_sha256": "260d30b0ada2976136cad3e49e810b4409304eb4a2bc60bd9ed710864d3953ac",
+      "matches": true
+    }
+  ],
+  "sources": {
+    "/workspace/kangyc1@xiaopeng.com/dev/GPT-as-Policy/public_results/evaluation_cases.json": "b2ef651cc5d4c90375165a852030a3864b33d9410986dafedde7b04253f1c39a",
+    "/workspace/kangyc1@xiaopeng.com/dev/GPT-as-Policy/report_web/data.json": "e1a4e6d8fba53513ed088e1b10706c4387e211b48832128e5781d86bb0947457"
+  },
+  "comparison": "Pair case_id, seeds, layout hash and native horizon with prior Direct. Model, context and adapter differences remain explicit.",
+  "incomplete_policy": "Keep prior and new incomplete attempts separate; never replace missing native scores with zero.",
+  "panel_sha256": "17f7bf07c3134b4cb2a4c81c514195cd60b45833194ed0f9490b8f67f4eef012"
+}

@@ -1,0 +1,16 @@
+{
+  "route": "A: local base + Codex Direct",
+  "task": "stack_bowls",
+  "eval_seed": 0,
+  "layout_id": 0,
+  "native_control_horizon": 800,
+  "max_control_steps": 800,
+  "max_decisions": 800,
+  "max_total_tokens": 40000000,
+  "wall_seconds": 14400,
+  "purpose": "Full development episode, separate from the published ten-task comparison panel",
+  "model_config": "configs/base_model.json",
+  "no_action_rewriting": true,
+  "no_automatic_action_retry": true,
+  "no_episode_reset": true
+}
