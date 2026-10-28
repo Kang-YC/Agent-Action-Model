@@ -88,3 +88,15 @@ def test_live_mixed_snapshot_is_incomplete_not_passed(tmp_path):
     report = audit(run)
     assert report['status'] == 'incomplete'
     assert not report['tool_loop_verified']
+
+
+def test_normal_development_budget_stop_passes_chain_without_native_score(tmp_path, monkeypatch):
+    run = episode(tmp_path)
+    write(run / 'summary.json', dict(status='budget_censored'))
+    write(run / 'controller/result.json', dict(reason='control_step_budget', step_id=6))
+    write(run / 'sim/evaluation_outcome.json', dict(complete=False, native_success=None, native_score=None))
+    video(monkeypatch)
+    report = audit(run)
+    assert report['status'] == 'passed'
+    assert report['normal_termination_verified']
+    assert report['task_result']['native_score'] is None

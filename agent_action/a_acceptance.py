@@ -73,7 +73,7 @@ def audit(run: Path) -> dict:
     rejects = sum(c.get('no_execution') is True for c in calls)
     loop = (len(history) >= 2 and verified == len(history) and consistent and not issues
             and image_requests > 0 and 0 in observations and end in observations)
-    normal = (summary is not None and summary.get('status') == 'completed'
+    normal = (summary is not None and summary.get('status') in ('completed', 'budget_censored')
               and result.get('reason') in ('terminal', 'control_step_budget')
               and result.get('step_id') == end)
     video = dict(status='deferred_until_finalization')

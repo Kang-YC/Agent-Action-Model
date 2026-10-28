@@ -15,6 +15,13 @@ def validate_native_budget(plan: dict) -> None:
         raise ValueError("The reference protocol disables extra decision, token and wall-clock caps")
 
 
+def validate_development_budget(plan: dict) -> None:
+    if not 0 < plan['max_control_steps'] <= plan['native_control_horizon']:
+        raise ValueError('Development control budget must be positive and within the native horizon')
+    if any(plan[key] != 0 for key in ('max_decisions', 'max_total_tokens', 'wall_seconds')):
+        raise ValueError('Development validation uses only a control-step cap')
+
+
 def published_case_plan(panel: dict, case_id: str) -> dict:
     payload = {key: value for key, value in panel.items() if key != "panel_sha256"}
     if hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode()).hexdigest() != panel["panel_sha256"]:
@@ -59,7 +66,7 @@ def main() -> None:
     source = args.panel if args.case_id else args.config
     definition = json.loads(source.read_text())
     plan = published_case_plan(definition, args.case_id) if args.case_id else definition
-    validate_native_budget(plan)
+    (validate_native_budget if args.case_id else validate_development_budget)(plan)
     if args.case_id:
         actual = hashlib.sha256((args.robodojo / plan["layout"]["path"]).read_bytes()).hexdigest()
         if actual != plan["layout"]["sha256"]:

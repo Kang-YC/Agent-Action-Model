@@ -249,6 +249,8 @@ def main() -> None:
         failure_category = simulator_error(sim_log.read_text(errors="replace")) if sim_log.exists() else None
         if "result" in summary:
             summary["task_outcome"] = task_outcome(summary["result"], summary.get("native_outcome", {}), args.max_control_steps)
+            if summary['task_outcome'] == 'budget_censored':
+                summary['status'] = 'budget_censored'
         elif failure_category:
             summary.update(status="simulator_error", task_outcome="aborted_simulator_error",
                            failure_category=failure_category)

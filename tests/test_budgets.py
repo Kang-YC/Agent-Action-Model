@@ -7,7 +7,7 @@ import sys
 
 import pytest
 
-from agent_action.a_line import published_case_plan, validate_native_budget
+from agent_action.a_line import published_case_plan, validate_native_budget, validate_development_budget
 from agent_action.direct import episode_wait_timeout, nonnegative_int, simulator_error, startup_timeout, task_outcome, wait_for_controller
 
 
@@ -39,15 +39,23 @@ def test_zero_wall_cap_keeps_startup_deadline_and_allows_episode_completion():
         nonnegative_int("-1")
 
 
-def test_stack_bowls_uses_native_horizon_without_extra_caps():
+def test_stack_bowls_uses_400_step_development_cap_without_changing_native_horizon():
     plan = json.loads(Path("configs/a_stack_bowls_development.json").read_text())
-    assert plan["native_control_horizon"] == plan["max_control_steps"] == 800
-    validate_native_budget(plan)
-    for key in ("max_decisions", "max_total_tokens", "wall_seconds", "max_control_steps"):
+    assert plan['native_control_horizon'] == 800
+    assert plan['max_control_steps'] == 400
+    validate_development_budget(plan)
+    with pytest.raises(ValueError):
+        validate_native_budget(plan)
+    for limit in (0, 801):
+        invalid = copy.deepcopy(plan)
+        invalid['max_control_steps'] = limit
+        with pytest.raises(ValueError):
+            validate_development_budget(invalid)
+    for key in ('max_decisions', 'max_total_tokens', 'wall_seconds'):
         invalid = copy.deepcopy(plan)
         invalid[key] = 1
         with pytest.raises(ValueError):
-            validate_native_budget(invalid)
+            validate_development_budget(invalid)
 
 
 def test_all_published_cases_use_their_own_native_horizons_and_variants():
@@ -85,3 +93,9 @@ def test_simulator_faults_and_early_budgets_are_not_step_limit_failures():
     assert task_outcome(dict(step_id=147, reason="controller_error"), {}, 800) == "incomplete"
     assert task_outcome(dict(step_id=1, reason="control_step_budget"), dict(native_step_limit=800), 1) == "budget_censored"
     assert task_outcome(dict(step_id=800, success=False), dict(status="invalid_native_layout"), 800) == "invalid_native_layout"
+
+
+def test_400_step_development_stop_is_censored_not_native_failure():
+    result = dict(step_id=400, reason='control_step_budget', success=False)
+    native = dict(complete=False, native_control_steps=400, native_step_limit=800)
+    assert task_outcome(result, native, 400) == 'budget_censored'

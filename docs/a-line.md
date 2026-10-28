@@ -8,7 +8,7 @@
 bash scripts/run_a_stack_bowls.sh --output artifacts/a-stack-bowls-new
 ```
 
-新运行按参考协议，仅使用原生控制步数限制。`configs/a_stack_bowls_development.json` 中叠碗固定为 800 步，`max_decisions`、`max_total_tokens`、`wall_seconds` 均为 0，表示关闭额外上限。实际预算和命令另存到 `<run>.plan.json`；原生成功可提前结束，达到 horizon 时仍未成功，汇总标为 `failure_control_step_limit`，停止继续发控制动作；成功可提前结束。仿真故障另记为 `aborted_simulator_error`，不伪造原生分数。
+当前叠碗开发预算为 **400 控制步**，原生 horizon 仍为 800，`budget_protocol=development_control_step_cap`。`max_decisions`、`max_total_tokens`、`wall_seconds` 保持 0，关闭额外上限。此设置用于链路验收，不要求任务成功；到 400 步未成功记为 `budget_censored`，不填原生零分。实际预算和命令存入 `<run>.plan.json`。网页 50 案例仍各自使用冻结的原生 horizon，不因开发预算缩短而改变。
 
 `artifacts/a-stack-bowls-01/` 在预算变更前启动，仍使用自身快照中的旧开发保护预算（800 步、800 次有效决策、4000 万 token、4 小时）。修改配置不会热更新已有 Python 进程，既有运行以其 `.plan.json` 为准，不能追溯标成新协议。详见 [参考评测限制](reference-evaluation-limits.md)。
 
@@ -126,3 +126,14 @@ GPU 1 在仿真加载后尚余 3404 MiB，未见显存分配或场景损坏错�
 检查共 35 项通过，包含 50 例逐一身份匹配、启动参数传递，以及 outcome / manifest / plan 任一身份错配都不得计分。离线准备新报告为 `artifacts/a-line-followup-20261028/panel-readiness-with-identity.json`，仍为 50 待运行、0 已尝试。该验证未启动新的仿真，也尚未完成任一网页案例的真实原生判分验收。
 
 08:14 UTC 第四轮进度为 9/800 步，自动跟踪状态 running；新入口修改未热更新或干预当前运行。
+
+
+## 开发预算缩减为 400 步（2026-10-28 09:05 UTC）
+
+按用户要求，后续叠碗启动配置从 800 缩减为 400 控制步，保留 native_control_horizon=800。开发入口允许正数且不超过原生 horizon 的预算；网页案例入口仍严格要求等于冻结原生 horizon。Direct 将提前预算结束单列为 budget_censored；自动链路验收接受规范的 control_step_budget 终止，不要求 native_score 或任务成功。预算与验收相关检查共 37 项通过。
+
+网页冻结结果的上限范围是 500–1600 步：折衣 500、麻将 600、丢瓶 700，其余 1000–1600。叠碗不在网页十任务内。400 步适合本阶段工具闭环与退出流程验证，但不能保证任务完成，也不作为网页同协议成绩。
+
+第四轮启动时仍为 800，原始 plan 和运行参数保持不变，不伪称配置已热更新。另启动预算守护 PID 696625，检查 launcher/controller 的 PID、启动标识与完整命令，每 0.2 秒观察日志与步数。它在首次完成动作且步数至少 395 时，只对登记的 controller 发 SIGTERM，使用其既有 finish/close 清理路径，尽量在 400 以内完整动作边界收尾；这是外部守护，不是进程内精确硬上限。当前动作每次 3 步，预期在约 396 步收尾；以实际记录为准。
+
+守护状态、代码与日志位于 `artifacts/a-line-followup-20261028/run04-budget400/`，状态已确认为 watching，登记时进度45。触发后另写本轮 `budget_adjustment.json`，记录用户调整预算与实际停步；原始 termination 可能仍为 operator_interrupt、顶层为 controller_error，必须结合此证据解释为开发预算人工截断，不能归为模型原生失败或伪称完整原生终止。守护不停止 B 线、模型服务或其他实例。后续新运行在进程内逐控制步执行精确的 400 上限。
