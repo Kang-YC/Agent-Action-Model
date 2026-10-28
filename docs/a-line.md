@@ -104,3 +104,11 @@ A 线新运行仅在自己的 reference_source 快照中，为 RPC 每次读请�
 续跑使用新的 episode，不具备从旧仿真 117 步恢复的条件。07:52 UTC 两张卡核查：GPU 0 剩 7487 MiB，GPU 1 剩 9283 MiB；B 线固定占用 GPU 1 模型与仿真，单仿真约 7189 MiB。按用户要求选择剩余更多的 GPU 1 承载新的 A 线仿真，模型复用 GPU 0 的 19230 服务；不停止其他运行。新目录预定为 `artifacts/a-stack-bowls-p02080-04/`，独立仿真端口 19124、桥接端口 19231；启动记录与日志使用同名 `.launch.json` / `.launch.log`。GPU 共享情况作为本轮基础设施差异记录；未生成实际轨迹前不称为已跑通。
 
 第四轮已于 2026-10-28 07:52:40 UTC 启动，launcher PID 2661831。07:53 UTC 仿真 RPC 19124 已报告 ready；模型服务复用 GPU 0，仿真在 GPU 1，与 B 线共享资源。尚无动作轨迹时只标记初始化，不标记闭环通过。补丁与推理、原生工具、服务管理相关检查共 30 项通过。新运行 manifest 已登记 rpc_idle_patch 及实际源码哈希。
+
+### 第四轮首动作与自动跟踪（2026-10-28 08:02 UTC）
+
+已确认本轮首动作实际执行到 3/800 步，保存 `execution_000.npz` 与新观测；模型此后继续推理。RPC 快照实际哈希与 manifest 的 `rpc_idle_patch.patched_sha256` 及 reference_sources 一致，确认本轮已加载空闲等待修复；真实长空闲验证仍须依靠后续运行证据，不能用单次动作替代。
+
+GPU 1 在仿真加载后尚余 3404 MiB，未见显存分配或场景损坏错误。当前验收快照 `artifacts/a-line-followup-20261028/run04-monitor/initial-acceptance.json` 标记 incomplete：仅一次有效动作，尚不足以验证两轮连续反馈闭环；不表示实验失败。
+
+独立只读跟踪进程 PID 2942395 已启动，登记 launcher 的 PID、启动标识和完整命令以防 PID 复用。每 30 秒将进度和成本写入 `artifacts/a-line-followup-20261028/run04-monitor/state.json`。launcher 退出后自动运行验收，输出该目录下 `final-acceptance.json` 并记录最终状态；不发送仿真 RPC、不请求模型、不停止进程。脚本、启动登记和错误日志也保存在该目录。正常结束、任务结果与链路验收继续分别记录。
