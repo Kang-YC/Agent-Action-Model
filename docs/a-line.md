@@ -88,3 +88,9 @@ python3 -m agent_action.a_panel \
 第三轮已于 07:33 UTC 异常结束，不再运行。自动报告 `artifacts/a-line-followup-20261028/acceptance-live-01.json` 核实：25 次有效决策、117 个控制步，25 份执行数组完整且连续；26 份反馈观测有图片；135 个模型请求含图像，共 480 个 image parts；25 次输入拒绝未执行动作；18 次压缩事件。视频 118 帧可读取；总成本 3,140,324 token。工具闭环已验证，正常终止未通过，原生 success/score 保持 null。
 
 launcher 本次及时检测到 `Simulator exited 0 while controller was running` 并清理控制器，输出完整顶层 summary，证明上一轮进程监测修复生效。仿真最后动作在 07:18:00，07:33:03 关闭，间隔约 900 秒；本轮冻结 RPC 源码设有 `connection.settimeout(900)`，捕获 timeout 后退出，server finally 又将原因写成 `server_close`。这与 RPC 空闲超时高度一致，但现有日志未保存捕获异常类型，仍标为待直接复现确认的基础设施原因，不归为模型原生任务失败。下一步应隔离复现 idle 超时并修复推理等待期间的服务生命周期，而非重复长跑叠碗。
+
+### RPC 空闲退出隔离复现
+
+使用本轮冻结 `reference_source` 的真实 RPC serve/protocol，在本机回环 TCP 上连接后不发包，仅将测试连接的 900 秒 timeout 缩短为 0.1 秒；不启动仿真、不加载模型、不修改参考源码。测试成功复现 serve 正常返回并记录 `controller_disconnect`。结合 server finally 无条件 `_write_summary('server_close')`，确认空闲超时可被现有日志掩盖成 server_close。脚本与结果位于 `artifacts/a-line-followup-20261028/reproduce-idle.py` 和 `idle-reproduction.log`。该复现确认机制存在；第三轮具体关闭异常没有独立异常日志，仍不能声称已捕获其原始 timeout 异常。
+
+旧第二轮离线验收报告也已生成：`artifacts/a-line-followup-20261028/acceptance-previous-02.json`。顶层汇总缺失时仅标 incomplete，不据此推断其原主机当前仍在运行。
