@@ -99,6 +99,8 @@ def main() -> None:
     parser.add_argument("--task", default="classify_objects")
     parser.add_argument('--eval-manifest', type=Path)
     parser.add_argument('--case-file', type=Path)
+    parser.add_argument('--prompt-protocol', choices=('calibrated_development', 'published_reference'),
+                        default='calibrated_development')
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--eval-seed", type=int, default=0)
     parser.add_argument("--sim-port", type=int, default=19124)
@@ -109,6 +111,8 @@ def main() -> None:
     args = parser.parse_args()
     if bool(args.eval_manifest) != bool(args.case_file):
         parser.error('--eval-manifest and --case-file must be provided together')
+    if args.eval_manifest and args.prompt_protocol != 'published_reference':
+        parser.error('Frozen published cases require --prompt-protocol published_reference')
     evaluation_identity = None
     if args.eval_manifest:
         from hybrid_rollout.robodojo.evaluation import read_panel, verify_assets, case_identity
@@ -134,9 +138,13 @@ def main() -> None:
         shutil.copytree(args.reference / "hybrid_rollout" / name, snapshot / "hybrid_rollout" / name,
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     rpc_idle_patch = patch_rpc_idle_wait(snapshot / 'hybrid_rollout/robodojo/robodojo_server/rpc.py')
+    prompt_protocol = dict(protocol='calibrated_development', image_max_edge=640, added_static_calibration=True)
+    if args.prompt_protocol == 'published_reference':
+        from agent_action.a_protocol import align_published_policy
+        prompt_protocol = align_published_policy(snapshot, args.reference)
     harness_source = output / "harness_source"
     (harness_source / "agent_action").mkdir(parents=True)
-    for name in ("__init__.py", "direct.py", "direct_worker.py", "bridge.py", "serve.py"):
+    for name in ("__init__.py", "direct.py", "direct_worker.py", "bridge.py", "serve.py", "a_protocol.py"):
         shutil.copy2(root / "agent_action" / name, harness_source / "agent_action" / name)
     (harness_source / "scripts").mkdir()
     shutil.copy2(root / "scripts/start_native.sh", harness_source / "scripts/start_native.sh")
@@ -145,8 +153,10 @@ def main() -> None:
         shutil.copy2(args.eval_manifest, output / 'evaluation_panel.json')
         shutil.copy2(args.case_file, output / 'evaluation_case.json')
     manifest = checkpoint_manifest(config)
-    manifest.update(kind="development_direct_chain_validation", task=args.task, layout_id=args.seed, eval_seed=args.eval_seed,
+    manifest.update(kind="published_paired_case" if evaluation_identity else "development_direct_chain_validation",
+                    task=args.task, layout_id=args.seed, eval_seed=args.eval_seed,
                     rpc_idle_patch=rpc_idle_patch,
+                    prompt_protocol=prompt_protocol,
                     evaluation_identity=evaluation_identity,
                     max_decisions=args.max_decisions, max_control_steps=args.max_control_steps,
                     max_total_tokens=args.max_total_tokens,
@@ -184,7 +194,7 @@ def main() -> None:
         env.pop(key, None)
     children, logs = [], []
     started = time.monotonic()
-    summary = dict(status="infrastructure_error", formal_evaluation=False)
+    summary = dict(status="infrastructure_error", formal_evaluation=bool(evaluation_identity))
 
     def start(name, command):
         log = (output / "logs" / f"{name}.log").open("w")

@@ -8,7 +8,7 @@ const cameraName = value => ({cam_high:'全景相机',cam_left_wrist:'左腕相�
 const statuses = {running:'运行中',completed:'已完成',error:'异常结束',budget:'预算截断',incomplete:'未完整结束',unknown:'待核验'};
 const badge = status => `<span class="badge ${esc(status)}"><i></i>${esc(statuses[status] || status)}</span>`;
 const date = value => value ? new Date(value).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}) : '—';
-const state = {records:[], line:'all', detail:null, active:null, traceTab:'calls', archive:false, selectedMedia:null, busy:false, noteDirty:false, activeCallId:null, evidencePhase:'after', pinCall:false, clipCall:null};
+const state = {records:[], batches:[], line:'all', detail:null, active:null, traceTab:'calls', archive:false, selectedMedia:null, busy:false, noteDirty:false, activeCallId:null, evidencePhase:'after', pinCall:false, clipCall:null};
 let toastTimer;
 function toast(text) { $('toast').textContent=text; $('toast').hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').hidden=true,3000); }
 async function api(path, options={}) {
@@ -47,7 +47,7 @@ function renderOverview() {
   $('nav-count').textContent=live.length;
   const r=live[0]; $('spotlight').hidden=!r;
   if(r) {
-    $('live-name').textContent=`${taskName(r.task)} / ${r.line} 线开发运行`;
+    $('live-name').textContent=`${taskName(r.task)} / ${r.line} 线${r.scope==='published'?'配对评测':'开发运行'}`;
     $('live-subtitle').textContent=`${r.harness}  ·  ${r.model}`;
     $('live-progress').textContent=`${number(r.steps)} / ${number(r.budget)} 控制步`;
     $('live-percent').textContent=`${(100*r.steps/(r.budget||1)).toFixed(1)}%`;
@@ -56,6 +56,9 @@ function renderOverview() {
     if(r.images[0]) {if($('live-image').getAttribute('src')!==r.images[0].url)$('live-image').src=r.images[0].url; $('live-image').hidden=false;} else $('live-image').hidden=true;
     $('live-open').onclick=()=>openRun(r.id);
   }
+  const batchLabels={preflight:'协议与资产校验',waiting_development_run:'等待开发运行收尾',development_run_finished:'开发运行已结束',waiting_resources:'等待显存与端口',running:'正在评测',case_finished:'当前案例已结束',finished:'本批执行结束',halt_infrastructure:'基础设施异常，队列已停',halt_missing_summary:'结果不完整，队列已停',halt_launcher_error:'启动异常，队列已停',halted_error:'队列异常',halted_model_unavailable:'模型服务不可用',interrupted:'队列已中断',halted_development_infrastructure:'开发运行基础设施异常，队列已停',halted_development_controller:'开发运行控制器异常，队列已停'};
+  $('batch-banner').hidden=!state.batches.length;
+  $('batch-banner').innerHTML=state.batches.map(b=>`<div class="batch-row"><div class="batch-symbol">↗</div><div><strong>网页任务配对评测 <span>${b.planned_tasks??10} 任务 · ${b.planned_cases??50} 案例</span></strong><p>${esc(batchLabels[b.status]||b.status)}${b.status==='waiting_development_run'?` · 叠碗当前 ${b.after_run_step??'—'} 步`:''}${b.current_case?` · ${esc(b.current_case)}${b.current_step==null?'':` · STEP ${b.current_step}`}`:''}</p></div><div class="batch-counts"><strong>${b.attempted_cases??0}<small> / ${b.planned_cases??50} 已尝试</small></strong><span>${b.complete_cases??0} 有效原生结果 · ${b.review_cases??0} 待核验</span></div></div>`).join('');
   renderTable();
 }
 function mediaButtons(row) {
@@ -188,8 +191,8 @@ function renderDetail(row, initial=false) {
   $('detail-eyebrow').textContent=`${row.line} LINE / ${row.scope==='published'?'PUBLISHED EVALUATION':'DEVELOPMENT RUN'}`;
   $('detail-model').textContent=`${taskName(row.task)} · ${row.harness} · ${row.model}`;
   $('detail-status').innerHTML=badge(row.status);
-  $('detail-stats').innerHTML=`<div class="detail-stat"><span>已执行控制步 / 开发预算</span><strong>${number(row.steps)}<small>/ ${number(row.budget)}</small></strong></div><div class="detail-stat"><span>已确认有效执行</span><strong>${number(row.decisions)}<small>次</small></strong></div><div class="detail-stat"><span>累计模型 Tokens</span><strong>${tokens(row.tokens)}</strong></div><div class="detail-stat"><span>原生任务结果</span><strong style="font-size:17px">${row.valid_score?(row.native_success?'成功':'未成功'):'尚无有效判分'}</strong></div>`;
-  const fields=[['运行 ID',row.id],['任务',row.task],['Harness',row.harness],['模型',row.model],['实验类型',row.scope==='published'?'网页冻结案例':'开发链路验证'],['启动时间',date(row.started_at)],['最新产物',date(row.updated_at)],['原生步数上限',number(row.native_horizon)],['连续工具闭环',row.tool_loop_observed?'已观察到连续动作与执行回执':'待核验（其他 harness 以原始轨迹为准）'],['本轮有效预算',`${number(row.budget)}${row.budget_guard?' · 外部守护收尾':''}`],['启动快照预算',number(row.original_budget)],['原始状态',row.raw_status],['原生分数',row.native_score==null?'缺失，未补零':row.native_score],['案例 ID',row.case_id||'独立开发任务'],['产物目录',`artifacts/${row.relative_path}`]];
+  $('detail-stats').innerHTML=`<div class="detail-stat"><span>已执行控制步 / 本轮预算</span><strong>${number(row.steps)}<small>/ ${number(row.budget)}</small></strong></div><div class="detail-stat"><span>已确认有效执行</span><strong>${number(row.decisions)}<small>次</small></strong></div><div class="detail-stat"><span>累计模型 Tokens</span><strong>${tokens(row.tokens)}</strong></div><div class="detail-stat"><span>原生任务结果</span><strong style="font-size:17px">${row.valid_score?(row.native_success?'成功':'未成功'):'尚无有效判分'}</strong></div>`;
+  const fields=[['运行 ID',row.id],['任务',row.task],['Harness',row.harness],['模型',row.model],['实验类型',row.scope==='published'?'网页冻结案例':'开发链路验证'],['启动时间',date(row.started_at)],['最新产物',date(row.updated_at)],['提示协议',row.prompt_protocol||'未记录'],['预览长边',row.image_max_edge?row.image_max_edge+' px':'未记录'],['上下文上限',row.context_window?number(row.context_window)+' tokens':'未记录'],['原生步数上限',number(row.native_horizon)],['连续工具闭环',row.tool_loop_observed?'已观察到连续动作与执行回执':'待核验（其他 harness 以原始轨迹为准）'],['本轮有效预算',`${number(row.budget)}${row.budget_guard?' · 外部守护收尾':''}`],['启动快照预算',number(row.original_budget)],['原始状态',row.raw_status],['原生分数',row.native_score==null?'缺失，未补零':row.native_score],['案例 ID',row.case_id||'独立开发任务'],['产物目录',`artifacts/${row.relative_path}`]];
   if(row.error)fields.push(['异常信息',row.error]);
   $('provenance').innerHTML=fields.map(([k,v])=>`<div class="provenance-row"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
   if(initial||!state.noteDirty)$('notes').value=row.notes||'';
@@ -214,7 +217,7 @@ function showError(message) {$('error-banner').textContent=message;$('error-bann
 async function refresh(manual=false) {
   if(state.busy)return;state.busy=true;
   try {
-    const data=await api('/api/records');state.records=data.records;
+    const data=await api('/api/records');state.records=data.records;state.batches=data.batches||[];
     $('host-name').textContent=data.host;$('update-label').textContent=`最新读取 ${date(data.updated_at)} · ${data.read_errors.length?`${data.read_errors.length} 条记录读取异常`:'直接读取实验产物'}`;
     $('error-banner').hidden=true;$('sync-state').innerHTML='<i class="live-dot"></i>实时读取';
     renderOverview();

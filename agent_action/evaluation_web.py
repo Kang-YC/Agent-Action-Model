@@ -156,6 +156,10 @@ class Observatory:
                     harness=registry.get('harness') or ('Codex Direct' if line == 'A' else 'mini-swe-agent'),
                     model=model, status=state, raw_status=raw_status, steps=steps, budget=budget,
                     native_horizon=horizon, original_budget=plan.get('max_control_steps') or args.get('max_control_steps') or horizon,
+                    prompt_protocol=manifest.get('prompt_protocol', {}).get('protocol', '未单独记录'),
+                    image_max_edge=manifest.get('prompt_protocol', {}).get('image_max_edge') or
+                        read(c / 'codex_workspace/worker.json', {}).get('image_max_edge'),
+                    context_window=manifest.get('effective_codex_context_window'),
                     budget_guard=guard, decisions=len(history) or len(actions), tokens=tokens,
                     tool_loop_observed=loop_observed,
                     started_at=launch.get('started_at_utc') or dt.datetime.fromtimestamp(run.stat().st_mtime, dt.timezone.utc).isoformat(),
@@ -176,8 +180,17 @@ class Observatory:
             except (OSError, ValueError, TypeError, KeyError) as error:
                 errors.append(dict(id=key, error=str(error)))
         rows.sort(key=lambda r: (r['status'] == 'running', r['started_at']), reverse=True)
+        batches = []
+        for path in sorted(self.artifacts.glob('a-published-batch-*/state.json')):
+            batch = read(path, {})
+            if batch.get('schema') != 'agent_action.a_batch.v1':
+                continue
+            batches.append(dict(id=path.parent.name, **{k: batch.get(k) for k in (
+                'status', 'updated_at', 'planned_cases', 'planned_tasks', 'attempted_cases',
+                'complete_cases', 'review_cases', 'pending_cases', 'current_case',
+                'current_step', 'native_horizon', 'after_run_step', 'error')}))
         return dict(schema='agent_action.evaluation_observatory.v1', updated_at=stamp(), mode='live',
-                    refresh_seconds=15, host=socket.gethostname(), records=rows, read_errors=errors)
+                    refresh_seconds=15, host=socket.gethostname(), records=rows, batches=batches, read_errors=errors)
 
     def detail(self, key):
         run = self.run(key)
