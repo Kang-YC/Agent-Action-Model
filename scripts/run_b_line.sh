@@ -17,7 +17,12 @@ export ROBODOJO_ROOT="${ROBODOJO_ROOT:-${ROBODOJO_SHARED_ROOT:-/dataset_rc_b1/ka
 mkdir "${output}/sim"
 bash scripts/start_native.sh --task "${task}" --port "${port}" --output "${output}/sim" > "${output}/sim.log" 2>&1 &
 sim_pid=$!
+controller_pid=""
 cleanup() {
+  if [[ -n "${controller_pid}" ]] && kill -0 "${controller_pid}" 2>/dev/null; then
+    kill -TERM "${controller_pid}" 2>/dev/null || true
+    wait "${controller_pid}" || true
+  fi
   if kill -0 "${sim_pid}" 2>/dev/null; then
     kill -TERM "${sim_pid}" 2>/dev/null || true
   fi
@@ -43,4 +48,16 @@ if [[ "${ready}" != 1 ]]; then
   echo "Native readiness timeout; inspect ${output}/sim.log" >&2
   exit 1
 fi
-"${b_python}" -m agent_action.b_run --output "${output}/controller" --task "${task}" --port "${port}" --sim-output "${output}/sim" "$@" > "${output}/controller.log" 2>&1
+"${b_python}" -m agent_action.b_run --output "${output}/controller" --task "${task}" --port "${port}" --sim-output "${output}/sim" "$@" > "${output}/controller.log" 2>&1 &
+controller_pid=$!
+while kill -0 "${controller_pid}" 2>/dev/null; do
+  if ! kill -0 "${sim_pid}" 2>/dev/null; then
+    echo '{"status":"infrastructure_error","reason":"native_backend_exited"}' > "${output}/launcher_error.json"
+    echo "Native backend exited during control; stopping owned controller" >&2
+    kill -TERM "${controller_pid}" 2>/dev/null || true
+    wait "${controller_pid}" || true
+    exit 1
+  fi
+  sleep 2
+done
+wait "${controller_pid}"

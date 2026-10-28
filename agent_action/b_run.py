@@ -8,6 +8,7 @@ import hashlib
 import shutil
 import time
 import os
+import signal
 
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.exceptions import LimitsExceeded
@@ -73,6 +74,10 @@ def main():
                    "/dataset_rc_b1/kangyc1@xiaopeng.com/robodojo_shared/RoboDojo")))
     p.add_argument("--reference", type=Path, default=Path(os.environ.get("GPT_AS_POLICY_ROOT", "../GPT-as-Policy")))
     a = p.parse_args()
+    def launcher_interrupted(signum, frame):
+        raise RuntimeError("Controller interrupted by launcher SIGTERM; no request/action retry")
+
+    signal.signal(signal.SIGTERM, launcher_interrupted)
     if (
         a.max_control_steps <= 0
         or min(a.max_turns, a.wall_seconds, a.max_total_tokens, a.history_turns) < 0
