@@ -8,6 +8,7 @@
 | [A 线](a-line.md) | 叠碗开发运行、网页十任务配对清单、后续验收 |
 | [B 线](b-line.md) | mini-swe-agent、持久 Python、历史窗口与叠碗开发运行 |
 | [A/B 叠碗对照协议](ab-stack-bowls-protocol.md) | 固定条件、已知差异、判分口径与自动报告入口 |
+| [B 线评测候选准备](b-panel-readiness.md) | 开发案例排除、布局校验、候选参数与正式启动缺口 |
 | [叠碗首次运行复盘](experiments/a-stack-bowls-01.md) | 147 步显存异常、证据与失败分类 |
 | [参考评测限制](reference-evaluation-limits.md) | 五案例规模、原生步数、仿真时间与墙钟预算的区别 |
 | [共享机器人契约](robot-contract.md) | 双臂目标、逐步 ACK、图像反馈、固定命令检查 |

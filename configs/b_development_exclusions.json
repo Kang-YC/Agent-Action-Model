@@ -1,0 +1,19 @@
+{
+  "schema": "agent_action.b_development_exclusions.v1",
+  "entries": [
+    {
+      "runtime_task": "classify_objects",
+      "eval_seed": 0,
+      "layout_id": 0,
+      "reason": "Used for B-line smoke and history-window development",
+      "evidence": "docs/b-line.md"
+    },
+    {
+      "runtime_task": "stack_bowls",
+      "eval_seed": 0,
+      "layout_id": 0,
+      "reason": "Current A/B paired development task; outside the published ten-task panel",
+      "evidence": "docs/ab-stack-bowls-protocol.md"
+    }
+  ]
+}
