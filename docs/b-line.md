@@ -175,3 +175,13 @@ CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
 校验阈值和动作语义不变。拒绝反馈新增 arm、distance／angle／norm、limit、当前／目标位置（平移错误），以及 no_execution=true，便于模型自己修正。不自动裁剪或归一化动作。新增左右臂对角线位移的检查证明：每轴 4cm、合成距离约 5.66cm 时，即使 steps=5，仍在任何动作 RPC 前拒绝、控制步保持零。全仓 85 项检查通过。
 
 本次仅改后续加载的说明和错误反馈，B02 已运行的进程仍使用启动快照；没有热更新、停止或重跑该 episode，不将新版说明追溯标记为模型已经收到。
+
+## 按用户要求停 B02、启动 B03（2026-10-28 11:07 UTC）
+
+用户授权停止旧运行并重新启动，以实际加载新版 move_to 说明和拒绝反馈。B02 controller 已中断退出，原始产物保留；最后确认 5 个控制步、61 次完成请求。检查发现其仿真在 10:39 已 server_close，而 controller 仍处理本地无效参数，没有及时发现后端退出。停止记录为 `artifacts/b-stack-bowls-p02080-02.restart-request.json`；这是中断／基础设施异常尝试，不是完成的 800 步任务结果。
+
+补充 launcher 看护：仿真运行期间每两秒检查所拥有的 simulator 进程；若退出，写 launcher_error.json 并 SIGTERM 停止本次 controller。B CLI 注册 SIGTERM 处理以退出模型循环、不重试请求，并清理自己的 Python 会话。它不会建立第二个 RPC health socket，不会停止其他任务／模型。集成检查验证“后端先退出则控制器被终止”和“控制器正常先退出不误报后端异常”，全仓 87 项检查通过。
+
+新运行 `artifacts/b-stack-bowls-p02080-03`，仍使用原生 800 步、layout／eval seed 0、H0 最新三图和八轮文本＋持久 Python，不调整模型配置或增加历史图像。本轮明确加载新版边界说明、带手臂／距离信息的拒绝错误、静态标定和 14 维状态。GPU 0 复用 19230 模型，GPU 1／19134 运行仿真；A 线和其他服务保持原样。独立监督／验收状态为同名前缀 `.state.json`、`.audit.json`，报告为 `artifacts/ab-stack-bowls-p02080-03/comparison.md`；A 参照仍为已保存 A03，不擅自切换到当前其他 A 尝试。当前正在初始观测／首请求验收，不标为任务成功。
+
+B03 首请求已核验，记录在 `artifacts/b-stack-bowls-p02080-03.startup-validation.json`：欧氏位移、每臂独立检查、steps 不放大边界、静态标定均实际存在于模型 system；packet 为 14 维本体状态，inline 图片为 3 张。说明已在新进程实际生效，而不只是工作区文件修改。
