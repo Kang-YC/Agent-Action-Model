@@ -151,3 +151,9 @@ CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
 ```
 
 用户随后明确要求按“400 步内未成功即失败”记开发结果。已核对前 400 个连续有效控制回执，每步 success 均为 false，第 400 步同样未 terminated／truncated。因此该次开发结果记为 **failure_400_step_limit／development_success=false**，证据为 `artifacts/b-stack-bowls-p02080-01.development-assessment.json`。该标准是在实际运行超过 400 步后确定，机器记录保留 criterion_adopted_after_cutoff=true、实际执行 620 步以及原生 score 缺失。对照报告单列开发结果为失败，同时保留用户截断终止原因及原始 native 字段。
+
+## 恢复原生预算（用户最新要求）
+
+用户随后决定恢复使用原生上限。`configs/b_stack_bowls_development.json` 后续控制上限恢复为 800，与 native_control_horizon 相同；模型轮数、token 和 episode 墙钟额外上限仍关闭。此变更仅用于后续新运行，不自动重启任务，不改写上一轮实际 620 步、按当时用户 400 步标准认定失败的记录。最近的 400 步启动示例已成为历史配置，新叠碗应传 `--max-control-steps 800`。
+
+历史策略暂不变：B 仍是初始 system／task＋最近八组完整交互＋最新带图观测交互的窗口，没有语义摘要；保留持久 Python 变量，旧轨迹在磁盘但不自动回送模型。参考 A 是持续对话、Codex 上下文压缩和可读写笔记／历史看图，不能把两者都叫“有历史”就认为等价。当前先解释差异，未擅自改变 B 的历史算法。
