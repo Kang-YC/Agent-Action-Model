@@ -8,7 +8,24 @@ import sys
 import pytest
 
 from agent_action.a_line import published_case_plan, validate_native_budget
-from agent_action.direct import episode_wait_timeout, nonnegative_int, simulator_error, startup_timeout, task_outcome
+from agent_action.direct import episode_wait_timeout, nonnegative_int, simulator_error, startup_timeout, task_outcome, wait_for_controller
+
+
+def test_controller_wait_detects_service_exit_without_wall_cap():
+    from unittest.mock import Mock
+
+    worker = Mock(args=["controller"])
+    worker.poll.return_value = None
+    service = Mock()
+    service.poll.return_value = 0
+    with pytest.raises(RuntimeError, match="Simulator exited 0"):
+        wait_for_controller(worker, {"Simulator": service}, None)
+    worker.poll.return_value = 7
+    assert wait_for_controller(worker, {"Simulator": service}, None) == 7
+    worker.poll.return_value = None
+    service.poll.return_value = None
+    with pytest.raises(subprocess.TimeoutExpired):
+        wait_for_controller(worker, {"Simulator": service}, 0)
 
 
 def test_zero_wall_cap_keeps_startup_deadline_and_allows_episode_completion():

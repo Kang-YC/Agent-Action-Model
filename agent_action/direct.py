@@ -35,6 +35,22 @@ def episode_wait_timeout(wall_seconds: int, elapsed: float) -> float | None:
     return max(1, wall_seconds - elapsed) if wall_seconds else None
 
 
+def wait_for_controller(worker, services: dict, timeout: float | None) -> int:
+    """Stop inference when a required service exits, even without a wall cap."""
+    deadline = time.monotonic() + timeout if timeout is not None else None
+    while True:
+        code = worker.poll()
+        if code is not None:
+            return code
+        for name, service in services.items():
+            code = service.poll()
+            if code is not None:
+                raise RuntimeError(f"{name} exited {code} while controller was running; inspect logs")
+        if deadline is not None and time.monotonic() >= deadline:
+            raise subprocess.TimeoutExpired(worker.args, timeout)
+        time.sleep(1)
+
+
 def task_outcome(result: dict, native: dict, step_limit: int) -> str:
     if native.get("status") == "invalid_native_layout":
         return "invalid_native_layout"
@@ -167,7 +183,8 @@ def main() -> None:
             "--codex", str(wrapper), "--output", str(output / "controller"), "--task", args.task,
             "--seed", str(args.seed), "--sim-port", str(args.sim_port), "--max-decisions", str(args.max_decisions),
             "--max-control-steps", str(args.max_control_steps)])
-        code = worker.wait(timeout=episode_wait_timeout(args.wall_seconds, time.monotonic()-started))
+        code = wait_for_controller(worker, {"Simulator": sim, "Model bridge": bridge},
+                                   episode_wait_timeout(args.wall_seconds, time.monotonic()-started))
         if code:
             summary["status"] = "controller_error"
             raise RuntimeError(f"Reference controller exited {code}; inspect logs")
