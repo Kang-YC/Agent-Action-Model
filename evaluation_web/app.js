@@ -8,7 +8,7 @@ const cameraName = value => ({cam_high:'全景相机',cam_left_wrist:'左腕相�
 const statuses = {running:'运行中',completed:'已完成',error:'异常结束',budget:'预算截断',incomplete:'未完整结束',unknown:'待核验'};
 const badge = status => `<span class="badge ${esc(status)}"><i></i>${esc(statuses[status] || status)}</span>`;
 const date = value => value ? new Date(value).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}) : '—';
-const state = {records:[], line:'all', detail:null, active:null, traceTab:'calls', archive:false, selectedMedia:null, busy:false, noteDirty:false};
+const state = {records:[], line:'all', detail:null, active:null, traceTab:'calls', archive:false, selectedMedia:null, busy:false, noteDirty:false, activeCallId:null, evidencePhase:'after', pinCall:false, clipCall:null};
 let toastTimer;
 function toast(text) { $('toast').textContent=text; $('toast').hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').hidden=true,3000); }
 async function api(path, options={}) {
@@ -71,17 +71,96 @@ function mediaButtons(row) {
     else $('viewer').innerHTML=`<img src="${esc(selected.url)}" alt="${esc(selected.label)}最新观测" data-media-type="image">`;
   }
   $('viewer-state').textContent=selected.type==='video'?'实验录像 · 支持拖动回放':'最新观测 · 随运行刷新';
-  document.querySelectorAll('[data-media]').forEach(b=>b.onclick=()=>{state.selectedMedia=b.dataset.media;mediaButtons(row);});
+  document.querySelectorAll('[data-media]').forEach(b=>b.onclick=()=>{state.selectedMedia=b.dataset.media;state.clipCall=null;mediaButtons(row);});
+  const video=$('viewer').querySelector('video');if(video)bindVideo(video);
   $('video-links').innerHTML=videos.length?videos.map(v=>v.available?`<div>↗ <a href="${esc(v.url)}" target="_blank" rel="noopener">打开${esc(v.name)}</a> <small>${(v.bytes/1048576).toFixed(1)} MB</small></div>`:`<div>◌ ${esc(v.name)}仍在写入 <small>封装完成后自动开放播放</small></div>`).join(''):'<small>当前实验尚未生成视频文件。</small>';
 }
-function seek(step) {
+function targetSummary(call) {
+  const targets=call.targets||{};
+  if(!targets.left&&!targets.right)return '<div class="target-unavailable">未记录结构化目标，完整参数见下方。</div>';
+  const vector=value=>Array.isArray(value)?value.map(v=>typeof v==='number'?v.toFixed(4):String(v)).join(', '):'未记录';
+  return `<div class="target-summary"><div class="target-heading">${call.status==='rejected'?'请求目标 · 未执行':'目标位置 XYZ · m'}<span>环境坐标 · 姿态 w,x,y,z</span></div>${['left','right'].map(arm=>{
+    const t=targets[arm]||{};
+    return `<div class="arm-target"><span class="arm-name">${arm==='left'?'左臂':'右臂'}</span><div><code>[${esc(vector(t.position))}]</code><small>q [${esc(vector(t.quaternion_wxyz))}]</small></div><span class="gripper ${t.gripper_closed===true?'closed':''}">${t.gripper_closed===true?'夹爪闭合':t.gripper_closed===false?'夹爪张开':'夹爪未记录'}</span></div>`;
+  }).join('')}<div class="target-note">目标参数与夹爪指令不代表实际到位或抓取成功。</div></div>`;
+}
+function highlightCall(id, follow=false) {
+  document.querySelectorAll('[data-call-id]').forEach(el=>el.classList.toggle('selected-call',el.dataset.callId===id));
+  if(follow&&state.traceTab==='calls'){
+    const list=$('trace-list'),el=list.querySelector(`[data-call-id="${CSS.escape(id)}"]`);
+    if(el&&(el.offsetTop<list.scrollTop||el.offsetTop+Math.min(el.offsetHeight,180)>list.scrollTop+list.clientHeight))
+      list.scrollTo({top:Math.max(0,el.offsetTop-18),behavior:'smooth'});
+  }
+}
+function renderEvidence() {
+  const call=state.detail?.calls.find(c=>c.id===state.activeCallId);
+  if(!call){delete $('evidence-images').dataset.signature;$('evidence-call-label').textContent='选择右侧工具调用';$('evidence-images').innerHTML='<p class="empty-state">点击右侧调用，查看该次动作对应的相机图像。</p>';$('evidence-caption').textContent='';$('evidence-step').textContent='';return;}
+  if(call.status!=='executed')state.evidencePhase='before';
+  const phase=state.evidencePhase, observation=call.observations?.[phase];
+  $('evidence-call-label').textContent=`${call.tool} · STEP ${call.step_start} → ${call.step_end??'待核验'}`;
+  document.querySelectorAll('[data-phase]').forEach(b=>{b.classList.toggle('selected',b.dataset.phase===phase);b.disabled=b.dataset.phase==='after'&&call.status!=='executed';});
+  $('evidence-step').textContent=observation?`STEP ${observation.step_id}`:'该步图像未保存';
+  const images=observation?.images||[];
+  const signature=call.id+'|'+phase+'|'+images.map(i=>i.url).join('|');
+  if($('evidence-images').dataset.signature!==signature){
+    $('evidence-images').dataset.signature=signature;
+    $('evidence-images').innerHTML=images.length?images.map(i=>`<a class="evidence-image" href="${esc(i.url)}" target="_blank" rel="noopener" title="打开原始图像"><img src="${esc(i.url)}" alt="${esc(cameraName(i.camera))} STEP ${observation.step_id}" loading="lazy"><span>${esc(cameraName(i.camera))}<b>↗</b></span></a>`).join(''):'<p class="empty-state">该控制步没有保存对应图像，未用其他时刻的画面替代。</p>';
+  }
+  $('evidence-caption').textContent=call.status==='rejected'?'本次输入被拒绝，未执行物理动作、未产生动作后图像；此处显示调用时已有观测。':call.status==='uncertain'?'执行结果待核验，只展示已保存的动作前观测。':`${phase==='before'?'动作前':'动作后'}三相机观测。点击缩略图打开原图；图像按执行步对应，不按墙钟推理时间对应。`;
+}
+function selectCall(id,{play=false,seek=true}={}) {
+  const call=state.detail?.calls.find(c=>c.id===id);if(!call)return;
+  state.activeCallId=id;state.pinCall=true;state.evidencePhase=call.status==='executed'?'after':'before';
+  highlightCall(id);renderEvidence();
   const videos=state.detail.videos.filter(v=>v.available);
-  if(!videos.length)return toast('录像仍在写入；结束后可按控制步跳转。');
-  state.selectedMedia='video-0';mediaButtons(state.detail);
-  const video=$('viewer').querySelector('video');
-  const play=()=>{video.currentTime=Math.max(0,Number(step)*state.detail.control_dt);video.play().catch(()=>{});};
-  if(video.readyState>=1)play();else video.addEventListener('loadedmetadata',play,{once:true});
-  video.scrollIntoView({behavior:'smooth',block:'center'});
+  const videoIndex=videos.findIndex(v=>v.sync_available);
+  if(seek&&videoIndex>=0){
+    state.selectedMedia=`video-${videoIndex}`;mediaButtons(state.detail);
+    const video=$('viewer').querySelector('video');video.pause();
+    const go=()=>{
+      const time=EvalTraceSync.timeForCall(call,state.detail.control_dt);
+      if(time==null)return;
+      video.currentTime=Math.max(0,Math.min(time,Math.max(0,video.duration-0.001)));
+      $('playback-position').textContent=call.status==='executed'?`选中 ${call.tool} · STEP ${call.step_start} → ${call.step_end}`:'输入拒绝 / 执行待核验 · 无可归属的动作片段';
+      if(play&&call.status==='executed'){state.clipCall=call;state.pinCall=false;video.play().catch(()=>{});}
+    };
+    if(video.readyState>=1)go();else video.addEventListener('loadedmetadata',go,{once:true});
+  } else {
+    const video=$('viewer').querySelector('video');if(video)video.pause();
+    $('playback-position').textContent='录像尚不可联动 · 已显示本次调用对应图像';
+  }
+}
+function syncPlayback(video,seconds=video.currentTime) {
+  const available=state.detail?.videos.filter(v=>v.available)||[];
+  const index=Number((state.selectedMedia||'').replace('video-',''));
+  if(!available[index]?.sync_available){$('playback-position').textContent='此录像未声明控制步映射，未自动关联调用';return;}
+  const dt=state.detail.control_dt;
+  if(state.clipCall&&video.currentTime>=(state.clipCall.step_end+1)*dt-0.001){
+    const call=state.clipCall;state.clipCall=null;video.pause();state.pinCall=true;video.currentTime=call.step_end*dt;
+    $('playback-position').textContent=`动作回放结束 · STEP ${call.step_end}`;return;
+  }
+  if(video.paused&&state.pinCall)return;
+  const frame=Math.floor(seconds/dt+1e-6);
+  const call=EvalTraceSync.callAtTime(state.detail.calls,seconds,dt);
+  $('playback-position').textContent=call?`FRAME ${frame} · ${call.tool} · STEP ${call.step_start} → ${call.step_end}`:frame===0?'FRAME 0 · 初始观测，尚无执行动作':`FRAME ${frame} · 没有可确认的调用归属`;
+  if(!$('sync-follow').checked)return;
+  if(call&&state.activeCallId!==call.id){state.activeCallId=call.id;state.evidencePhase='after';highlightCall(call.id,true);renderEvidence();}
+  else if(!call){state.activeCallId=null;highlightCall(null);renderEvidence();}
+}
+function bindVideo(video) {
+  if(video.dataset.syncBound)return;video.dataset.syncBound='true';
+  let generation=0;
+  const start=()=>{
+    const current=++generation;
+    const tick=(_time,metadata)=>{if(current!==generation||!video.isConnected||video.paused)return;syncPlayback(video,metadata?.mediaTime??video.currentTime);if(video.paused)return;if(video.requestVideoFrameCallback)video.requestVideoFrameCallback(tick);else requestAnimationFrame(tick);};
+    tick();
+  };
+  video.addEventListener('play',()=>{state.pinCall=false;start();});
+  video.addEventListener('pause',()=>{generation++;});
+  video.addEventListener('timeupdate',()=>syncPlayback(video));
+  video.addEventListener('seeked',()=>syncPlayback(video));
+  video.addEventListener('pointerdown',()=>{state.clipCall=null;state.pinCall=false;});
+  video.addEventListener('keydown',()=>{state.clipCall=null;state.pinCall=false;});
 }
 function renderTrace(row) {
   const list=$('trace-list'), scroll=list.scrollTop;
@@ -91,8 +170,13 @@ function renderTrace(row) {
   $('call-filter').hidden=state.traceTab!=='calls';
   if(state.traceTab==='calls') {
     const calls=row.calls.filter(c=>filter==='all'||c.status===filter).slice().reverse();
-    list.innerHTML=calls.length?calls.map(c=>`<article class="call ${esc(c.status)}" data-call-id="${esc(c.id)}"><div class="call-header"><code>${esc(c.tool)}</code><span>STEP ${c.step_start??'—'} → ${c.step_end??'—'} <a class="call-permalink" href="#run=${encodeURIComponent(row.id)}&amp;call=${encodeURIComponent(c.id)}" title="此调用的独立链接">↗</a></span></div><p>${esc(c.reason||'机器人控制调用')}</p><div class="call-meta"><span>${c.status==='executed'?'已执行':c.status==='rejected'?'输入拒绝 · 未执行':'执行待核验'}</span><span>${c.executed_steps==null?'—':number(c.executed_steps)} 物理步</span><button class="seek-button" data-seek="${c.step_end||0}">回放 ↗</button></div><details data-id="${esc(c.id)}" ${open.has(c.id)?'open':''}><summary>参数与调用详情</summary><pre>${esc(JSON.stringify(c.arguments,null,2))}</pre></details></article>`).join(''):'<div class="empty-state">暂无此类工具调用。</div>';
-    list.querySelectorAll('[data-seek]').forEach(b=>b.onclick=()=>seek(b.dataset.seek));
+    list.innerHTML=calls.length?calls.map(c=>`<article tabindex="0" aria-label="查看 ${esc(c.tool)} STEP ${c.step_start} 的录像与图像" class="call ${esc(c.status)} ${c.id===state.activeCallId?'selected-call':''}" data-call-id="${esc(c.id)}"><div class="call-header"><code>${esc(c.tool)}</code><span>STEP ${c.step_start??'—'} → ${c.step_end??'—'} <a class="call-permalink" href="#run=${encodeURIComponent(row.id)}&amp;call=${encodeURIComponent(c.id)}" title="此调用的独立链接">↗</a></span></div><p>${esc(c.reason||'机器人控制调用')}</p>${targetSummary(c)}<div class="call-meta"><span>${c.status==='executed'?'已执行':c.status==='rejected'?'输入拒绝 · 未执行':'执行待核验'}</span><span>${c.executed_steps==null?'—':number(c.executed_steps)} 物理步</span><button class="seek-button" data-select-call="${esc(c.id)}">对应图像 ↗</button>${c.status==='executed'?`<button class="seek-button" data-play-call="${esc(c.id)}">回放此动作 ▷</button>`:''}</div><details data-id="${esc(c.id)}" ${open.has(c.id)?'open':''}><summary>参数与调用详情</summary><pre>${esc(JSON.stringify(c.arguments,null,2))}</pre></details></article>`).join(''):'<div class="empty-state">暂无此类工具调用。</div>';
+    list.querySelectorAll('[data-select-call]').forEach(b=>b.onclick=()=>selectCall(b.dataset.selectCall));
+    list.querySelectorAll('[data-play-call]').forEach(b=>b.onclick=()=>selectCall(b.dataset.playCall,{play:true}));
+    list.querySelectorAll('[data-call-id]').forEach(el=>{
+      el.onclick=event=>{if(!event.target.closest('button,a,details'))selectCall(el.dataset.callId);};
+      el.onkeydown=event=>{if(event.target===el&&(event.key==='Enter'||event.key===' ')){event.preventDefault();selectCall(el.dataset.callId);}};
+    });
   } else {
     const events=row.events.slice().reverse();
     list.innerHTML=events.length?'<div class="subtle" style="padding:15px 0 0">此处包含模型自述，不代表物理执行或原生成功。</div>'+events.map(e=>`<article class="event"><div class="event-head"><b>${esc(({agentMessage:'Agent 消息',commandExecution:'命令执行',imageView:'图像查看',assistant:'Agent 消息',tool:'工具反馈'})[e.type]||e.type)}</b><span>${e.step==null?'':`STEP ${e.step}`}${e.exit_code==null?'':` · EXIT ${e.exit_code}`}</span></div>${e.type==='commandExecution'?`<pre>${esc(e.text)}</pre>`:`<p>${esc(e.text||'图像查看完成')}</p>`}</article>`).join(''):'<div class="empty-state">当前运行未保存可展示的 Agent 活动。</div>';
@@ -109,18 +193,20 @@ function renderDetail(row, initial=false) {
   if(row.error)fields.push(['异常信息',row.error]);
   $('provenance').innerHTML=fields.map(([k,v])=>`<div class="provenance-row"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
   if(initial||!state.noteDirty)$('notes').value=row.notes||'';
-  mediaButtons(row);renderTrace(row);
+  mediaButtons(row);renderTrace(row);renderEvidence();
 }
 async function openRun(id,callId=null) {
-  state.active=id;state.selectedMedia=null;state.noteDirty=false;
+  $('viewer').querySelector('video')?.pause();state.detail=null;
+  state.active=id;state.selectedMedia=null;state.noteDirty=false;state.activeCallId=null;state.clipCall=null;state.pinCall=false;
   $('overview').hidden=true;$('detail').hidden=false;$('breadcrumb').textContent='运行详情';
   $('detail-name').textContent='读取运行记录…';
   history.replaceState(null,'',`#run=${encodeURIComponent(id)}${callId?'&call='+encodeURIComponent(callId):''}`);
   window.scrollTo({top:0});
-  try {const row=await api(`/api/run/${encodeURIComponent(id)}`);if(state.active!==id)return;state.detail=row;if(callId){state.traceTab='calls';$('call-filter').value='all';document.querySelectorAll('#trace-tabs button').forEach(b=>b.classList.toggle('selected',b.dataset.tab==='calls'));}renderDetail(row,true);if(callId){const call=document.querySelector(`[data-call-id="${CSS.escape(callId)}"]`);if(call){call.querySelector('details').open=true;call.scrollIntoView({behavior:'smooth',block:'center'});}}}
+  try {const row=await api(`/api/run/${encodeURIComponent(id)}`);if(state.active!==id)return;state.detail=row;if(callId){state.traceTab='calls';$('call-filter').value='all';document.querySelectorAll('#trace-tabs button').forEach(b=>b.classList.toggle('selected',b.dataset.tab==='calls'));}renderDetail(row,true);if(callId){selectCall(callId);const call=document.querySelector(`[data-call-id="${CSS.escape(callId)}"]`);if(call){call.querySelector('details').open=true;call.scrollIntoView({behavior:'smooth',block:'center'});}}}
   catch(error){showError(`读取详情失败：${error.message}`);}
 }
 function overview() {
+  $('viewer').querySelector('video')?.pause();
   state.active=null;state.detail=null;state.noteDirty=false;$('overview').hidden=false;$('detail').hidden=true;$('breadcrumb').textContent='评测总览';
   history.replaceState(null,'',location.pathname);renderTable();
 }
@@ -149,6 +235,7 @@ $('export-index').onclick=()=>download({schema:'agent_action.evaluation_observat
 $('export-run').onclick=()=>state.detail&&download(state.detail,`${state.detail.id.replaceAll('/','-')}.json`);
 $('notes').oninput=()=>{state.noteDirty=true;$('notes-status').textContent='有未保存的修改';};
 $('save-notes').onclick=async()=>{if(!state.active)return;try{await api(`/api/notes/${encodeURIComponent(state.active)}`,{method:'POST',body:JSON.stringify({notes:$('notes').value})});state.noteDirty=false;$('notes-status').textContent='已保存到实验目录';toast('实验备注已保存');}catch(e){toast(`保存失败：${e.message}`);}};
+document.querySelectorAll('[data-phase]').forEach(b=>b.onclick=()=>{state.evidencePhase=b.dataset.phase;renderEvidence();});
 $('call-filter').onchange=()=>state.detail&&renderTrace(state.detail);
 document.querySelectorAll('#trace-tabs button').forEach(b=>b.onclick=()=>{state.traceTab=b.dataset.tab;document.querySelectorAll('#trace-tabs button').forEach(x=>x.classList.toggle('selected',x===b));if(state.detail)renderTrace(state.detail);});
 $('register-button').onclick=()=>$('register-dialog').showModal();$('close-register').onclick=()=>$('register-dialog').close();

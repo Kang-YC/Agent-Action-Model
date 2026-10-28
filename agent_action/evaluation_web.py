@@ -197,7 +197,8 @@ class Observatory:
                 request = read(path.with_name(path.name.replace('_result', '_request')), {})
                 calls.append(dict(id=path.stem, tool='robodojo_act', status='rejected',
                     step_start=result.get('step_id'), step_end=result.get('step_id'),
-                    requested_steps=None, executed_steps=0, reason=result.get('error', ''), arguments=request))
+                    requested_steps=request.get('arguments', {}).get('response', {}).get('steps'),
+                    executed_steps=0, reason=result.get('error', ''), arguments=request))
         for path in sorted((c / 'robot').glob('action_*.json')):
             action = read(path, {})
             calls.append(dict(id=path.stem, tool='move_to', status='executed' if action.get('status') == 'acknowledged' else 'uncertain',
@@ -206,6 +207,25 @@ class Observatory:
                 executed_steps=(action.get('end_step', 0) - action.get('start_step', 0)) if action.get('end_step') is not None else None,
                 reason='双臂 EEF 控制', arguments=dict(targets=action.get('targets'), requested_steps=action.get('requested_steps'))))
         calls.sort(key=lambda x: (x.get('step_start') or 0, x['id']))
+        observations = {}
+        for path in self.observations(run):
+            observation = read(path, {})
+            step = observation.get('step_id')
+            if step is None:
+                continue
+            images = []
+            for image in observation.get('images', []):
+                source = image.get('path')
+                url = self.media_url(key, source, run)
+                if url and Path(source).is_file():
+                    images.append(dict(camera=image.get('camera', 'camera'), url=url))
+            observations[step] = dict(step_id=step, images=images, current_eef=observation.get('current_eef', {}))
+        for call in calls:
+            arguments = call['arguments']
+            response = arguments.get('arguments', {}).get('response', arguments)
+            call['targets'] = response.get('target') or response.get('targets') or {}
+            call['observations'] = dict(before=observations.get(call['step_start']),
+                after=observations.get(call['step_end']) if call['status'] == 'executed' else None)
         events = []
         log = run / 'logs/controller.log'
         if log.exists():
@@ -226,13 +246,18 @@ class Observatory:
                     events.append(dict(type=message['role'], step=None, text=content[:16000]))
         row = self.summary(key, run)
         videos = []
+        debug_manifest = read(c / 'debug_video/manifest.json', {})
         for path in (run / 'sim/sensors.mp4', c / 'debug_video/debug_rollout.mp4'):
             if not path.exists():
                 continue
             available = video_readable(str(path), path.stat().st_size, path.stat().st_mtime_ns)
             videos.append(dict(name='三相机录屏' if path.name == 'sensors.mp4' else 'Agent 调试录像',
                                available=available, url=self.media_url(key, path, run) if available else None,
-                               state='ready' if available else 'writing', bytes=path.stat().st_size))
+                               state='ready' if available else 'writing', bytes=path.stat().st_size,
+                               sync_available=(path.name == 'sensors.mp4' or
+                                   (debug_manifest.get('frame_mapping') == 'initial frame 0; frame t>0 shows action t-1 ACK'
+                                    and debug_manifest.get('reading_pause_frames') == 0
+                                    and debug_manifest.get('playback_speed') == 1))))
         control_dt = read(run / 'sim/summary.json', {}).get('control_dt') or read(c / 'run.json', {}).get('control_dt') or 0.04
         row.update(calls=calls, events=events, videos=videos, control_dt=control_dt,
                    notes=read(self.storage / 'notes.json', {}).get(key, ''))

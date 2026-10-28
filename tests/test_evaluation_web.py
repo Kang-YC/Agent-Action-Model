@@ -111,3 +111,56 @@ def test_nested_run_registration_and_registration_path_limits(app, server, tmp_p
     with pytest.raises(urllib.error.HTTPError) as error:
         urllib.request.urlopen(request)
     assert error.value.code == 400
+
+
+def test_call_images_join_by_exact_step_and_rejections_have_no_after_image(app):
+    run = app.run('a-test')
+    c = run / 'controller'
+    target = dict(left=dict(position=[0.1, -0.2, 0.9], quaternion_wxyz=[1, 0, 0, 0], gripper_closed=True),
+                  right=dict(position=[0.3, -0.1, 0.8], quaternion_wxyz=[1, 0, 0, 0], gripper_closed=False))
+    history = json.loads((c / 'history.json').read_text())
+    history[0]['response']['target'] = target
+    write(c / 'history.json', history)
+    for name, step in [('000', 0), ('002', 99)]:
+        image = c / f'observations/{name}/cam_high.png'
+        image.parent.mkdir(parents=True)
+        image.write_bytes(b'image')
+        write(image.with_name('observation.json'), dict(step_id=step, images=[dict(camera='cam_high', path=str(image))]))
+    write(c / 'codex_workspace/call_0001_request.json', dict(arguments=dict(response=dict(target=target, steps=5))))
+    write(c / 'codex_workspace/call_0001_result.json', dict(no_execution=True, step_id=3, error='Invalid input'))
+    detail = app.detail('a-test')
+    executed = next(x for x in detail['calls'] if x['status'] == 'executed')
+    rejected = next(x for x in detail['calls'] if x['status'] == 'rejected')
+    assert executed['targets'] == target
+    assert executed['observations']['before']['step_id'] == 0
+    assert executed['observations']['after']['step_id'] == 3
+    assert '/001/' in executed['observations']['after']['images'][0]['url']
+    assert rejected['targets'] == target
+    assert rejected['requested_steps'] == 5
+    assert rejected['observations']['before']['step_id'] == 3
+    assert rejected['observations']['after'] is None
+    (c / 'observations/001/observation.json').unlink()
+    executed = next(x for x in app.detail('a-test')['calls'] if x['status'] == 'executed')
+    assert executed['observations']['after'] is None  # Never substitute step 99's latest image.
+
+
+def test_move_to_coordinates_and_before_after_cameras_are_exposed(app):
+    run = app.artifacts / 'b-test'
+    (run / 'sim').mkdir(parents=True)
+    c = run / 'controller'
+    target = dict(left=dict(position=[-0.2, -0.3, 0.9], quaternion_wxyz=[1, 0, 0, 0], gripper_closed=True))
+    write(c / 'robot/action_0001.json', dict(start_step=0, end_step=5, requested_steps=5, status='acknowledged', targets=target))
+    for step in (0, 5):
+        images = []
+        for camera in ('cam_high', 'cam_left_wrist', 'cam_right_wrist'):
+            image = c / f'robot/observation_{step:04d}/{camera}.png'
+            image.parent.mkdir(parents=True, exist_ok=True)
+            image.write_bytes(b'image')
+            images.append(dict(camera=camera, path=str(image)))
+        write(image.with_name('observation.json'), dict(step_id=step, images=images))
+    call = app.detail('b-test')['calls'][0]
+    assert call['tool'] == 'move_to'
+    assert call['targets']['left']['position'] == [-0.2, -0.3, 0.9]
+    assert call['observations']['before']['step_id'] == 0
+    assert call['observations']['after']['step_id'] == 5
+    assert len(call['observations']['after']['images']) == 3
