@@ -134,3 +134,18 @@ CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
 新增只读离线诊断 `artifacts/b-stack-bowls-p02080-01.diagnose.py` 与 `.diagnostics.json`：只解析已捕获请求、响应和轨迹，使用 AST literal 识别直接给出的目标，不执行模型 Python，不求值动态表达式，不回传纠正或隐藏标签。最新快照含 1 次四元数错误、16 次平移越界和 1 次语法错误。第 41／42 次请求右臂目标距实测 pose 分别约 0.163／0.113 m，超过 0.05 m；左臂目标为当前 pose。请求仍正确收到 observation_0016，而不是回传错步图像。
 
 人工检查 observation_0016 高位图，三个碗仍分开位于桌面；模型声称已抓起／准备叠放不作为阶段达成或成功依据。当前瓶颈为无效目标与模型对真实执行／抓取的判断，不是已证实的 transport 或上下文故障。暂不改变该 paired run 的提示词、动作限制或反馈格式；结束后依据原生结果和视频决定是否另开具备结构化距离反馈的新配置。全仓当前 **61 passed**（包含并行 A 线新增检查）；本轮未修改 A 线实现或运行。
+
+## 用户将开发上限改为 400（2026-10-28 09:00 UTC）
+
+用户要求将 B 线叠碗控制步上限从 800 改为 400。收到指令时当前 episode 已到 620 步，已立即中断并确认 controller 与本次仿真退出；没有重启实验或追溯改写已执行步数。最终 620 步、154 次完成模型调用、155 次请求尝试、1793203 个已记录 token；原生任务未完成，成功／分数缺失。中断发生在模型请求阶段，修复后的模型包装器没有重试 KeyboardInterrupt。
+
+原 controller 对 KeyboardInterrupt 的 summary 仍保留原始 infrastructure_error 字段，另以 `artifacts/b-stack-bowls-p02080-01.budget-revision.json` 记录用户要求、实际停止步数与已确认停止；自动对照报告读取此记录，将终止解释为 operator_budget_revision，同时保留原 summary status。不是原生失败或已完成的 400 步对照。
+
+`configs/b_stack_bowls_development.json` 后续 max_control_steps 为 **400**，native_control_horizon 保持原生 **800**，budget_protocol 为 development_control_step_cap。若在 400 步前原生成功，可正常判成功；否则 400 步收尾是预算截断，不补零分。A 线与既有运行的启动快照保持原样，此后 B 与 A 的预算不再相同。旧的 `.supervisor.py` 是 800 步配对运行快照，不用于新配置启动。新运行入口参数应为：
+
+```bash
+CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
+  bash scripts/run_b_line.sh artifacts/b-stack-bowls-400-new \
+  --seed 0 --max-control-steps 400 --max-turns 0 \
+  --max-total-tokens 0 --wall-seconds 0 --history-turns 8
+```

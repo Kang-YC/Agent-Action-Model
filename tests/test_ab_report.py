@@ -127,3 +127,16 @@ def test_final_steps_override_stale_progress_and_video_is_checked_only_after_sum
     final = build_report(a, b)
     assert len(calls) == 1
     assert final["runs"]["B"]["video"]["frames_equal_steps_plus_initial"] is True
+
+
+def test_operator_budget_revision_preserves_actual_steps_and_raw_status(tmp_path):
+    a, b = tmp_path / "A", tmp_path / "B"
+    write(b / "controller/summary.json", dict(status="infrastructure_error", last_observation=dict(step_id=620)))
+    write(Path(str(b) + ".budget-revision.json"), dict(stop_confirmed=True, requested_limit=400))
+    report = build_report(a, b)
+    run = report["runs"]["B"]
+    assert run["termination"] == "operator_budget_revision"
+    assert run["summary_status"] == "infrastructure_error"
+    assert run["actions"]["control_steps"] == 620
+    assert run["native_score"] is None
+    assert "actual executed steps are not rewritten" in markdown(report)

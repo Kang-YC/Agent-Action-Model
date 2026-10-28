@@ -211,6 +211,10 @@ def collect(root, route, now):
     result["protocol"] = dict(plan=plan, metadata=reset.get("metadata", {}), model_config=model_config,
                               resolved_config=reader.json(root / "sim/resolved_config.json"),
                               initial_fingerprint=reader.json(root / "sim/initial_observation_fingerprint.json"))
+    revision = reader.json(Path(str(root) + ".budget-revision.json"))
+    result["operator_budget_revision"] = revision
+    if revision and revision.get("stop_confirmed") and summary is not None and not eligible:
+        result["termination"] = "operator_budget_revision"
     return result
 
 
@@ -239,6 +243,7 @@ def compare_protocol(a, b):
         fingerprints[field] = fa[field] == fb[field] if field in fa and field in fb else None
     return dict(checks=checks, matched_known_conditions=all(c["equal"] is True for c in checks),
                 initial_observation_fields_equal=fingerprints,
+                operator_budget_changed=bool(a.get("operator_budget_revision") or b.get("operator_budget_revision")),
                 caveat="Single development pair; differing tools, static geometry/calibration access, prompts and history management. RGB is not asserted pixel-identical. No causal ranking or success-rate estimate.")
 
 
@@ -279,6 +284,8 @@ def markdown(report):
               "Rejection rate uses acknowledged chunks + known pre-execution rejections; other tool errors are excluded. "
               "Model calls include analysis and non-action tools. Latency includes queueing; wall scopes and tools differ.",
               "", "## Matched conditions", "", "| Condition | Equal |", "|---|---|"]
+    if report["comparison"]["operator_budget_changed"]:
+        lines[5:5] = ["User revised the control budget during a run. Original launch conditions below are retained; actual executed steps are not rewritten to the new cap. This pair is no longer an unchanged-budget comparison.", ""]
     lines += [f"| {c['field']} | {cell(c['equal'])} |" for c in report["comparison"]["checks"]]
     lines += ["", "## Evidence", ""]
     for route, run in report["runs"].items():
