@@ -72,3 +72,19 @@ python3 -m agent_action.a_panel \
 入口核对冻结 panel、原生预算、布局与支持轨迹哈希，生成每例 `next_command` 和历史尝试汇总。已有 `.plan.json` 必须与冻结案例一致；原生结果完整且顶层正常结束的案例标为 completed，任务失败也不重跑。未结束或异常尝试标为 needs_review，保留原生分数缺失，不会自动执行重试命令；多个完整结果直接要求复核，避免择优选择。新命令使用未占用的 attempt 目录，不覆盖旧证据。该入口提供继续执行清单，不是后台批量执行器，也不自动启动正式评测。
 
 本次准备结果为 `artifacts/a-line-followup-20261028/panel-readiness.json`：50 计划、0 尝试、50 待运行，全部布局和支持轨迹通过哈希检查。原生任务源码的历史差异仍沿用既有审计，不因资产哈希通过就宣称环境完全相同。新增准备入口与预算相关检查共 13 项通过。
+
+## 自动验收与第三轮结束核查（2026-10-28 07:40 UTC）
+
+新增只读验收入口，独立检查工具闭环、正常终止、模型任务结果。任务失败不影响链路通过；基础设施中断不能算作正常完成。运行中报告为快照，不推断进程存活，也不提前扫描尚未封装的视频：
+
+```bash
+/opt/robodojo-conda/envs/RoboDojo/bin/python -m agent_action.a_acceptance \
+  --run artifacts/a-stack-bowls-p02080-03 \
+  --output artifacts/a-acceptance-new.json
+```
+
+报告检查连续 history、逐决策 execution 数组形状与有限数值、步数一致性、初始和最终反馈观测图像、模型请求中的实际图像、完成的压缩事件、`no_execution` 拒绝、正常终止结果、最终视频帧数及 token 成本。只记录压缩事件，不自动宣称记忆保真。输出必须使用新路径。验收入口及 A 线预算/评测准备相关测试共 19 项通过，其中覆盖原生失败仍通过、执行数组缺失拒绝通过、仿真异常和视频不完整拒绝通过。
+
+第三轮已于 07:33 UTC 异常结束，不再运行。自动报告 `artifacts/a-line-followup-20261028/acceptance-live-01.json` 核实：25 次有效决策、117 个控制步，25 份执行数组完整且连续；26 份反馈观测有图片；135 个模型请求含图像，共 480 个 image parts；25 次输入拒绝未执行动作；18 次压缩事件。视频 118 帧可读取；总成本 3,140,324 token。工具闭环已验证，正常终止未通过，原生 success/score 保持 null。
+
+launcher 本次及时检测到 `Simulator exited 0 while controller was running` 并清理控制器，输出完整顶层 summary，证明上一轮进程监测修复生效。仿真最后动作在 07:18:00，07:33:03 关闭，间隔约 900 秒；本轮冻结 RPC 源码设有 `connection.settimeout(900)`，捕获 timeout 后退出，server finally 又将原因写成 `server_close`。这与 RPC 空闲超时高度一致，但现有日志未保存捕获异常类型，仍标为待直接复现确认的基础设施原因，不归为模型原生任务失败。下一步应隔离复现 idle 超时并修复推理等待期间的服务生命周期，而非重复长跑叠碗。
