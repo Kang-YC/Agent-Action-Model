@@ -47,3 +47,11 @@ bash scripts/run_a_stack_bowls.sh \
 已补上 launcher 的必需进程退出监测，避免无墙钟上限时仿真退出后控制器继续消耗推理。当前主机 GPU 0 已启动固定模型服务，登记独立保存在 `artifacts/base-service-p02080/`，未修改其他主机的服务登记。一次性续跑进程等待该服务健康检查（包括 checkpoint 一致性）通过后，在 GPU 1 启动 `artifacts/a-stack-bowls-p02080-03/`，保持 800 原生控制步、关闭额外预算；不恢复或覆盖旧 episode。等待最长一小时，服务退出或超时即失败，不自动重试。
 
 续跑实时状态见 `artifacts/a-line-followup-20261028/state.json`，启动器和日志也保存在该目录；只有状态变为 running 且新目录产出实际轨迹后才算 episode 已启动。开发链路尚未通过完整验收，50 案例正式评测仍未启动。
+
+### 第三轮实时核验（2026-10-28 06:54 UTC）
+
+`a-stack-bowls-p02080-03` 已在 05:47:26 UTC 启动，固定模型 GPU 0、仿真 GPU 1。06:53 UTC 快照确认原生控制步 89/800，19 次有效决策；history 从 0 到 89 连续，`executed_steps` 合计 89，存在 19 个 execution 数组，与 progress 一致。launcher 和等待进程存活，模型持续返回 HTTP 200，未发现显存分配失败或场景损坏签名。尚无原生终止成绩。
+
+累计约 202 万 token（快照之后仍在增长）。最近五个模型请求中四个含图像，图像数量分别为 5、2、2、2；另一个请求不含图像，不能据单个文本请求判断图像链路失效。RPC 日志已记录 11 个完成的 `contextCompaction` 事件，且此后继续产生动作；工作区 `agent/NOTES.md` 仍为初始模板，故压缩事件存在和执行可继续已证实，长期记忆保真尚未验收。16 次 recoverable input 拒绝包含位移越界、四元数/布尔校验和过期 observation，均为 `no_execution=true`，未计入控制步。
+
+机器可读核验快照保存于 `artifacts/a-line-followup-20261028/live-audit.json`。保持本轮原配置继续运行，不在运行中改写提示或补写模型工作笔记。完成后再检查原生结果、完整视频、记忆保真与成本；50 案例正式评测仍待开发验收。
