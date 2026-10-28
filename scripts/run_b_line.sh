@@ -15,7 +15,13 @@ export MSWEA_GLOBAL_CONFIG_DIR="${output}/mini-config"
 export LITELLM_LOCAL_MODEL_COST_MAP=True
 export ROBODOJO_ROOT="${ROBODOJO_ROOT:-${ROBODOJO_SHARED_ROOT:-/dataset_rc_b1/kangyc1@xiaopeng.com/robodojo_shared}/RoboDojo}"
 mkdir "${output}/sim"
-bash scripts/start_native.sh --task "${task}" --port "${port}" --output "${output}/sim" > "${output}/sim.log" 2>&1 &
+sim_args=(--task "${task}" --port "${port}" --output "${output}/sim" --eval-seed "${B_LINE_EVAL_SEED:-0}")
+if [[ -n "${B_LINE_EVAL_MANIFEST:-}" ]]; then
+  : "${B_LINE_CASE_FILE:?Frozen evaluation requires B_LINE_CASE_FILE}"
+  : "${ROLLOUT_EVAL_MANIFEST_SHA256:?Frozen evaluation requires manifest identity}"
+  sim_args+=(--eval-manifest "${B_LINE_EVAL_MANIFEST}" --case-file "${B_LINE_CASE_FILE}")
+fi
+bash scripts/start_native.sh "${sim_args[@]}" > "${output}/sim.log" 2>&1 &
 sim_pid=$!
 controller_pid=""
 cleanup() {

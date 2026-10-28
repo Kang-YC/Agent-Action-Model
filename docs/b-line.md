@@ -185,3 +185,7 @@ CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
 新运行 `artifacts/b-stack-bowls-p02080-03`，仍使用原生 800 步、layout／eval seed 0、H0 最新三图和八轮文本＋持久 Python，不调整模型配置或增加历史图像。本轮明确加载新版边界说明、带手臂／距离信息的拒绝错误、静态标定和 14 维状态。GPU 0 复用 19230 模型，GPU 1／19134 运行仿真；A 线和其他服务保持原样。独立监督／验收状态为同名前缀 `.state.json`、`.audit.json`，报告为 `artifacts/ab-stack-bowls-p02080-03/comparison.md`；A 参照仍为已保存 A03，不擅自切换到当前其他 A 尝试。当前正在初始观测／首请求验收，不标为任务成功。
 
 B03 首请求已核验，记录在 `artifacts/b-stack-bowls-p02080-03.startup-validation.json`：欧氏位移、每臂独立检查、steps 不放大边界、静态标定均实际存在于模型 system；packet 为 14 维本体状态，inline 图片为 3 张。说明已在新进程实际生效，而不只是工作区文件修改。
+
+## B03 后续顺序任务
+
+按用户要求，B03 原生结束后执行按语言分类（1100 步）和物品装箱（1300 步），各一个 standard／g0／l0 案例，均按公开原生预算。已准备身份绑定和不可变启动计划，等待进程 `agent_action.b_sequence` 已启动，状态为 `artifacts/b-followup-two-01/state.json`。只有完整有效的原生前置结果才继续，基础设施异常／提前停止时记 halted，不自动重试。详情与产物见[两任务队列](b-followup-two.md)。当前叠碗不受影响。

@@ -1,0 +1,15 @@
+{
+  "schema": "agent_action.b_followup_two_tasks.v1",
+  "source": "https://arxiv.org/pdf/2609.38537",
+  "prerequisite": "artifacts/b-stack-bowls-p02080-03",
+  "history_turns": 8,
+  "budget_protocol": "native_control_steps_only",
+  "simulation_gpu": "1",
+  "cases": [
+    {"case_id": "classify_objects_by_language__standard__g0__l0", "native_control_horizon": 1100},
+    {"case_id": "pack_objects_into_box__standard__g0__l0", "native_control_horizon": 1300}
+  ],
+  "attempts_per_case": 1,
+  "no_automatic_retry": true,
+  "stop_on_infrastructure_error": true
+}

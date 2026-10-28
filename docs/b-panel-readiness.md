@@ -35,3 +35,5 @@ python3 -m agent_action.b_panel \
 6. 审核开发排除记录和 A/B 共同案例分母，然后才冻结正式案例清单、生成可执行评测命令。
 
 这些缺口保存在机器提案的 activation_gates 中。开发 summary 是否存在、状态是什么也会如实记录，但即使出现成功 summary，准备器仍不会自动解锁或启动评测。
+
+后续更新：用户已授权 B03 完成后先做两个论文任务。[两任务队列](b-followup-two.md)已实现并验证 native manifest/case-file 绑定，只准备并排队这两个明确案例；本页原 49 案例提案仍不是已启动的完整评测。
