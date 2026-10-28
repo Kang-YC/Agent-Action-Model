@@ -157,3 +157,13 @@ CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
 用户随后决定恢复使用原生上限。`configs/b_stack_bowls_development.json` 后续控制上限恢复为 800，与 native_control_horizon 相同；模型轮数、token 和 episode 墙钟额外上限仍关闭。此变更仅用于后续新运行，不自动重启任务，不改写上一轮实际 620 步、按当时用户 400 步标准认定失败的记录。最近的 400 步启动示例已成为历史配置，新叠碗应传 `--max-control-steps 800`。
 
 历史策略暂不变：B 仍是初始 system／task＋最近八组完整交互＋最新带图观测交互的窗口，没有语义摘要；保留持久 Python 变量，旧轨迹在磁盘但不自动回送模型。参考 A 是持续对话、Codex 上下文压缩和可读写笔记／历史看图，不能把两者都叫“有历史”就认为等价。当前先解释差异，未擅自改变 B 的历史算法。
+
+## 重跑叠碗：加入标定和本体状态（2026-10-28 10:20 UTC）
+
+用户确认历史图像增强留待后续消融，当前先按既定方案重跑。新目录为 `artifacts/b-stack-bowls-p02080-02`，使用恢复后的原生 800 控制步、eval seed／layout 0；额外模型轮次、token 和 episode 墙钟上限关闭。仍只看最新三视角、最近八轮完整文本交互＋持久 Python；没有增加历史图像或切换历史算法。
+
+本轮启用新增的静态硬件／标定内联系统提示词，以及每步 14 维原生本体状态。配置来源、geometry 推导器和静态源文件随 run 保存，`controller/embodiment_context.json`、`embodiment_source/`、`system_prompt.txt` 和实际请求共同验证模型可见信息；配置推导相机 K 仍明确标为 nominal，未声称 runtime 实测。旧 B01 失败、预算修改和实际 620 步记录完整保留，不覆写、不续接旧 episode。
+
+启动时确认固定模型 19230 服务 ready、checkpoint 一致；GPU 1 空闲 10623 MiB，本轮仿真使用 GPU 1／端口 19134，模型复用 GPU 0。没有停止或改动已有 A 线／19232 模型实例。独立监督器 `.supervisor.py` 和只读 `.audit.py` 保存同名前缀 `.state.json`、`.audit.json`；对照报告独立写至 `artifacts/ab-stack-bowls-p02080-02/`，A 参照明确为已保存的 A03，而非当前 A04，不据不同启动条件的累计指标直接判优劣。当前处于启动／初始模型请求验收阶段，尚无终局结论。
+
+首个实际请求已核验：`controller/request_0001.input.json.gz` 含 3 张 inline 图像，初始 packet 的 current_state 为 14 维；system 确有 Static robot and camera context 与 URDF joint chain，embodiment_context SHA256 与 manifest 一致；history 为 H0_latest_images_recent_8_turns。此为本次新 episode 的真实模型请求，不是此前离线 replay。
