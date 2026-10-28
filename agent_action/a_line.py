@@ -31,12 +31,27 @@ def published_case_plan(panel: dict, case_id: str) -> dict:
                 layout=case["layout"])
 
 
+def native_case_selection(plan: dict, native_panel: dict) -> dict:
+    from hybrid_rollout.robodojo.evaluation import case_identity, validate_panel
+
+    validate_panel(native_panel)
+    rows = [case for case in native_panel['cases'] if case['case_id'] == plan['case_id']]
+    if len(rows) != 1:
+        raise ValueError('Published case is absent from the native identity panel')
+    case = rows[0]
+    if (case['runtime_task'], case['eval_seed'], case['layout_id'], case['layout']) != (
+            plan['task'], plan['eval_seed'], plan['layout_id'], plan['layout']):
+        raise ValueError('Native case identity differs from the published case')
+    return dict(case=case, identity=case_identity(native_panel, case))
+
+
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=root / "configs/a_stack_bowls_development.json")
     parser.add_argument("--panel", type=Path, default=root / "configs/a_published_ten_task_panel.json")
     parser.add_argument("--case-id", help="Use this frozen published case instead of the stack-bowls plan")
+    parser.add_argument("--native-panel", type=Path, default=root / 'configs/a_native_panel60_v1.json')
     parser.add_argument("--robodojo", type=Path, default=Path(os.environ.get("ROBODOJO_SHARED_ROOT", "/dataset_rc_b1/kangyc1@xiaopeng.com/robodojo_shared")) / "RoboDojo")
     parser.add_argument("--codex", type=Path, default=Path("/root/.codex/packages/app-server-daemon/releases/0.164.0-x86_64-unknown-linux-musl/bin/codex"))
     parser.add_argument("--output", type=Path, required=True)
@@ -59,8 +74,17 @@ def main() -> None:
                "--max-decisions", str(plan["max_decisions"]), "--max-control-steps", str(plan["max_control_steps"]),
                "--max-total-tokens", str(plan["max_total_tokens"]), "--wall-seconds", str(plan["wall_seconds"])]
     output.parent.mkdir(parents=True, exist_ok=True)
+    selection = None
+    if args.case_id:
+        native_panel = json.loads(args.native_panel.read_text())
+        selection = native_case_selection(plan, native_panel)
+        case_file = output.with_name(output.name + '.case.json')
+        with case_file.open('x') as stream:
+            json.dump(selection, stream, indent=2)
+        command.extend(['--eval-manifest', str(args.native_panel.resolve()), '--case-file', str(case_file)])
     with output.with_name(output.name + ".plan.json").open("x") as stream:
-        json.dump(dict(plan=plan, config_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), argv=command), stream, indent=2)
+        json.dump(dict(plan=plan, config_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
+                       evaluation_identity=selection['identity'] if selection else None, argv=command), stream, indent=2)
     os.execv(sys.executable, command)
 
 

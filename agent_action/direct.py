@@ -97,6 +97,8 @@ def main() -> None:
     parser.add_argument("--codex", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--task", default="classify_objects")
+    parser.add_argument('--eval-manifest', type=Path)
+    parser.add_argument('--case-file', type=Path)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--eval-seed", type=int, default=0)
     parser.add_argument("--sim-port", type=int, default=19124)
@@ -105,6 +107,20 @@ def main() -> None:
     parser.add_argument("--wall-seconds", type=nonnegative_int, default=0, help="0 disables the episode wall-clock cap")
     parser.add_argument("--max-total-tokens", type=nonnegative_int, default=0, help="0 disables the cumulative token cap")
     args = parser.parse_args()
+    if bool(args.eval_manifest) != bool(args.case_file):
+        parser.error('--eval-manifest and --case-file must be provided together')
+    evaluation_identity = None
+    if args.eval_manifest:
+        from hybrid_rollout.robodojo.evaluation import read_panel, verify_assets, case_identity
+        panel = read_panel(args.eval_manifest)
+        selected = json.loads(args.case_file.read_text())
+        case = selected['case']
+        if case not in panel['cases'] or selected['identity'] != case_identity(panel, case):
+            raise ValueError('Selected case differs from the frozen native panel')
+        if (args.task, args.eval_seed, args.seed) != (case['runtime_task'], case['eval_seed'], case['layout_id']):
+            raise ValueError('Runtime arguments differ from the selected native case')
+        verify_assets(panel, args.robodojo, [case])
+        evaluation_identity = selected['identity']
     config = json.loads(args.config.read_text())
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -125,9 +141,13 @@ def main() -> None:
     (harness_source / "scripts").mkdir()
     shutil.copy2(root / "scripts/start_native.sh", harness_source / "scripts/start_native.sh")
     shutil.copy2(args.config, output / "base_model.json")
+    if args.eval_manifest:
+        shutil.copy2(args.eval_manifest, output / 'evaluation_panel.json')
+        shutil.copy2(args.case_file, output / 'evaluation_case.json')
     manifest = checkpoint_manifest(config)
     manifest.update(kind="development_direct_chain_validation", task=args.task, layout_id=args.seed, eval_seed=args.eval_seed,
                     rpc_idle_patch=rpc_idle_patch,
+                    evaluation_identity=evaluation_identity,
                     max_decisions=args.max_decisions, max_control_steps=args.max_control_steps,
                     max_total_tokens=args.max_total_tokens,
                     extra_budget_caps=dict(decisions=args.max_decisions or None,
@@ -186,7 +206,9 @@ def main() -> None:
         bridge = start("bridge", [sys.executable, "-m", "agent_action.bridge", "--config", str(args.config.resolve()),
                                   "--output", str(output / "model_requests")])
         sim = start("sim", ["bash", str(harness_source / "scripts/start_native.sh"), "--task", args.task,
-                            "--port", str(args.sim_port), "--output", str(output / "sim"), "--eval-seed", str(args.eval_seed)])
+                            "--port", str(args.sim_port), "--output", str(output / "sim"), "--eval-seed", str(args.eval_seed)] +
+                    (['--eval-manifest', str(output / 'evaluation_panel.json'), '--case-file', str(output / 'evaluation_case.json')]
+                     if evaluation_identity else []))
         while '"event": "ready"' not in (output / "logs/sim.log").read_text(errors="replace"):
             if sim.poll() is not None or bridge.poll() is not None:
                 raise RuntimeError("Service exited during startup; inspect logs")

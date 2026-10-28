@@ -112,3 +112,17 @@ A 线新运行仅在自己的 reference_source 快照中，为 RPC 每次读请�
 GPU 1 在仿真加载后尚余 3404 MiB，未见显存分配或场景损坏错误。当前验收快照 `artifacts/a-line-followup-20261028/run04-monitor/initial-acceptance.json` 标记 incomplete：仅一次有效动作，尚不足以验证两轮连续反馈闭环；不表示实验失败。
 
 独立只读跟踪进程 PID 2942395 已启动，登记 launcher 的 PID、启动标识和完整命令以防 PID 复用。每 30 秒将进度和成本写入 `artifacts/a-line-followup-20261028/run04-monitor/state.json`。launcher 退出后自动运行验收，输出该目录下 `final-acceptance.json` 并记录最终状态；不发送仿真 RPC、不请求模型、不停止进程。脚本、启动登记和错误日志也保存在该目录。正常结束、任务结果与链路验收继续分别记录。
+
+## 网页案例原生身份与成绩归属（2026-10-28）
+
+并行核查发现，原 `--case-id` 入口虽检查网页布局和预算，但未将身份传入原生 server，汇总也未要求结果身份一致。现已接入参考 server 既有 `--eval-manifest` / `--case-file` 路径，不改 native 判分代码。
+
+`configs/a_native_panel60_v1.json` 冻结当前原生源码、布局与支持资产，并使用原生 60 案例 schema 提供身份校验。它是身份校验载体，实际待运行的评测范围仍是网页清单的 50 例；没有增加评测案例，也没有更换原网页布局。50 例均匹配载体中的 case_id、variant、eval_seed、layout_id、布局哈希和支持轨迹。当前源码与历史源码的差异仍按既有审计单列，不能据新载体宣称它们相同。
+
+网页入口生成独立 `.case.json`，将原生 identity 写入 `.plan.json`；Direct 在启动仿真前调用原生 verify_assets 校验提交、源码与案例资产，复制 panel/case 到运行目录，再交由 server 校验和记录实际 reset 布局。manifest 同步保存 identity。叠碗开发入口不启用评测身份，已启动的第四轮使用其既有源码快照继续运行。
+
+离线汇总现在要求 plan、manifest 和 `evaluation_outcome.json.evaluation_case` 与固定原生身份完全一致，才接受完整的原生成绩。旧记录缺失身份时标 needs_review，原始文件保留，不自动补身份或补分数；原生失败且身份与结果完整仍算有效完成，不因失败重跑。非默认身份载体可通过 `--native-panel` 指定，生成的命令同时携带该参数。
+
+检查共 35 项通过，包含 50 例逐一身份匹配、启动参数传递，以及 outcome / manifest / plan 任一身份错配都不得计分。离线准备新报告为 `artifacts/a-line-followup-20261028/panel-readiness-with-identity.json`，仍为 50 待运行、0 已尝试。该验证未启动新的仿真，也尚未完成任一网页案例的真实原生判分验收。
+
+08:14 UTC 第四轮进度为 9/800 步，自动跟踪状态 running；新入口修改未热更新或干预当前运行。
