@@ -35,3 +35,12 @@ def test_two_task_subset_keeps_five_cases_each_and_excludes_other_tasks():
     order = never_attempted(subset, ['classify_objects', 'put_bottles_into_dustbin'])
     assert [c['task'] for c in order[:2]] == ['classify_objects', 'put_bottles_into_dustbin']
     assert len(order) == 10
+
+
+def test_one_case_per_task_pilot_is_two_predeclared_cases_not_ten():
+    cases = [dict(case_id=f'{task}-{i}', task=task, state='pending', attempts=[], result=None)
+             for task in ('classify_objects', 'put_bottles_into_dustbin') for i in range(5)]
+    tasks = ['classify_objects', 'put_bottles_into_dustbin']
+    report = scoped_report(dict(cases=cases), tasks, 1)
+    assert report['planned_cases'] == 2
+    assert [c['case_id'] for c in never_attempted(report, tasks)] == ['classify_objects-0', 'put_bottles_into_dustbin-0']

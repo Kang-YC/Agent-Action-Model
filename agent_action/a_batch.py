@@ -52,8 +52,10 @@ def outcome_policy(summary, returncode):
     return 'continue'
 
 
-def scoped_report(report, tasks):
-    cases = [case for case in report['cases'] if case['task'] in tasks]
+def scoped_report(report, tasks, cases_per_task=None):
+    ordered = round_robin([case for case in report['cases'] if case['task'] in tasks], tasks)
+    allowed = {case['case_id'] for case in ordered[:len(tasks) * cases_per_task]} if cases_per_task else None
+    cases = [case for case in report['cases'] if case['task'] in tasks and (allowed is None or case['case_id'] in allowed)]
     return dict(report, cases=cases, planned_cases=len(cases),
         attempted_cases=sum(bool(c['attempts']) for c in cases),
         complete_cases=sum(c['state'] == 'completed' for c in cases),
@@ -74,6 +76,7 @@ def main():
     parser.add_argument('--gpu', type=int, default=1)
     parser.add_argument('--minimum-free-mib', type=int, default=9000)
     parser.add_argument('--tasks', nargs='+', help='Predeclared subset of the published task order')
+    parser.add_argument('--cases-per-task', type=int, default=1, help='Frozen-order pilot cases per selected task')
     args = parser.parse_args()
     root, output, runs = args.harness_root.resolve(), args.output.resolve(), args.runs.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -84,6 +87,8 @@ def main():
     tasks = args.tasks or panel['task_order']
     if len(set(tasks)) != len(tasks) or not set(tasks) <= set(panel['task_order']):
         raise ValueError('Task selection must contain distinct published tasks')
+    if not 1 <= args.cases_per_task <= 5:
+        raise ValueError('Cases per task must be within 1..5')
     native = json.loads(native_path.read_text())
     config = json.loads((root / 'configs/base_model.json').read_text())
     lock = (runs / '.batch.lock').open('a')
@@ -96,7 +101,7 @@ def main():
 
     state = dict(schema='agent_action.a_batch.v1', host=socket.gethostname(), pid=os.getpid(),
         panel_sha256=panel['panel_sha256'], native_panel_sha256=native['panel_sha256'],
-        planned_cases=sum(case['task'] in tasks for case in panel['cases']), planned_tasks=len(tasks),
+        planned_cases=len(tasks) * args.cases_per_task, planned_tasks=len(tasks), cases_per_task=args.cases_per_task,
         selected_tasks=tasks, frozen_panel_cases=len(panel['cases']),
         harness_root=str(root), reference=str(args.reference.resolve()), runs=str(runs),
         gpu=args.gpu, minimum_free_mib=args.minimum_free_mib,
@@ -112,7 +117,7 @@ def main():
     def report():
         complete = prepare(panel, args.robodojo.resolve(), runs, panel_path, native, native_path)
         write_state(output / 'all-panel-results.json', complete)
-        value = scoped_report(complete, tasks)
+        value = scoped_report(complete, tasks, args.cases_per_task)
         write_state(output / 'results.json', value)
         state.update(attempted_cases=value['attempted_cases'], complete_cases=value['complete_cases'],
                      pending_cases=value['pending_cases'], review_cases=value['review_cases'],
