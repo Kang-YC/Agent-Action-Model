@@ -149,3 +149,5 @@ CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
   --seed 0 --max-control-steps 400 --max-turns 0 \
   --max-total-tokens 0 --wall-seconds 0 --history-turns 8
 ```
+
+用户随后明确要求按“400 步内未成功即失败”记开发结果。已核对前 400 个连续有效控制回执，每步 success 均为 false，第 400 步同样未 terminated／truncated。因此该次开发结果记为 **failure_400_step_limit／development_success=false**，证据为 `artifacts/b-stack-bowls-p02080-01.development-assessment.json`。该标准是在实际运行超过 400 步后确定，机器记录保留 criterion_adopted_after_cutoff=true、实际执行 620 步以及原生 score 缺失。对照报告单列开发结果为失败，同时保留用户截断终止原因及原始 native 字段。

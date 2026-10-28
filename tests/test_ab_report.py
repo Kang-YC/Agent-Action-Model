@@ -133,10 +133,14 @@ def test_operator_budget_revision_preserves_actual_steps_and_raw_status(tmp_path
     a, b = tmp_path / "A", tmp_path / "B"
     write(b / "controller/summary.json", dict(status="infrastructure_error", last_observation=dict(step_id=620)))
     write(Path(str(b) + ".budget-revision.json"), dict(stop_confirmed=True, requested_limit=400))
+    write(Path(str(b) + ".development-assessment.json"), dict(
+        development_outcome="failure_400_step_limit", development_success=False, budget_steps=400))
     report = build_report(a, b)
     run = report["runs"]["B"]
     assert run["termination"] == "operator_budget_revision"
     assert run["summary_status"] == "infrastructure_error"
     assert run["actions"]["control_steps"] == 620
     assert run["native_score"] is None
+    assert run["development_assessment"]["development_success"] is False
+    assert "failure_400_step_limit" in markdown(report)
     assert "actual executed steps are not rewritten" in markdown(report)

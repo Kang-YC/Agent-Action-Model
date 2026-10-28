@@ -213,6 +213,7 @@ def collect(root, route, now):
                               initial_fingerprint=reader.json(root / "sim/initial_observation_fingerprint.json"))
     revision = reader.json(Path(str(root) + ".budget-revision.json"))
     result["operator_budget_revision"] = revision
+    result["development_assessment"] = reader.json(Path(str(root) + ".development-assessment.json"))
     if revision and revision.get("stop_confirmed") and summary is not None and not eligible:
         result["termination"] = "operator_budget_revision"
     return result
@@ -262,6 +263,7 @@ def markdown(report):
         return (f"{value:.2f}" if isinstance(value, float) else str(value)).replace("|", "\\|").replace("\n", " ")
 
     rows = [("State", lambda r: r["phase"]), ("Termination", lambda r: r["termination"]),
+            ("Development result (user criterion)", lambda r: (r.get("development_assessment") or {}).get("development_outcome")),
             ("Error type", lambda r: r["error_type"]), ("Failure category", lambda r: r["failure_category"]),
             ("Native scored", lambda r: r["scored"]), ("Native success", lambda r: r["native_success"]),
             ("Native score", lambda r: r["native_score"]), ("Control steps", lambda r: r["actions"]["control_steps"]),
