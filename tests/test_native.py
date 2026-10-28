@@ -73,6 +73,26 @@ def test_stepwise_ack_cell_limit_and_observation(tmp_path):
     assert json.loads((robot.output / "action_0001.json").read_text())["end_step"] == 3
 
 
+@pytest.mark.parametrize("arm", ["left", "right"])
+def test_diagonal_bound_feedback_identifies_arm_and_executes_nothing(tmp_path, arm):
+    peer = ProtocolPeer()
+    robot = NativeRobot(peer, tmp_path / "run", "test")
+    targets = deepcopy(robot.current)
+    targets[arm]["position"] = [.04, .04, 0.]
+    before = len(peer.calls)
+    # Each axis is below 5cm, but the Euclidean displacement is above it.
+    # Even steps=5 cannot enlarge the 5cm target bound.
+    with pytest.raises(ValueError, match=f"arm={arm}") as error:
+        robot.move_to(**targets, steps=5)
+    message = str(error.value)
+    assert "distance_m=" in message and "limit_m=0.05" in message
+    assert "current_position=" in message and "target_position=" in message
+    assert "no_execution=true" in message
+    assert len(peer.calls) == before
+    assert robot.tick == robot.index == 0
+    robot.close()
+
+
 def test_lost_ack_is_not_retried_or_finished(tmp_path):
     peer = ProtocolPeer(fail_step=True)
     robot = NativeRobot(peer, tmp_path / "run", "test")

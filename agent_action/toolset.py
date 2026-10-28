@@ -59,8 +59,8 @@ def build_registry() -> ToolRegistry:
     registry = ToolRegistry()
     registry.register(ToolSpec(name="move_to", function=move_to, prompt=ToolPrompt(
         summary="Execute one bounded dual-arm robot action and automatically return current RGB and state.",
-        parameters={"left": "Left position, quaternion_wxyz, gripper_closed dictionary.",
-                    "right": "Right position, quaternion_wxyz, gripper_closed dictionary.",
+        parameters={"left": "Exact keys: position (3 finite numbers, absolute meters), quaternion_wxyz (4 finite unit-quaternion numbers), gripper_closed (Python bool). Check against measured LEFT pose.",
+                    "right": "Same keys/types as left. Check against measured RIGHT pose, including when holding this arm.",
                     "steps": f"Integer 1..{CONTRACT.max_steps}, default {CONTRACT.max_steps}."},
         returns="Post-ACK observation; images and state are automatically printed for the next model request.",
         raises="ValueError for invalid targets; RuntimeError for repeated calls or uncertain execution.",

@@ -36,26 +36,42 @@ class RobotContract:
                 raise ValueError(f"{arm} requires position, quaternion_wxyz, gripper_closed only")
             p = vector(target["position"], 3)
             q = vector(target["quaternion_wxyz"], 4)
-            if abs(math.sqrt(sum(x*x for x in q))-1) > 1e-4:
-                raise ValueError("Expected unit quaternion wxyz")
+            norm = math.sqrt(sum(x*x for x in q))
+            if abs(norm-1) > 1e-4:
+                raise ValueError(f"Expected unit quaternion wxyz: arm={arm}, norm={norm:.9g}, "
+                                 "required abs(norm-1)<=0.0001; no_execution=true")
             if type(target["gripper_closed"]) is not bool:
                 raise ValueError("gripper_closed must be boolean")
             old = current[arm]
-            if math.dist(p, old["position"]) > self.max_translation_m + 1e-9:
-                raise ValueError("Target exceeds translation bound")
+            distance = math.dist(p, old["position"])
+            if distance > self.max_translation_m + 1e-9:
+                raise ValueError(f"Target exceeds translation bound: arm={arm}, "
+                    f"distance_m={distance:.9g}, limit_m={self.max_translation_m}, "
+                    f"current_position={old['position']}, target_position={p}; "
+                    "metric=3D Euclidean distance, not per-axis; steps does not multiply the limit; no_execution=true")
             previous = vector(old["quaternion_wxyz"], 4)
             dot = abs(sum(a*b for a, b in zip(q, previous)))
             dot /= math.sqrt(sum(x*x for x in q)*sum(x*x for x in previous))
-            if 2*math.acos(min(1.0, dot)) > self.max_rotation_rad + 1e-9:
-                raise ValueError("Target exceeds rotation bound")
+            angle = 2*math.acos(min(1.0, dot))
+            if angle > self.max_rotation_rad + 1e-9:
+                raise ValueError(f"Target exceeds rotation bound: arm={arm}, "
+                                 f"angle_rad={angle:.9g}, limit_rad={self.max_rotation_rad}; no_execution=true")
             targets[arm] = dict(position=p, quaternion_wxyz=q, gripper_closed=target["gripper_closed"])
         return targets
 
     def description(self) -> str:
         return (f"Dual ARX X5; {self.eef_link} in {self.frame}; meters and unit wxyz. "
-                f"Explicit left/right targets within {self.max_translation_m} m and "
-                f"{self.max_rotation_rad} rad of measured pose; 1..{self.max_steps} steps "
+                "Targets are absolute link6 poses, not XYZ deltas or fingertip poses. "
+                f"For EACH arm independently, math.dist(target.position, current measured position) "
+                f"must be <= {self.max_translation_m} m: a 3D Euclidean norm, NOT a per-axis bound. "
+                f"Orientation change must be <= {self.max_rotation_rad} radians (about 20 degrees), "
+                "and abs(norm(quaternion_wxyz)-1) <= 0.0001. "
+                f"Execute 1..{self.max_steps} steps "
                 f"at {1/self.control_dt:g} Hz. True gripper_closed maps to opening=0. "
+                "steps repeats control toward the SAME target; it does NOT multiply the displacement allowance. "
+                "Check BOTH targets against Observation['current_eef'] on every call; previous desired targets "
+                "may not have been reached. Hold an unused arm at its measured pose. "
+                "Invalid calls execute zero controls; no target clipping or quaternion normalization is performed. "
                 "Per-step bounded IK and joint limits are enforced by the native backend. "
                 "Arrival and grasp are not guaranteed; gripper state is a command, not measured contact.")
 

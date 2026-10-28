@@ -167,3 +167,11 @@ CUDA_VISIBLE_DEVICES=1 B_LINE_TASK=stack_bowls B_LINE_PORT=19134 \
 启动时确认固定模型 19230 服务 ready、checkpoint 一致；GPU 1 空闲 10623 MiB，本轮仿真使用 GPU 1／端口 19134，模型复用 GPU 0。没有停止或改动已有 A 线／19232 模型实例。独立监督器 `.supervisor.py` 和只读 `.audit.py` 保存同名前缀 `.state.json`、`.audit.json`；对照报告独立写至 `artifacts/ab-stack-bowls-p02080-02/`，A 参照明确为已保存的 A03，而非当前 A04，不据不同启动条件的累计指标直接判优劣。当前处于启动／初始模型请求验收阶段，尚无终局结论。
 
 首个实际请求已核验：`controller/request_0001.input.json.gz` 含 3 张 inline 图像，初始 packet 的 current_state 为 14 维；system 确有 Static robot and camera context 与 URDF joint chain，embodiment_context SHA256 与 manifest 一致；history 为 H0_latest_images_recent_8_turns。此为本次新 episode 的真实模型请求，不是此前离线 replay。
+
+## 工具边界说明与拒绝反馈澄清
+
+用户通过执行轨迹发现模型频繁参数越界。核对 B02 实际首请求，move_to 说明已有 0.05m／0.35rad 和 1–5 步，但没有足够强调三维欧氏距离、每臂独立检查、绝对 link6 目标以及 steps 不放大位移限制。新版将这些内容写入 CONTRACT.description 和 left/right 参数说明，仍作为 run_python 外部工具使用说明渲染到 system prompt；API 顶层 schema 保持 run_python(code)。
+
+校验阈值和动作语义不变。拒绝反馈新增 arm、distance／angle／norm、limit、当前／目标位置（平移错误），以及 no_execution=true，便于模型自己修正。不自动裁剪或归一化动作。新增左右臂对角线位移的检查证明：每轴 4cm、合成距离约 5.66cm 时，即使 steps=5，仍在任何动作 RPC 前拒绝、控制步保持零。全仓 85 项检查通过。
+
+本次仅改后续加载的说明和错误反馈，B02 已运行的进程仍使用启动快照；没有热更新、停止或重跑该 episode，不将新版说明追溯标记为模型已经收到。
