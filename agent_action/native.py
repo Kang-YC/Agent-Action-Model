@@ -75,6 +75,7 @@ class NativeRobot:
                                         else bool(observation["states"][i*7+6] < .5)))
                         for i, arm in enumerate(("left", "right"))}
         self.packet = dict(episode_id=self.episode, step_id=self.tick, current_eef=self.current,
+                           current_state=observation["states"].tolist(),
                            instruction=observation["instruction"], images=images,
                            remaining_steps=observation["remaining_steps"],
                            rollout_finished=self.finished,

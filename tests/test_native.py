@@ -60,6 +60,7 @@ def test_stepwise_ack_cell_limit_and_observation(tmp_path):
     assert result["step_id"] == 3 and len(result["images"]) == 3
     assert not result["current_eef"]["left"]["gripper_closed"]
     assert result["native_gripper_opening_feedback"] == [0., 0.]
+    assert result["current_state"] == [0.] * 14
     assert "success" not in result
     before = len(peer.calls)
     with pytest.raises(RuntimeError, match="one move_to"):

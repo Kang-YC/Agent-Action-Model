@@ -7,12 +7,14 @@ import subprocess
 import hashlib
 import shutil
 import time
+import os
 
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.exceptions import LimitsExceeded
 from agent_action.b_model import BasePythonModel, ContextLimitExceeded
 from agent_action.toolset import RobotEnvironment
 from agent_action.b_report import summarize
+from agent_action.b_embodiment import build_context, render_context
 
 
 class RobotAgent(DefaultAgent):
@@ -67,6 +69,9 @@ def main():
     p.add_argument("--wall-seconds", type=int, default=1800, help="Agent wall limit; 0 disables")
     p.add_argument("--history-turns", type=int, default=0,
                    help="Explicit recent text exchanges to retain; 0 keeps all text")
+    p.add_argument("--robodojo", type=Path, default=Path(os.environ.get("ROBODOJO_ROOT",
+                   "/dataset_rc_b1/kangyc1@xiaopeng.com/robodojo_shared/RoboDojo")))
+    p.add_argument("--reference", type=Path, default=Path(os.environ.get("GPT_AS_POLICY_ROOT", "../GPT-as-Policy")))
     a = p.parse_args()
     if (
         a.max_control_steps <= 0
@@ -100,6 +105,10 @@ def main():
     started = time.monotonic()
     report = dict(status="infrastructure_error")
     try:
+        embodiment = build_context(a.robodojo, a.reference, output)
+        embodiment_prompt = render_context(embodiment)
+        manifest["embodiment_context_sha256"] = hashlib.sha256((output / "embodiment_context.json").read_bytes()).hexdigest()
+        (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
         model = BasePythonModel(a.config, output, history_turns=a.history_turns)
         with RobotEnvironment(
             toolset="agent_action.toolset:build_registry",
@@ -152,7 +161,7 @@ def main():
                 "Use only supplied images, state and instruction; do not inspect files or evaluator data. "
                 "Do not infer grasp success from the gripper command. "
                 "Continue until native termination or runner budget. ReturnAnswer is a model stop, not task success. "
-                "Do not reset or restart episodes.\n{{ tool_prompt }}",
+                "Do not reset or restart episodes.\n" + embodiment_prompt + "\n{{ tool_prompt }}",
                 instance_template="{{ task }}",
             )
             agent.robot_output, agent.control_limit, agent.token_limit = (
@@ -160,6 +169,7 @@ def main():
                 a.max_control_steps,
                 a.max_total_tokens,
             )
+            (output / "system_prompt.txt").write_text(agent._render_template(agent.config.system_template))
             try:
                 result = agent.run(task)
                 report.update(
