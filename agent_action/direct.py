@@ -20,6 +20,20 @@ def write(path: Path, value: dict) -> None:
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
 
 
+def patch_rpc_idle_wait(path: Path) -> dict:
+    """Patch only the run snapshot: thinking is idle, partial packets still time out."""
+    original = path.read_text()
+    marker = '                    request = receive_packet(connection)'
+    if original.count(marker) != 1 or 'connection.settimeout(900)' not in original:
+        raise ValueError('Unexpected reference RPC source; refusing an unverified idle-wait patch')
+    patched = original.replace('import socket\n', 'import socket\nimport select\n', 1).replace(
+        marker, '                    select.select([connection], [], [])\n' + marker, 1)
+    path.write_text(patched)
+    return dict(kind='wait_for_request_without_idle_deadline', partial_packet_timeout_seconds=900,
+                original_sha256=hashlib.sha256(original.encode()).hexdigest(),
+                patched_sha256=hashlib.sha256(patched.encode()).hexdigest())
+
+
 def nonnegative_int(value: str) -> int:
     number = int(value)
     if number < 0:
@@ -103,6 +117,7 @@ def main() -> None:
     for name in ("robodojo", "luban_direct"):
         shutil.copytree(args.reference / "hybrid_rollout" / name, snapshot / "hybrid_rollout" / name,
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    rpc_idle_patch = patch_rpc_idle_wait(snapshot / 'hybrid_rollout/robodojo/robodojo_server/rpc.py')
     harness_source = output / "harness_source"
     (harness_source / "agent_action").mkdir(parents=True)
     for name in ("__init__.py", "direct.py", "direct_worker.py", "bridge.py", "serve.py"):
@@ -112,6 +127,7 @@ def main() -> None:
     shutil.copy2(args.config, output / "base_model.json")
     manifest = checkpoint_manifest(config)
     manifest.update(kind="development_direct_chain_validation", task=args.task, layout_id=args.seed, eval_seed=args.eval_seed,
+                    rpc_idle_patch=rpc_idle_patch,
                     max_decisions=args.max_decisions, max_control_steps=args.max_control_steps,
                     max_total_tokens=args.max_total_tokens,
                     extra_budget_caps=dict(decisions=args.max_decisions or None,

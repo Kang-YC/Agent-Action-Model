@@ -94,3 +94,11 @@ launcher 本次及时检测到 `Simulator exited 0 while controller was running`
 使用本轮冻结 `reference_source` 的真实 RPC serve/protocol，在本机回环 TCP 上连接后不发包，仅将测试连接的 900 秒 timeout 缩短为 0.1 秒；不启动仿真、不加载模型、不修改参考源码。测试成功复现 serve 正常返回并记录 `controller_disconnect`。结合 server finally 无条件 `_write_summary('server_close')`，确认空闲超时可被现有日志掩盖成 server_close。脚本与结果位于 `artifacts/a-line-followup-20261028/reproduce-idle.py` 和 `idle-reproduction.log`。该复现确认机制存在；第三轮具体关闭异常没有独立异常日志，仍不能声称已捕获其原始 timeout 异常。
 
 旧第二轮离线验收报告也已生成：`artifacts/a-line-followup-20261028/acceptance-previous-02.json`。顶层汇总缺失时仅标 incomplete，不据此推断其原主机当前仍在运行。
+
+## 修复推理期间 RPC 空闲退出（2026-10-28）
+
+A 线新运行仅在自己的 reference_source 快照中，为 RPC 每次读请求前加入 `select.select` 等待可读数据。模型思考期间不触发空闲截止；一旦开始传包，仍保留原 900 秒 socket 超时。连接 EOF 仍正常退出，launcher 继续监测必需服务并清理所属进程。原参考仓库、B 线和旧运行快照不变；manifest 登记补丁类型、原始/修改后哈希，reference_sources 记录实际使用源码。动作协议与原生控制步预算不变。
+
+真实回环 socket 测试将传输超时缩短到 0.05 秒，验证空闲 0.15 秒后仍可收发合法请求；只发送部分包则仍会超时退出。与自动验收、案例准备及预算检查合计 22 项通过。
+
+续跑使用新的 episode，不具备从旧仿真 117 步恢复的条件。07:52 UTC 两张卡核查：GPU 0 剩 7487 MiB，GPU 1 剩 9283 MiB；B 线固定占用 GPU 1 模型与仿真，单仿真约 7189 MiB。按用户要求选择剩余更多的 GPU 1 承载新的 A 线仿真，模型复用 GPU 0 的 19230 服务；不停止其他运行。新目录预定为 `artifacts/a-stack-bowls-p02080-04/`，独立仿真端口 19124、桥接端口 19231；启动记录与日志使用同名 `.launch.json` / `.launch.log`。GPU 共享情况作为本轮基础设施差异记录；未生成实际轨迹前不称为已跑通。
