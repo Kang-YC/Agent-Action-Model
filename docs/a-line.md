@@ -39,3 +39,11 @@ bash scripts/run_a_stack_bowls.sh \
 服务入口见 [固定模型推理服务](model-service.md)，基础闭环证据见 [本地 base 推理链路](base-inference.md)。
 
 旧 episode 的错误时间线、成本和证据见 [叠碗首次运行复盘](experiments/a-stack-bowls-01.md)。
+
+## 继续核查（2026-10-28）
+
+第二次运行的共享产物已停在 330/800 步：仿真 `server_close`、原生评分无效，总汇总缺失。控制器在仿真关闭后仍重复读取观测；成本累计约 2276 万 token。视频已验证为 331 帧。详细证据与限制见 [第二次运行核查](experiments/a-stack-bowls-p02152-02.md)。当前主机为 `cnwlb-a100-p02080`，不能将原主机进程登记视为本机正在运行的服务。
+
+已补上 launcher 的必需进程退出监测，避免无墙钟上限时仿真退出后控制器继续消耗推理。当前主机 GPU 0 已启动固定模型服务，登记独立保存在 `artifacts/base-service-p02080/`，未修改其他主机的服务登记。一次性续跑进程等待该服务健康检查（包括 checkpoint 一致性）通过后，在 GPU 1 启动 `artifacts/a-stack-bowls-p02080-03/`，保持 800 原生控制步、关闭额外预算；不恢复或覆盖旧 episode。等待最长一小时，服务退出或超时即失败，不自动重试。
+
+续跑实时状态见 `artifacts/a-line-followup-20261028/state.json`，启动器和日志也保存在该目录；只有状态变为 running 且新目录产出实际轨迹后才算 episode 已启动。开发链路尚未通过完整验收，50 案例正式评测仍未启动。
