@@ -10,7 +10,7 @@ import time
 
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.exceptions import LimitsExceeded
-from agent_action.b_model import BasePythonModel
+from agent_action.b_model import BasePythonModel, ContextLimitExceeded
 from agent_action.toolset import RobotEnvironment
 from agent_action.b_report import summarize
 
@@ -61,16 +61,18 @@ def main():
     )
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--port", type=int, default=19123)
-    p.add_argument("--max-turns", type=int, default=10)
+    p.add_argument("--max-turns", type=int, default=10, help="Model call limit; 0 disables")
     p.add_argument("--max-control-steps", type=int, default=10)
     p.add_argument("--max-total-tokens", type=int, default=200000)
-    p.add_argument("--wall-seconds", type=int, default=1800)
+    p.add_argument("--wall-seconds", type=int, default=1800, help="Agent wall limit; 0 disables")
+    p.add_argument("--history-turns", type=int, default=0,
+                   help="Explicit recent text exchanges to retain; 0 keeps all text")
     a = p.parse_args()
     if (
-        min(a.max_turns, a.max_control_steps, a.wall_seconds) <= 0
-        or a.max_total_tokens < 0
+        a.max_control_steps <= 0
+        or min(a.max_turns, a.wall_seconds, a.max_total_tokens, a.history_turns) < 0
     ):
-        p.error("Budgets must be positive")
+        p.error("Control steps must be positive; other budgets must be non-negative")
     output = a.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     model_config = json.loads(a.config.read_text())
@@ -78,7 +80,7 @@ def main():
     manifest = dict(
         arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(a).items()},
         model=model_config,
-        history="H0_latest_images_all_text",
+        history="H0_latest_images_all_text" if not a.history_turns else f"H0_latest_images_recent_{a.history_turns}_turns",
         mini_revision=subprocess.check_output(
             ["git", "-C", "third_party/mini-swe-agent", "rev-parse", "HEAD"], text=True
         ).strip(),
@@ -98,7 +100,7 @@ def main():
     started = time.monotonic()
     report = dict(status="infrastructure_error")
     try:
-        model = BasePythonModel(a.config, output)
+        model = BasePythonModel(a.config, output, history_turns=a.history_turns)
         with RobotEnvironment(
             toolset="agent_action.toolset:build_registry",
             context_factory="agent_action.toolset:RobotContext",
@@ -165,6 +167,9 @@ def main():
                     model_calls=agent.n_calls,
                     total_tokens=agent.tokens(),
                 )
+            except ContextLimitExceeded:
+                report["status"] = "context_limit"
+                raise
             finally:
                 reason = {
                     "control_budget": "control_step_budget",
@@ -176,7 +181,7 @@ def main():
     except Exception as error:
         report.update(
             controller_status=report["status"],
-            status="infrastructure_error",
+            status="context_limit" if isinstance(error, ContextLimitExceeded) else "infrastructure_error",
             error_type=type(error).__name__,
             error=str(error),
         )

@@ -1,0 +1,18 @@
+{
+  "route": "B: local base + mini-swe-agent persistent Python",
+  "task": "classify_objects",
+  "eval_seed": 0,
+  "layout_id": 0,
+  "native_control_horizon": 1100,
+  "max_control_steps": 1100,
+  "max_turns": 0,
+  "max_total_tokens": 0,
+  "wall_seconds": 0,
+  "budget_protocol": "native_control_steps_only",
+  "history": "H0_latest_images_all_text",
+  "model_config": "configs/base_model.json",
+  "purpose": "Development episode; this layout has been used for debugging and is not held-out evaluation",
+  "no_action_rewriting": true,
+  "no_automatic_action_retry": true,
+  "no_episode_reset": true
+}

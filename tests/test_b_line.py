@@ -55,6 +55,33 @@ def test_native_terminal_stops_before_another_model_request(tmp_path):
     assert caught.value.messages[0]["extra"]["exit_status"] == "native_terminal"
 
 
+def test_native_only_budget_keeps_querying_until_control_horizon(tmp_path):
+    from types import SimpleNamespace
+
+    packet = tmp_path / "observation_0001"
+    packet.mkdir()
+    observation = dict(rollout_finished=False, step_id=1099)
+    (packet / "observation.json").write_text(json.dumps(observation))
+    response = dict(role="assistant", content="next action")
+    model = SimpleNamespace(query=lambda messages: response)
+    agent = RobotAgent(model, None, step_limit=0, wall_time_limit_seconds=0,
+                       system_template="", instance_template="{{ task }}")
+    agent.robot_output = tmp_path
+    agent.control_limit = 1100
+    agent.token_limit = 0
+    agent.n_calls = 100000
+    agent._start_time = 0
+    agent.tokens = lambda: 1000000000
+    assert agent.query() == response
+    assert agent.n_calls == 100001
+    observation["step_id"] = 1100
+    (packet / "observation.json").write_text(json.dumps(observation))
+    with pytest.raises(LimitsExceeded) as caught:
+        agent.query()
+    assert caught.value.messages[0]["extra"]["exit_status"] == "control_budget"
+    assert agent.n_calls == 100001
+
+
 @pytest.mark.parametrize(
     "step, tokens, expected", [(10, 0, "control_budget"), (1, 100, "token_budget")]
 )

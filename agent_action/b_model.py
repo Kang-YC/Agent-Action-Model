@@ -10,13 +10,21 @@ import urllib.error
 from pathlib import Path
 
 from agent_action.client import BaseModelClient
+from agent_action.b_history import select_history
 from minisweagent.models.litellm_python_model import LitellmPythonModel
 
 
-class BasePythonModel(LitellmPythonModel):
-    abort_exceptions = [Exception]
+class ContextLimitExceeded(RuntimeError):
+    """The fixed model's context limit rejected this request; never retry it."""
 
-    def __init__(self, config_path: Path, output: Path):
+
+class BasePythonModel(LitellmPythonModel):
+    abort_exceptions = [BaseException]
+
+    def __init__(self, config_path: Path, output: Path, *, history_turns: int = 0):
+        if history_turns < 0:
+            raise ValueError("History turns must be non-negative")
+        self.history_turns = history_turns
         self.client = BaseModelClient(config_path)
         from agent_action.service import health
 
@@ -31,6 +39,7 @@ class BasePythonModel(LitellmPythonModel):
         )
 
     def _prepare_messages_for_api(self, messages):
+        messages, self.history_selection = select_history(messages, getattr(self, "history_turns", 0))
         # H0 retains text history but only the latest observation's images.
         latest = max(
             (
@@ -60,6 +69,7 @@ class BasePythonModel(LitellmPythonModel):
 
         self.index += 1
         stem = self.output / f"request_{self.index:04d}"
+        Path(str(stem) + ".history.json").write_text(json.dumps(self.history_selection, indent=2))
         with gzip.open(str(stem) + ".input.json.gz", "wt") as stream:
             json.dump(
                 dict(
@@ -107,4 +117,7 @@ class BasePythonModel(LitellmPythonModel):
                     )
                     + "\n"
                 )
+            if (isinstance(error, urllib.error.HTTPError) and error.code == 400
+                    and "maximum context length" in detail.lower()):
+                raise ContextLimitExceeded(detail) from error
             raise

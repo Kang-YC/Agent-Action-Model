@@ -35,6 +35,8 @@ def summarize(output: Path, *, status: str, sim_output: Path | None = None) -> d
     classification = (
         "native_completed"
         if valid
+        else "context_exhausted"
+        if status == "context_limit"
         else "budget_censored"
         if status in budget_statuses
         else "model_stopped"

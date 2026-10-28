@@ -1,0 +1,21 @@
+{
+  "route": "B: local base + mini-swe-agent persistent Python",
+  "task": "stack_bowls",
+  "eval_seed": 0,
+  "layout_id": 0,
+  "native_control_horizon": 800,
+  "max_control_steps": 800,
+  "max_turns": 0,
+  "max_total_tokens": 0,
+  "wall_seconds": 0,
+  "budget_protocol": "native_control_steps_only",
+  "history": "H0_latest_images_recent_8_turns",
+  "history_turns": 8,
+  "history_policy": "Initial instruction + latest observation exchange + most recent 8 complete exchanges; persistent Python state; omitted message hashes audited",
+  "model_config": "configs/base_model.json",
+  "comparison_a_run": "artifacts/a-stack-bowls-p02080-03",
+  "purpose": "Paired development comparison with A; matched task, layout, eval seed, checkpoint and native horizon; harness and history strategies differ",
+  "no_action_rewriting": true,
+  "no_automatic_action_retry": true,
+  "no_episode_reset": true
+}

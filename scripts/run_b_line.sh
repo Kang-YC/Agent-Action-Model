@@ -13,6 +13,7 @@ b_python="${B_LINE_PYTHON:-/tmp/agent-action-b-venv/bin/python}"
 export PYTHONPATH="${repo_root}:${repo_root}/third_party/mini-swe-agent/src:${repo_root}/../GPT-as-Policy${PYTHONPATH:+:${PYTHONPATH}}"
 export MSWEA_GLOBAL_CONFIG_DIR="${output}/mini-config"
 export LITELLM_LOCAL_MODEL_COST_MAP=True
+export ROBODOJO_ROOT="${ROBODOJO_ROOT:-${ROBODOJO_SHARED_ROOT:-/dataset_rc_b1/kangyc1@xiaopeng.com/robodojo_shared}/RoboDojo}"
 mkdir "${output}/sim"
 bash scripts/start_native.sh --task "${task}" --port "${port}" --output "${output}/sim" > "${output}/sim.log" 2>&1 &
 sim_pid=$!

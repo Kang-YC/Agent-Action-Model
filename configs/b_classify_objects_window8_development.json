@@ -1,0 +1,20 @@
+{
+  "route": "B: local base + mini-swe-agent persistent Python",
+  "task": "classify_objects",
+  "eval_seed": 0,
+  "layout_id": 0,
+  "native_control_horizon": 1100,
+  "max_control_steps": 1100,
+  "max_turns": 0,
+  "max_total_tokens": 0,
+  "wall_seconds": 0,
+  "budget_protocol": "native_control_steps_only",
+  "history": "H0_latest_images_recent_8_turns",
+  "model_config": "configs/base_model.json",
+  "purpose": "Development of explicit text window after all-text context exhaustion; distinct harness configuration; not held-out evaluation",
+  "no_action_rewriting": true,
+  "no_automatic_action_retry": true,
+  "no_episode_reset": true,
+  "history_turns": 8,
+  "history_policy": "Initial instruction + latest observation exchange + most recent 8 complete exchanges; persistent Python state; omitted message hashes audited"
+}
