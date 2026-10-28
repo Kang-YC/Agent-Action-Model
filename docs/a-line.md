@@ -159,3 +159,9 @@ GPU 1 在仿真加载后尚余 3404 MiB，未见显存分配或场景损坏错�
 ### 首批案例数最终确认
 
 用户进一步明确“每个任务先1个案例即可”。首批最终为2任务×1例，共2例，固定选择各任务冻结清单中的首个案例：classify_objects__standard__g0__l0 与 put_bottles_into_dustbin__standard__g0__l0。分别使用1100和700原生控制步。并不执行此前计划的10例；也不将每任务单例结果冒充论文5例成绩。执行器--cases-per-task默认1，批次启动时也显式指定1，选例在运行前冻结，不根据新模型结果更换。
+
+### 两案例队列已启动等待
+
+2026-10-28 11:20 UTC，批次PID613946已启动，状态为 waiting_development_run：2任务、2案例、0已尝试，等待第四轮（当时185步）受控收尾。不是已开始执行官方案例。网页首页已通过API核验显示该队列及2例范围。
+
+harness工作树冻结在 bf7edbab9fb09e3f7ca3ccfc41eaec629a94bd42；reference工作树固定公开提交8f3d362并保留必要本地适配补丁和Luban目录，逐例再恢复正式原提示/原循环。Codex 0.164.0及code-mode host二进制已独立复制并记录哈希。来源见批次source-manifest.json，精确的两个case_id见execution-plan.json；状态与汇总分别为state.json、results.json，日志batch.log。启动参数显式指定 --cases-per-task 1，不会在这批中自动补齐另外8例或网页剩余任务。
