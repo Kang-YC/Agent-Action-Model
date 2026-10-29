@@ -99,3 +99,19 @@ def test_400_step_development_stop_is_censored_not_native_failure():
     result = dict(step_id=400, reason='control_step_budget', success=False)
     native = dict(complete=False, native_control_steps=400, native_step_limit=800)
     assert task_outcome(result, native, 400) == 'budget_censored'
+
+
+def test_documented_finish_allows_simulator_to_exit_before_worker(tmp_path):
+    from unittest.mock import Mock
+    marker = tmp_path / 'termination.json'
+    marker.write_text('{"reason":"operator_interrupt"}')
+    worker = Mock()
+    worker.poll.return_value = None
+    worker.wait.return_value = 1
+    sim = Mock()
+    sim.poll.return_value = 0
+    assert wait_for_controller(worker, {'Simulator': sim}, None, marker) == 1
+    worker.wait.assert_called_once_with(timeout=30)
+    sim.poll.return_value = 2
+    with pytest.raises(RuntimeError):
+        wait_for_controller(worker, {'Simulator': sim}, None, marker)

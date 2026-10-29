@@ -36,6 +36,15 @@ def prepare_request(body: dict, config: dict, cache: dict) -> tuple[dict, dict]:
     system = [m["content"] for m in request["messages"] if m["role"] == "system"]
     request["messages"] = ([dict(role="system", content="\n\n".join(system))] if system else []) + [
         m for m in request["messages"] if m["role"] != "system"]
+    merged = []
+    for message in request['messages']:
+        if (merged and message['role'] == 'assistant' and message.get('tool_calls')
+                and not message.get('content') and merged[-1]['role'] == 'assistant'
+                and not merged[-1].get('tool_calls')):
+            merged[-1].update({k: v for k, v in message.items() if k != 'content'})
+        else:
+            merged.append(message)
+    request['messages'] = merged
     request.update(temperature=config["temperature"], top_p=config["top_p"],
                    chat_template_kwargs={"enable_thinking": config["enable_thinking"]})
     request["max_completion_tokens"] = min(request["max_completion_tokens"], config["max_completion_tokens"])

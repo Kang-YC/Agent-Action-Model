@@ -49,7 +49,7 @@ def episode_wait_timeout(wall_seconds: int, elapsed: float) -> float | None:
     return max(1, wall_seconds - elapsed) if wall_seconds else None
 
 
-def wait_for_controller(worker, services: dict, timeout: float | None) -> int:
+def wait_for_controller(worker, services: dict, timeout: float | None, termination_path=None) -> int:
     """Stop inference when a required service exits, even without a wall cap."""
     deadline = time.monotonic() + timeout if timeout is not None else None
     while True:
@@ -59,6 +59,12 @@ def wait_for_controller(worker, services: dict, timeout: float | None) -> int:
         for name, service in services.items():
             code = service.poll()
             if code is not None:
+                # finish() closes the simulator before policy.close() returns.
+                if name == 'Simulator' and code == 0 and termination_path and termination_path.exists():
+                    try:
+                        return worker.wait(timeout=30)
+                    except subprocess.TimeoutExpired:
+                        pass
                 raise RuntimeError(f"{name} exited {code} while controller was running; inspect logs")
         if deadline is not None and time.monotonic() >= deadline:
             raise subprocess.TimeoutExpired(worker.args, timeout)
@@ -142,6 +148,9 @@ def main() -> None:
     if args.prompt_protocol == 'published_reference':
         from agent_action.a_protocol import align_published_policy
         prompt_protocol = align_published_policy(snapshot, args.reference)
+    if args.prompt_protocol == 'calibrated_development':
+        from agent_action.a_protocol import guard_development_progress
+        prompt_protocol['progress_guard'] = guard_development_progress(snapshot)
     harness_source = output / "harness_source"
     (harness_source / "agent_action").mkdir(parents=True)
     for name in ("__init__.py", "direct.py", "direct_worker.py", "bridge.py", "serve.py", "a_protocol.py"):
@@ -232,7 +241,8 @@ def main() -> None:
             "--seed", str(args.seed), "--sim-port", str(args.sim_port), "--max-decisions", str(args.max_decisions),
             "--max-control-steps", str(args.max_control_steps)])
         code = wait_for_controller(worker, {"Simulator": sim, "Model bridge": bridge},
-                                   episode_wait_timeout(args.wall_seconds, time.monotonic()-started))
+                                   episode_wait_timeout(args.wall_seconds, time.monotonic()-started),
+                                   output / "controller/termination.json")
         if code:
             summary["status"] = "controller_error"
             raise RuntimeError(f"Reference controller exited {code}; inspect logs")
@@ -267,6 +277,12 @@ def main() -> None:
             progress = output / "controller/progress.json"
             if progress.exists():
                 summary["last_acknowledged_control_step"] = json.loads(progress.read_text())["step_id"]
+        termination_path = output / "controller/termination.json"
+        if termination_path.exists():
+            termination = json.loads(termination_path.read_text())
+            summary['controller_termination'] = termination
+            if summary.get('status') == 'controller_error' and termination.get('reason') == 'operator_interrupt':
+                summary['status'] = 'operator_interrupted'
         write(output / "summary.json", summary)
     print(json.dumps(summary, ensure_ascii=False), flush=True)
 

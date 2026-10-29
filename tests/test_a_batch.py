@@ -19,7 +19,7 @@ def test_previously_attempted_failed_and_unfinished_cases_are_never_retried():
 
 def test_native_failure_continues_but_infrastructure_failure_halts():
     assert outcome_policy(dict(status='completed', task_outcome='failure_native'), 0) == 'continue'
-    assert outcome_policy(dict(status='controller_error'), 1) == 'continue'
+    assert outcome_policy(dict(status='controller_error'), 1) == 'halt_controller_error'
     assert outcome_policy(dict(status='simulator_error'), 1) == 'halt_infrastructure'
     assert outcome_policy(dict(status='infrastructure_error'), 1) == 'halt_infrastructure'
     assert outcome_policy(None, 1) == 'halt_missing_summary'

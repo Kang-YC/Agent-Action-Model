@@ -49,3 +49,28 @@ def align_published_policy(snapshot: Path, reference: Path) -> dict:
         remaining_differences=['specified base model and local API adapter', '32768-token model context',
             'provider-specific xhigh reasoning unavailable', 'isolated local Codex tool configuration',
             'model identity text substituted; runtime workspace paths differ', 'RPC idle-wait infrastructure fix'])
+
+
+def guard_development_progress(snapshot: Path, timeout_seconds=900) -> dict:
+    """Bound physical inactivity independently of image/shell/model activity."""
+    path = snapshot / RUN_PATH
+    source = path.read_text()
+    marker = '        while True:\n            remaining = deadline - time.monotonic()'
+    if source.count(marker) != 1 or 'stalled_turns = 0 if turn_control_progress else stalled_turns + 1' not in source:
+        raise ValueError('Unknown development progress loop; refusing an unchecked patch')
+    replacement = f'''        progress_tick = rollout.tick
+        progress_deadline = time.monotonic() + {timeout_seconds}
+        while True:
+            if rollout.tick != progress_tick:
+                progress_tick = rollout.tick
+                progress_deadline = time.monotonic() + {timeout_seconds}
+            if time.monotonic() >= progress_deadline:
+                raise RuntimeError('No physical control progress within {timeout_seconds} seconds')
+            remaining = min(deadline, progress_deadline) - time.monotonic()'''
+    patched = source.replace(marker, replacement)
+    ast.parse(patched)
+    path.write_text(patched)
+    return dict(no_control_progress_seconds=timeout_seconds, max_stalled_turns=12,
+                reset_on='acknowledged_control_step',
+                original_sha256=hashlib.sha256(source.encode()).hexdigest(),
+                patched_sha256=hashlib.sha256(patched.encode()).hexdigest())

@@ -47,8 +47,12 @@ def outcome_policy(summary, returncode):
         return 'halt_missing_summary'
     if summary.get('status') in ('infrastructure_error', 'simulator_error'):
         return 'halt_infrastructure'
-    if returncode and summary.get('status') != 'controller_error':
+    if summary.get('status') == 'controller_error':
+        return 'halt_controller_error'
+    if returncode:
         return 'halt_launcher_error'
+    if summary.get('status') != 'completed':
+        return 'halt_incomplete'
     return 'continue'
 
 

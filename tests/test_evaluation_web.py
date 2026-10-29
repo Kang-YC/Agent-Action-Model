@@ -164,3 +164,12 @@ def test_move_to_coordinates_and_before_after_cameras_are_exposed(app):
     assert call['observations']['before']['step_id'] == 0
     assert call['observations']['after']['step_id'] == 5
     assert len(call['observations']['after']['images']) == 3
+
+
+def test_no_progress_stop_is_not_budget_completion(app):
+    run = app.artifacts / 'a-test'
+    write(run / 'budget_adjustment.json', dict(status='stop_sent', reason='model_no_action_loop'))
+    row = app.summary('a-test', run)
+    assert row['status'] == 'incomplete'
+    assert row['raw_status'] == 'model_no_action_loop'
+    assert row['native_score'] is None

@@ -69,3 +69,17 @@ def test_terminal_guard_delivers_final_receipt_before_stopping():
     with pytest.raises(RolloutFinished):
         guarded.reply(2, {"step": 6, "finished": True})
     assert receipts[-1] == (2, {"step": 6, "finished": True})
+
+
+def test_assistant_text_and_call_share_one_chat_message():
+    cfg = config()
+    body = dict(model=cfg['served_model_name'], input=[
+        dict(role='assistant', content='I will move.'),
+        dict(type='function_call', name='step', call_id='c1', arguments='{"x":1}'),
+        dict(type='function_call_output', call_id='c1', output='ack')],
+        tools=[dict(type='function', name='step', parameters=dict(type='object'))])
+    request, _ = prepare_request(body, cfg, {})
+    assert len(request['messages']) == 2
+    assert request['messages'][0]['content'] == 'I will move.'
+    assert request['messages'][0]['tool_calls'][0]['id'] == 'c1'
+    assert request['messages'][1]['tool_call_id'] == 'c1'

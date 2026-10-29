@@ -128,7 +128,11 @@ class Observatory:
             raw_status, state = 'unverified', 'unknown'
         adjustment = read(run / 'budget_adjustment.json')
         if adjustment and adjustment.get('status') == 'stop_sent' and not alive:
-            raw_status, state = 'user_development_budget_stop', 'budget'
+            reason = adjustment.get('reason')
+            if reason == 'user_reduced_development_budget_to_400':
+                raw_status, state = 'user_development_budget_stop', 'budget'
+            else:
+                raw_status, state = reason or 'operator_interrupt', 'incomplete'
         usage = read(c / 'token_usage.json', {}).get('usage', {}).get('total', {})
         tokens = usage.get('totalTokens') or (summary or {}).get('total_tokens') or 0
         model_info = manifest.get('model', {})

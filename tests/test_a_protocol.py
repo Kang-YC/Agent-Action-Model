@@ -57,3 +57,25 @@ def test_unrecognized_adapter_is_rejected_without_writing(tmp_path):
     with pytest.raises(ValueError, match='Unknown local adapter'):
         align_published_policy(tmp_path, REFERENCE)
     assert worker.read_text() == 'unexpected source'
+
+
+def test_image_activity_cannot_extend_physical_progress_deadline(tmp_path):
+    from agent_action.a_protocol import guard_development_progress
+    path = tmp_path / RUN_PATH
+    path.parent.mkdir(parents=True)
+    path.write_text('''def run(rollout):
+        deadline = 10000
+        # stalled_turns = 0 if turn_control_progress else stalled_turns + 1
+        while True:
+            remaining = deadline - time.monotonic()
+            time.now += 1
+            deadline = time.now + 10000
+''')
+    clock = SimpleNamespace(now=0)
+    clock.monotonic = lambda: clock.now
+    guard_development_progress(tmp_path, timeout_seconds=3)
+    scope = dict(time=clock)
+    exec(compile(path.read_text(), str(path), 'exec'), scope)
+    with pytest.raises(RuntimeError, match='No physical control progress'):
+        scope['run'](SimpleNamespace(tick=0))
+    assert clock.now == 3
