@@ -195,3 +195,5 @@ harness工作树冻结在 bf7edbab9fb09e3f7ca3ccfc41eaec629a94bd42；reference�
 推理适配器现在支持显式top_k、repetition_penalty、parallel_tool_calls；未配置时保持既有行为。Direct支持显式auto_compact_token_limit，并在manifest记录最终压缩阈值，启动前检查其小于上下文窗口。full-access等运行权限保留，共享base配置未修改。相关16项测试通过。
 
 轻量实验目录 `artifacts/a-thinking-probe-20261029/`：选取分类案例的四元数拒绝后和位移拒绝后两个真实请求，各测试thinking关闭／开启；共4次串行请求，每次最多1024输出token，温度0，其余消息和图像固定，使用当前消息合并后的适配器。返回动作只做离线参数校验，不执行任何机器人动作。原始输入、输出、计划和逐请求状态分别保存；1024上限下的截断仅说明该预算未完成输出，不能当作完整能力失败。共享服务排队计入墙钟，不能据此推断纯GPU生成速度。最终结果以该目录state.json/results.json为准。
+
+本轮轻量对照未取得能力结论：首个thinking=false请求等待600.1秒后超时；脚本随即发出的thinking=true请求被主动取消，剩余两次未发送，共2次尝试、0份成功回包，token成本未知。状态记stopped_inconclusive，未执行机器人动作。已补充探针脚本的请求异常即停止逻辑，防止服务异常时继续发送后续样本。现有证据不能把该超时归因于thinking或模型能力，需先核查服务调度／请求处理。
