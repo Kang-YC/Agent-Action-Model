@@ -83,3 +83,16 @@ def test_assistant_text_and_call_share_one_chat_message():
     assert request['messages'][0]['content'] == 'I will move.'
     assert request['messages'][0]['tool_calls'][0]['id'] == 'c1'
     assert request['messages'][1]['tool_call_id'] == 'c1'
+
+
+def test_explicit_sampling_and_parallel_controls():
+    cfg = dict(config(), enable_thinking=True, temperature=0.2, top_p=0.9,
+               top_k=20, repetition_penalty=1.05, parallel_tool_calls=True,
+               max_completion_tokens=1024)
+    body = dict(model=cfg['served_model_name'], input='test',
+                tools=[dict(type='function', name='step', parameters=dict(type='object'))])
+    request, _ = prepare_request(body, cfg, {})
+    for key in ('temperature', 'top_p', 'top_k', 'repetition_penalty', 'parallel_tool_calls'):
+        assert request[key] == cfg[key]
+    assert request['chat_template_kwargs']['enable_thinking'] is True
+    assert request['max_completion_tokens'] == 1024

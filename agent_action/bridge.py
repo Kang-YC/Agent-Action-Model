@@ -47,6 +47,11 @@ def prepare_request(body: dict, config: dict, cache: dict) -> tuple[dict, dict]:
     request['messages'] = merged
     request.update(temperature=config["temperature"], top_p=config["top_p"],
                    chat_template_kwargs={"enable_thinking": config["enable_thinking"]})
+    for key in ('top_k', 'repetition_penalty'):
+        if key in config:
+            request[key] = config[key]
+    if request.get('tools'):
+        request['parallel_tool_calls'] = config.get('parallel_tool_calls', False)
     request["max_completion_tokens"] = min(request["max_completion_tokens"], config["max_completion_tokens"])
     return request, mapping
 

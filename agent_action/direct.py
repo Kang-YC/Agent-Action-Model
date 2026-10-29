@@ -132,6 +132,9 @@ def main() -> None:
         verify_assets(panel, args.robodojo, [case])
         evaluation_identity = selected['identity']
     config = json.loads(args.config.read_text())
+    compact_limit = config.get('auto_compact_token_limit', config['max_model_len'] * 3 // 4)
+    if type(compact_limit) is not int or not 0 < compact_limit < config['max_model_len']:
+        raise ValueError('auto_compact_token_limit must be positive and below max_model_len')
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     (output / "sim").mkdir()
@@ -176,6 +179,7 @@ def main() -> None:
                     inference_config=config, codex_version=subprocess.check_output([str(args.codex), "--version"], text=True).strip(),
                     codex_sha256=hashlib.sha256(args.codex.read_bytes()).hexdigest(),
                     effective_codex_context_window=config["max_model_len"],
+                    effective_codex_auto_compact_token_limit=compact_limit,
                     harness_commit=subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
                     harness_sources={str(p.relative_to(harness_source)): hashlib.sha256(p.read_bytes()).hexdigest()
                                      for p in harness_source.rglob("*") if p.is_file()},
@@ -190,7 +194,7 @@ def main() -> None:
     wrapper = output / "codex-with-local-context.sh"
     wrapper.write_text("#!/bin/sh\nif [ \"${1:-}\" = app-server ]; then\n  exec " + shlex.quote(str(args.codex.resolve())) +
         ' "$@" -c model_context_window=' + str(config["max_model_len"]) +
-        " -c model_auto_compact_token_limit=" + str(config["max_model_len"]*3//4) +
+        " -c model_auto_compact_token_limit=" + str(compact_limit) +
         "\nfi\nexec " + shlex.quote(str(args.codex.resolve())) + ' "$@"\n')
     wrapper.chmod(0o755)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join(map(str, (output / "harness_source", snapshot))),
