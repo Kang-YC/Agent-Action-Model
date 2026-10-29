@@ -165,3 +165,13 @@ GPU 1 在仿真加载后尚余 3404 MiB，未见显存分配或场景损坏错�
 2026-10-28 11:20 UTC，批次PID613946已启动，状态为 waiting_development_run：2任务、2案例、0已尝试，等待第四轮（当时185步）受控收尾。不是已开始执行官方案例。网页首页已通过API核验显示该队列及2例范围。
 
 harness工作树冻结在 bf7edbab9fb09e3f7ca3ccfc41eaec629a94bd42；reference工作树固定公开提交8f3d362并保留必要本地适配补丁和Luban目录，逐例再恢复正式原提示/原循环。Codex 0.164.0及code-mode host二进制已独立复制并记录哈希。来源见批次source-manifest.json，精确的两个case_id见execution-plan.json；状态与汇总分别为state.json、results.json，日志batch.log。启动参数显式指定 --cases-per-task 1，不会在这批中自动补齐另外8例或网页剩余任务。
+
+## 第四轮收尾与两案例实际执行（2026-10-29）
+
+第四轮最后一次控制步更新为 2026-10-28 18:00 UTC，停在372步。之后仍反复读取观测114、查看同一组三图并进行上下文压缩，模型请求继续消耗 token。2026-10-29 02:21 UTC 核对控制器身份及无活动动作后，通过 SIGTERM 走既有 finish/close 路径结束；`budget_adjustment.json` 明确记录 `model_no_action_loop`、实际372步和原请求400步。此次没有达到预算守护的395步触发点，也不记为原生任务失败。
+
+控制器原始 termination 为 operator_interrupt；启动器因仿真先于控制器退出而写 infrastructure_error。两份原始记录均保留，不能据该顶层标签推断此次是自发仿真故障。只读最终验收位于 `artifacts/a-line-followup-20261028/run04-monitor/final-acceptance.json`：114份执行数组、372控制步、115份图像观测一致；视频373帧可读取，累计51,597,280 token。工具闭环通过，正常终止未通过，原生success/score为空；396次压缩事件不代表记忆保真。
+
+旧批次在0/2时因上述顶层异常标签停止。续跑批次为 `artifacts/a-published-batch-20261029-two-case-resume/`，02:22 UTC启动，复用旧批次冻结的harness/reference/Codex与原定两个case_id，未更换案例或自动重试。身份、预算和发布协议已核对。
+
+分类 `classify_objects__standard__g0__l0--attempt-001` 于约02:31 UTC异常结束，仅执行1/1100步，累计149,467 token；控制器错误为 `Codex ended repeatedly before completing the episode`。日志显示模型在动作拒绝后多次结束文本回合，发布事件循环触发保护退出。结果为needs_review，原生成绩保持空值。瓶子入桶 `put_bottles_into_dustbin__standard__g0__l0--attempt-001` 随后启动，原生预算700步，已收到初始观测并发出工具调用；运行中不记录最终成绩。续跑状态、两例汇总和原始日志均在新批次目录，后续按实际终局核查。
