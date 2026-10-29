@@ -175,3 +175,9 @@ harness工作树冻结在 bf7edbab9fb09e3f7ca3ccfc41eaec629a94bd42；reference�
 旧批次在0/2时因上述顶层异常标签停止。续跑批次为 `artifacts/a-published-batch-20261029-two-case-resume/`，02:22 UTC启动，复用旧批次冻结的harness/reference/Codex与原定两个case_id，未更换案例或自动重试。身份、预算和发布协议已核对。
 
 分类 `classify_objects__standard__g0__l0--attempt-001` 于约02:31 UTC异常结束，仅执行1/1100步，累计149,467 token；控制器错误为 `Codex ended repeatedly before completing the episode`。日志显示模型在动作拒绝后多次结束文本回合，发布事件循环触发保护退出。结果为needs_review，原生成绩保持空值。瓶子入桶 `put_bottles_into_dustbin__standard__g0__l0--attempt-001` 随后启动，原生预算700步，已收到初始观测并发出工具调用；运行中不记录最终成绩。续跑状态、两例汇总和原始日志均在新批次目录，后续按实际终局核查。
+
+### 两例提前退出的适配核对（2026-10-29）
+
+逐份核对实际模型输入、上游回包、桥接输出及Codex turn完成记录，机器报告为 `artifacts/a-published-batch-20261029-two-case-resume/adapter-audit.json`。分类10份模型回包含7次工具调用，瓶子15份回包含11次工具调用；调用数量、call_id与原始arguments转换一致，没有发现桥接丢工具调用。两例各有3次普通请求返回 `finish_reason=stop`、仅文字且无tool_calls；对应输入均提供6个工具且tool_choice=auto。Codex均记录3个completed回合、error为空。瓶子另有一次无工具的压缩摘要回包，它不计入这3次普通回合。
+
+两例实际运行的 `skill/run.py` 字节均与固定公开提交8f3d362一致。`continuations` 在episode开始设0，每次任务未完成的turn/completed后加1，允许2次续接，第3次触发 `Codex ended repeatedly before completing the episode`；中间实际执行动作不会清零。退出因此源于上游文本结束行为与发布控制器累计续接上限的组合，未发现本地桥接将已有工具调用误变为结束回合的证据。该核查不解释模型为何选择文本结束，也不能单独验证vLLM生成前的原始token解析；不据此扩大到全面适配正确性结论。旧结果保留，不自动重跑或修改冻结协议。
