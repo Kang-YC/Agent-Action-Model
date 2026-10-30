@@ -10,7 +10,7 @@
   "wall_seconds": 0,
   "budget_protocol": "development_control_step_cap",
   "purpose": "Tool-loop development validation capped at 400 steps; task success is not required",
-  "model_config": "configs/base_model.json",
+  "model_config": "configs/a_model_compiled.json",
   "no_action_rewriting": true,
   "no_automatic_action_retry": true,
   "no_episode_reset": true

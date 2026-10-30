@@ -14,6 +14,31 @@ def config():
     return json.loads(Path("configs/base_model.json").read_text())
 
 
+def test_compiled_a_service_and_legacy_service_have_distinct_arguments():
+    legacy = server_arguments(config())
+    compiled = server_arguments(json.loads(Path('configs/a_model_compiled.json').read_text()))
+    assert '--enforce-eager' in legacy
+    assert '--compilation-config' not in legacy
+    assert '--enforce-eager' not in compiled
+    assert json.loads(compiled[compiled.index('--compilation-config') + 1]) == {
+        'cudagraph_capture_sizes': [1]}
+    assert compiled[compiled.index('--gpu-memory-utilization') + 1] == '0.88'
+    legacy[legacy.index('--gpu-memory-utilization') + 1] = '0.88'
+    assert json.loads(compiled[compiled.index('--limit-mm-per-prompt') + 1]) == {'image': 32, 'video': 0}
+    legacy[legacy.index('--limit-mm-per-prompt') + 1] = compiled[compiled.index('--limit-mm-per-prompt') + 1]
+    assert compiled[:compiled.index('--no-enable-prefix-caching')] == legacy[:legacy.index('--enforce-eager')]
+
+
+@pytest.mark.parametrize('extra', [
+    {'enforce_eager': 'false'},
+    {'compilation_config': {'cudagraph_capture_sizes': [1]}},
+    {'enforce_eager': False, 'compilation_config': 'invalid'},
+])
+def test_invalid_execution_configuration_is_rejected(extra):
+    with pytest.raises(ValueError):
+        server_arguments(dict(config(), **extra))
+
+
 def test_request_preserves_images_tool_receipts_and_serving_parameters():
     cfg = config()
     image = "data:image/png;base64," + base64.b64encode(b"image-content").decode()

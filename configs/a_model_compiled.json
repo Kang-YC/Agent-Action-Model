@@ -1,0 +1,25 @@
+{
+  "checkpoint": "/dataset_rc_b1/liwz7@xiaopeng.com/checkpoints/qwen3_6_35B_A3B_mopd_distillation/qwen3_6_35B_A3B_ties_merge_mopd_5_experts_k1_teacher_ratio_sampler_video_affordance_spatial_pointing_v2_0724_01/global_step_450/actor/huggingface",
+  "served_model_name": "agent-action-base-gs450",
+  "vllm_version": "0.19.1",
+  "host": "127.0.0.1",
+  "port": 19230,
+  "dtype": "bfloat16",
+  "max_model_len": 32768,
+  "max_num_seqs": 1,
+  "gpu_memory_utilization": 0.88,
+  "max_num_batched_tokens": 2048,
+  "max_images": 32,
+  "max_image_pixels": 262144,
+  "enable_thinking": false,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_completion_tokens": 4096,
+  "bridge_port": 19231,
+  "enforce_eager": false,
+  "compilation_config": {
+    "cudagraph_capture_sizes": [
+      1
+    ]
+  }
+}

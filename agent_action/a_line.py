@@ -34,7 +34,7 @@ def published_case_plan(panel: dict, case_id: str) -> dict:
                 panel_sha256=panel["panel_sha256"], eval_seed=case["seeds"]["eval_seed"],
                 layout_id=case["seeds"]["layout_id"], native_control_horizon=case["native_horizon"],
                 max_control_steps=case["native_horizon"], max_decisions=0, max_total_tokens=0, wall_seconds=0,
-                budget_protocol="native_control_steps_only", model_config="configs/base_model.json",
+                budget_protocol="native_control_steps_only", model_config="configs/a_model_compiled.json",
                 prompt_protocol='published_reference',
                 layout=case["layout"])
 

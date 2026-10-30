@@ -30,7 +30,13 @@ def checkpoint_manifest(config: dict) -> dict:
 
 
 def server_arguments(config: dict) -> list[str]:
-    return ["serve", config["checkpoint"], "--served-model-name", config["served_model_name"],
+    eager = config.get("enforce_eager", True)
+    compilation = config.get("compilation_config")
+    if type(eager) is not bool:
+        raise ValueError("enforce_eager must be boolean")
+    if compilation is not None and (not isinstance(compilation, dict) or eager):
+        raise ValueError("compilation_config requires a dictionary and enforce_eager=false")
+    arguments = ["serve", config["checkpoint"], "--served-model-name", config["served_model_name"],
             "--host", config["host"], "--port", str(config["port"]), "--dtype", config["dtype"],
             "--max-model-len", str(config["max_model_len"]), "--max-num-seqs", str(config["max_num_seqs"]),
             "--gpu-memory-utilization", str(config["gpu_memory_utilization"]),
@@ -39,7 +45,13 @@ def server_arguments(config: dict) -> list[str]:
             "--mm-processor-kwargs", json.dumps({"max_pixels": config["max_image_pixels"]}),
             "--default-chat-template-kwargs", json.dumps({"enable_thinking": config["enable_thinking"]}),
             "--generation-config", "vllm", "--enable-auto-tool-choice", "--tool-call-parser", "qwen3_coder",
-            "--reasoning-parser", "qwen3", "--enforce-eager", "--no-enable-prefix-caching"]
+            "--reasoning-parser", "qwen3"]
+    if eager:
+        arguments.append("--enforce-eager")
+    arguments.append("--no-enable-prefix-caching")
+    if compilation is not None:
+        arguments.extend(["--compilation-config", json.dumps(compilation)])
+    return arguments
 
 
 def main() -> None:
