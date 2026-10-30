@@ -74,3 +74,133 @@ def guard_development_progress(snapshot: Path, timeout_seconds=900) -> dict:
                 reset_on='acknowledged_control_step',
                 original_sha256=hashlib.sha256(source.encode()).hexdigest(),
                 patched_sha256=hashlib.sha256(patched.encode()).hexdigest())
+
+
+def unify_translation_guidance(snapshot: Path) -> dict:
+    """Clarify the unchanged norm bound in the owned A snapshot only."""
+    from agent_action.robot import CONTRACT
+
+    rule = CONTRACT.translation_rule()
+    skill = snapshot / 'hybrid_rollout/robodojo/skill'
+    path = skill / 'run.py'
+    source = path.read_text()
+    marker = "'No pi05 inference, proposals or direct joint-action commands exist.',"
+    start = source.index('def rejected_input(')
+    end = source.index('\n\ndef ', start + 1)
+    rejection = source[start:end]
+    if source.count(marker) != 1 or rejection.count('    return packet') != 1:
+        raise ValueError('Unknown Direct tool or rejection source; refusing partial guidance update')
+    updated = source[:start] + rejection.replace('    return packet',
+        '    packet["translation_constraint"] = ' + repr(rule) + '\n    return packet', 1) + source[end:]
+    updated = updated.replace(marker, marker[:-1] + ' + ' + repr(' ' + rule) + ',', 1)
+    ast.parse(updated)
+    files = {path: (source, updated)}
+    direct_skill = snapshot / 'hybrid_rollout/robodojo/robodojo-gpt-only-rollout'
+    for relative in ('SKILL.md', 'context/eef_control.md'):
+        doc = direct_skill / relative
+        original = doc.read_text()
+        files[doc] = (original, original.rstrip() + '\n\n### Translation limit (shared execution rule)\n\n' + rule + '\n')
+    hashes = {}
+    for target, (before, after) in files.items():
+        target.write_text(after)
+        hashes[str(target.relative_to(snapshot))] = dict(
+            before_sha256=hashlib.sha256(before.encode()).hexdigest(),
+            after_sha256=hashlib.sha256(after.encode()).hexdigest())
+    return dict(version='euclidean_translation_guidance_v2', rule=rule,
+                changes_acceptance_rule=False, sources=hashes)
+
+
+def eef_numeric_feedback(arguments, request):
+    """Diagnostic only: measure a rejected candidate without changing it."""
+    import math
+
+    if not isinstance(arguments, dict) or not isinstance(request, dict):
+        return {}
+    response = arguments.get('response')
+    if not isinstance(response, dict) or response.get('mode') != 'eef':
+        return {}
+    if response.get('request_id') != request.get('request_id'):
+        return {'unavailable': 'candidate does not match current request_id'}
+    arms = {}
+    for arm in ('left', 'right'):
+        values = {}
+        for field, size in (('position', 3), ('quaternion_wxyz', 4)):
+            try:
+                candidate = response['target'][arm][field]
+                if len(candidate) != size or any(type(x) not in (int, float) or not math.isfinite(x) for x in candidate):
+                    continue
+                if field == 'position':
+                    current = request['current_eef'][arm]['position']
+                    if len(current) != 3 or any(type(x) not in (int, float) or not math.isfinite(x) for x in current):
+                        continue
+                    distance = math.dist(candidate, current)
+                    if math.isfinite(distance):
+                        values.update(distance_m=distance, max_distance_m=0.05,
+                                      translation_exceeded=distance > 0.05 + 1e-9)
+                else:
+                    norm = math.hypot(*candidate)
+                    if math.isfinite(norm):
+                        values.update(quaternion_norm=norm, quaternion_norm_tolerance=1e-4,
+                                      quaternion_norm_invalid=abs(norm - 1) > 1e-4)
+            except (KeyError, TypeError, ValueError, OverflowError):
+                continue
+        if values:
+            arms[arm] = values
+    return {'arms': arms, 'diagnostic_only': True,
+            'note': 'Measured against current EEF; these metrics are not full action validation. Correct arguments yourself; no target was modified.'}
+
+
+def add_numeric_rejection_feedback(snapshot: Path) -> dict:
+    """Instrument the owned rejection receipt; retain the native validator."""
+    import inspect
+
+    path = snapshot / RUN_PATH
+    source = path.read_text()
+    start = source.index('def rejected_input(')
+    end = source.index('\n\ndef ', start + 1)
+    rejection = source[start:end]
+    if rejection.count('    return packet') != 1 or 'def eef_numeric_feedback(' in source:
+        raise ValueError('Unknown rejection source; refusing numerical feedback patch')
+    rejection = rejection.replace('    return packet',
+        '    packet["eef_numeric_feedback"] = eef_numeric_feedback(arguments, getattr(rollout, "request", None))\n    return packet', 1)
+    updated = source[:start] + inspect.getsource(eef_numeric_feedback) + '\n\n' + rejection + source[end:]
+    ast.parse(updated)
+    path.write_text(updated)
+    return dict(version='eef_numeric_rejection_v1', changes_acceptance_rule=False,
+                automatic_action_rewriting=False, additional_tool_calls=0,
+                before_sha256=hashlib.sha256(source.encode()).hexdigest(),
+                after_sha256=hashlib.sha256(updated.encode()).hexdigest())
+
+
+def response_input_feedback(error, arguments):
+    """Disambiguate the native combined type/ID error without coercing input."""
+    if str(error) != 'Response must match the current observation request_id':
+        return {}
+    response = arguments.get('response') if isinstance(arguments, dict) else None
+    if not isinstance(response, dict):
+        return dict(native_error=str(error), input_error='response_type',
+                    error='response must be a JSON object, not a string, array, scalar or null. '
+                          'Supply the response object directly; do not JSON-encode it inside a string.')
+    return dict(native_error=str(error), input_error='request_id_mismatch')
+
+
+def clarify_response_rejection(snapshot: Path) -> dict:
+    """Only amend rejected receipts in this run's snapshot; validation stays native."""
+    import inspect
+
+    path = snapshot / RUN_PATH
+    source = path.read_text()
+    start = source.index('def rejected_input(')
+    end = source.index('\n\ndef ', start + 1)
+    rejection = source[start:end]
+    if rejection.count('    return packet') != 1 or 'def response_input_feedback(' in source:
+        raise ValueError('Unknown rejection source; refusing response feedback patch')
+    rejection = rejection.replace('    return packet',
+        '    packet.update(response_input_feedback(error, arguments))\n    return packet', 1)
+    updated = source[:start] + inspect.getsource(response_input_feedback) + '\n\n' + rejection + source[end:]
+    ast.parse(updated)
+    path.write_text(updated)
+    return dict(version='response_type_feedback_v1', changes_acceptance_rule=False,
+                automatic_action_rewriting=False,
+                before_sha256=hashlib.sha256(source.encode()).hexdigest(),
+                after_sha256=hashlib.sha256(updated.encode()).hexdigest())

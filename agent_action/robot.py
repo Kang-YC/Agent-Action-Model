@@ -59,11 +59,17 @@ class RobotContract:
             targets[arm] = dict(position=p, quaternion_wxyz=q, gripper_closed=target["gripper_closed"])
         return targets
 
+    def translation_rule(self) -> str:
+        return (f"For EACH arm independently, dx, dy, dz = target.position - current measured EEF.position "
+                f"in meters. sqrt(dx*dx + dy*dy + dz*dz) must be <= {self.max_translation_m} m "
+                "(3D Euclidean displacement per call, NOT a separate allowance for each axis). "
+                "Check left and right independently; do not add their distances together. "
+                "steps repeats control toward the SAME absolute target and does not multiply this limit.")
+
     def description(self) -> str:
         return (f"Dual ARX X5; {self.eef_link} in {self.frame}; meters and unit wxyz. "
                 "Targets are absolute link6 poses, not XYZ deltas or fingertip poses. "
-                f"For EACH arm independently, math.dist(target.position, current measured position) "
-                f"must be <= {self.max_translation_m} m: a 3D Euclidean norm, NOT a per-axis bound. "
+                f"{self.translation_rule()} "
                 f"Orientation change must be <= {self.max_rotation_rad} radians (about 20 degrees), "
                 "and abs(norm(quaternion_wxyz)-1) <= 0.0001. "
                 f"Execute 1..{self.max_steps} steps "

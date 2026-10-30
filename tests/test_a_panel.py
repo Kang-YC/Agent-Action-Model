@@ -86,6 +86,39 @@ def test_finalization_and_plan_identity_required(tmp_path):
         prepare(panel, tmp_path, runs, native_panel=native)
 
 
+def test_previous_model_config_is_preserved_for_review_without_retry(tmp_path):
+    from agent_action.a_batch import never_attempted
+
+    panel, runs, native = fixture(tmp_path)
+    run = attempt(panel, runs, 'legacy', native, complete=True, success=True)
+    path = run.with_name(run.name + '.plan.json')
+    record = json.loads(path.read_text())
+    record['plan']['model_config'] = 'configs/base_model.json'
+    path.write_text(json.dumps(record))
+    original = path.read_bytes()
+    report = prepare(panel, tmp_path, runs, native_panel=native)
+    assert report['complete_cases'] == 0 and report['review_cases'] == 1
+    old = report['cases'][0]['attempts'][0]
+    assert old['model_config'] == 'configs/base_model.json'
+    assert old['model_config_matches'] is False and old['identity_verified'] is True
+    assert never_attempted(report, panel['task_order']) == []
+    assert path.read_bytes() == original
+
+
+@pytest.mark.parametrize('location', ['summary', 'manifest'])
+def test_budgeted_probe_even_if_successful_is_excluded_from_formal_results(tmp_path, location):
+    panel, runs, native = fixture(tmp_path)
+    run = attempt(panel, runs, 'probe', native, complete=True, success=True)
+    path = run / f'{location}.json'
+    record = json.loads(path.read_text())
+    record.update({'formal_evaluation': False} if location == 'summary'
+                  else {'kind': 'published_layout_budgeted_probe'})
+    path.write_text(json.dumps(record))
+    report = prepare(panel, tmp_path, runs, native_panel=native)
+    assert report['complete_cases'] == report['successful_cases'] == 0
+    assert report['review_cases'] == 1
+
+
 @pytest.mark.parametrize('location', ['outcome', 'manifest', 'plan'])
 def test_completed_score_without_matching_identity_is_rejected(tmp_path, location):
     panel, runs, native = fixture(tmp_path)

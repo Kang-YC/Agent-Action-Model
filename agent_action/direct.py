@@ -94,6 +94,31 @@ def simulator_error(log: str) -> str | None:
     return None
 
 
+def apply_controller_termination(summary: dict, termination: dict) -> None:
+    """Retain the primary controller cause when its cleanup closes the simulator."""
+    summary['controller_termination'] = termination
+    reason = termination.get('reason')
+    if (summary.get('status') == 'infrastructure_error'
+            and summary.get('error', '').startswith('Simulator exited 0 while controller was running')
+            and reason in ('controller_error', 'operator_interrupt')):
+        summary['status'] = 'controller_error'
+    if summary.get('status') == 'controller_error':
+        if reason == 'operator_interrupt':
+            summary['status'] = 'operator_interrupted'
+        elif reason == 'controller_error' and 'image(s) may be provided in one prompt' in termination.get('error', ''):
+            summary.update(failure_category='model_image_limit', task_outcome='incomplete')
+
+
+def has_probe_budget(args, published_panel: dict) -> bool:
+    if args.max_decisions or args.max_total_tokens or args.wall_seconds:
+        return True
+    if not args.max_control_steps:
+        return False  # Native server owns the horizon.
+    horizons = {case['native_horizon'] for case in published_panel['cases']
+                if case['runtime_task'] == args.task}
+    return horizons != {args.max_control_steps}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     root = Path(__file__).resolve().parents[1]
@@ -107,6 +132,10 @@ def main() -> None:
     parser.add_argument('--case-file', type=Path)
     parser.add_argument('--prompt-protocol', choices=('calibrated_development', 'published_reference'),
                         default='calibrated_development')
+    parser.add_argument('--translation-guidance', choices=('reference', 'unified'), default='unified',
+                        help='Reference wording control or explicit Euclidean-limit wording; validation is unchanged')
+    parser.add_argument('--numeric-rejection-feedback', action='store_true',
+                        help='Add measured EEF distance and quaternion norm to rejection receipts')
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--eval-seed", type=int, default=0)
     parser.add_argument("--sim-port", type=int, default=19124)
@@ -131,6 +160,8 @@ def main() -> None:
             raise ValueError('Runtime arguments differ from the selected native case')
         verify_assets(panel, args.robodojo, [case])
         evaluation_identity = selected['identity']
+    budgeted_evaluation = bool(evaluation_identity) and has_probe_budget(
+        args, json.loads((root / 'configs/a_published_ten_task_panel.json').read_text()))
     config = json.loads(args.config.read_text())
     compact_limit = config.get('auto_compact_token_limit', config['max_model_len'] * 3 // 4)
     if type(compact_limit) is not int or not 0 < compact_limit < config['max_model_len']:
@@ -154,9 +185,25 @@ def main() -> None:
     if args.prompt_protocol == 'calibrated_development':
         from agent_action.a_protocol import guard_development_progress
         prompt_protocol['progress_guard'] = guard_development_progress(snapshot)
+    if args.translation_guidance == 'unified':
+        from agent_action.a_protocol import unify_translation_guidance
+        prompt_protocol['translation_guidance'] = unify_translation_guidance(snapshot)
+        if args.prompt_protocol == 'published_reference':
+            prompt_protocol['remaining_differences'].append('explicit shared Euclidean translation-limit wording')
+    else:
+        prompt_protocol['translation_guidance'] = dict(version='reference_wording', changes_acceptance_rule=False)
+    if args.numeric_rejection_feedback:
+        from agent_action.a_protocol import add_numeric_rejection_feedback
+        prompt_protocol['numeric_rejection_feedback'] = add_numeric_rejection_feedback(snapshot)
+        if args.prompt_protocol == 'published_reference':
+            prompt_protocol['remaining_differences'].append('measured EEF distance and quaternion norm in rejection receipts')
+    from agent_action.a_protocol import clarify_response_rejection
+    prompt_protocol['response_input_feedback'] = clarify_response_rejection(snapshot)
+    if args.prompt_protocol == 'published_reference':
+        prompt_protocol['remaining_differences'].append('disambiguated response type and request_id rejection feedback')
     harness_source = output / "harness_source"
     (harness_source / "agent_action").mkdir(parents=True)
-    for name in ("__init__.py", "direct.py", "direct_worker.py", "bridge.py", "serve.py", "a_protocol.py"):
+    for name in ("__init__.py", "direct.py", "direct_worker.py", "bridge.py", "serve.py", "a_protocol.py", "robot.py"):
         shutil.copy2(root / "agent_action" / name, harness_source / "agent_action" / name)
     (harness_source / "scripts").mkdir()
     shutil.copy2(root / "scripts/start_native.sh", harness_source / "scripts/start_native.sh")
@@ -165,7 +212,8 @@ def main() -> None:
         shutil.copy2(args.eval_manifest, output / 'evaluation_panel.json')
         shutil.copy2(args.case_file, output / 'evaluation_case.json')
     manifest = checkpoint_manifest(config)
-    manifest.update(kind="published_paired_case" if evaluation_identity else "development_direct_chain_validation",
+    manifest.update(kind=("published_layout_budgeted_probe" if budgeted_evaluation else
+                          "published_paired_case" if evaluation_identity else "development_direct_chain_validation"),
                     task=args.task, layout_id=args.seed, eval_seed=args.eval_seed,
                     rpc_idle_patch=rpc_idle_patch,
                     prompt_protocol=prompt_protocol,
@@ -207,7 +255,7 @@ def main() -> None:
         env.pop(key, None)
     children, logs = [], []
     started = time.monotonic()
-    summary = dict(status="infrastructure_error", formal_evaluation=bool(evaluation_identity))
+    summary = dict(status="infrastructure_error", formal_evaluation=bool(evaluation_identity) and not budgeted_evaluation)
 
     def start(name, command):
         log = (output / "logs" / f"{name}.log").open("w")
@@ -284,9 +332,7 @@ def main() -> None:
         termination_path = output / "controller/termination.json"
         if termination_path.exists():
             termination = json.loads(termination_path.read_text())
-            summary['controller_termination'] = termination
-            if summary.get('status') == 'controller_error' and termination.get('reason') == 'operator_interrupt':
-                summary['status'] = 'operator_interrupted'
+            apply_controller_termination(summary, termination)
         write(output / "summary.json", summary)
     print(json.dumps(summary, ensure_ascii=False), flush=True)
 

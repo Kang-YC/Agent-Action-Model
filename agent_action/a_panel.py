@@ -40,7 +40,10 @@ def prepare(panel: dict, robodojo: Path, runs: Path, panel_path: Path | None = N
             saved = record.get('plan', {})
             if saved.get('case_id') != case['case_id']:
                 continue
-            if saved != plan:
+            # Model defaults can evolve without changing the frozen case. Keep
+            # earlier attempts visible, but require review before combining them.
+            model_config_matches = saved.get('model_config') == plan['model_config']
+            if dict(saved, model_config=plan['model_config']) != plan:
                 raise ValueError(f'Attempt plan differs from frozen case: {snapshot}')
             run = snapshot.with_name(snapshot.name.removesuffix('.plan.json'))
             summary_path = run / 'summary.json'
@@ -53,7 +56,9 @@ def prepare(panel: dict, robodojo: Path, runs: Path, panel_path: Path | None = N
                                  and manifest.get('evaluation_identity') == identity
                                  and native.get('evaluation_case') == identity)
             valid = (summary is not None and summary.get('status') == 'completed'
-                     and identity_verified
+                     and summary.get('formal_evaluation') is not False
+                     and manifest.get('kind') != 'published_layout_budgeted_probe'
+                     and identity_verified and model_config_matches
                      and native.get('complete') is True
                      and native.get('valid_for_success_rate') is True
                      and isinstance(native.get('native_success'), bool))
@@ -61,6 +66,8 @@ def prepare(panel: dict, robodojo: Path, runs: Path, panel_path: Path | None = N
                                  status=summary.get('status') if summary else 'unfinished_or_interrupted',
                                  valid_native_result=valid,
                                  identity_verified=identity_verified,
+                                 model_config=saved.get('model_config'),
+                                 model_config_matches=model_config_matches,
                                  native_success=native.get('native_success') if valid else None,
                                  native_score=native.get('native_score') if valid else None,
                                  native_control_steps=native.get('native_control_steps'),

@@ -13,6 +13,7 @@ import sys
 import time
 
 from agent_action.a_panel import prepare
+from agent_action.a_line import published_case_plan
 from agent_action.service import health, matches_process, process_identity, write_state
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -94,7 +95,8 @@ def main():
     if not 1 <= args.cases_per_task <= 5:
         raise ValueError('Cases per task must be within 1..5')
     native = json.loads(native_path.read_text())
-    config = json.loads((root / 'configs/base_model.json').read_text())
+    model_config = published_case_plan(panel, panel['cases'][0]['case_id'])['model_config']
+    config = json.loads((root / model_config).read_text())
     lock = (runs / '.batch.lock').open('a')
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(args.gpu), PYTHONPATH=os.pathsep.join(

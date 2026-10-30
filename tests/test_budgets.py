@@ -115,3 +115,42 @@ def test_documented_finish_allows_simulator_to_exit_before_worker(tmp_path):
     sim.poll.return_value = 2
     with pytest.raises(RuntimeError):
         wait_for_controller(worker, {'Simulator': sim}, None, marker)
+
+
+def test_controller_image_limit_remains_primary_cause_after_clean_simulator_exit():
+    from agent_action.direct import apply_controller_termination
+    native = dict(complete=False, native_score=None, native_success=None)
+    summary = dict(status='infrastructure_error',
+                   error='Simulator exited 0 while controller was running; inspect logs', native_outcome=native)
+    termination = dict(reason='controller_error', error='BadRequestError: At most 12 image(s) may be provided in one prompt.')
+    apply_controller_termination(summary, termination)
+    assert summary['status'] == 'controller_error'
+    assert summary['failure_category'] == 'model_image_limit'
+    assert summary['task_outcome'] == 'incomplete'
+    assert summary['native_outcome'] == native
+    assert summary['controller_termination'] == termination
+    assert summary['error'].startswith('Simulator exited 0')
+
+
+def test_controller_cleanup_cannot_mask_a_real_simulator_fault():
+    from agent_action.direct import apply_controller_termination
+    summary = dict(status='simulator_error', failure_category='gpu_memory_allocation')
+    apply_controller_termination(summary, dict(reason='operator_interrupt'))
+    assert summary['status'] == 'simulator_error'
+    assert summary['failure_category'] == 'gpu_memory_allocation'
+    summary = dict(status='infrastructure_error', error='Simulator exited 0 while controller was running; inspect logs')
+    apply_controller_termination(summary, dict(reason='operator_interrupt'))
+    assert summary['status'] == 'operator_interrupted'
+
+
+@pytest.mark.parametrize('steps,probe', [(0, False), (700, False), (30, True), (800, True)])
+def test_frozen_layout_control_cap_is_not_formal_evaluation(steps, probe):
+    from types import SimpleNamespace
+    from agent_action.direct import has_probe_budget
+
+    panel = json.loads(Path('configs/a_published_ten_task_panel.json').read_text())
+    args = SimpleNamespace(task='put_bottles_into_dustbin', max_control_steps=steps,
+                           max_decisions=0, max_total_tokens=0, wall_seconds=0)
+    assert has_probe_budget(args, panel) is probe
+    args.max_total_tokens = 250000
+    assert has_probe_budget(args, panel) is True
